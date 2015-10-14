@@ -9,20 +9,43 @@
 #include <jpeglib.h>
 #include "VG/openvg.h"
 #include "VG/vgu.h"
+#ifdef BCMHOST
 #include "EGL/egl.h"
 #include "GLES/gl.h"
 #include "bcm_host.h"
+#else
+#include "shContext.h"
+#endif
 #include "DejaVuSans.inc"				   // font data
 #include "DejaVuSerif.inc"
 #include "DejaVuSansMono.inc"
 #include "eglstate.h"					   // data structures for graphics state
 #include "fontinfo.h"					   // font data structure
+
+//
+// Libshape globals
+//
+/*
+ void vgDestroyPaint(VGPaint paint)
+
+ The resources associated with a paint object may be deallocated by calling
+ vgDestroyPaint. Following the call, the paint handle is no longer valid in any
+ of the contexts that shared it. If the paint object is currently active in a drawing
+ context, the context continues to access it until it is replaced or the context
+ is destroyed.
+
+*/
+
+VGPaint fillPaint;
+VGPaint paint;
+VGPaint strokePaint;
+
 static STATE_T _state, *state = &_state;	// global graphics state
 static const int MAXFONTPATH = 256;
+
 //
 // Terminal settings
 //
-
 // terminal settings structures
 struct termios new_term_attr;
 struct termios orig_term_attr;
@@ -216,9 +239,19 @@ Fontinfo SansTypeface, SerifTypeface, MonoTypeface;
 
 // init sets the system to its initial state
 void init(int *w, int *h) {
+#ifdef BCMHOST
 	bcm_host_init();
 	memset(state, 0, sizeof(*state));
 	oglinit(state);
+#else
+	memset(state, 0, sizeof(*state));
+    init_glx();
+    vgCreateContextSH(800,600);
+
+    state->screen_width=800;
+    state->screen_height=600;
+    // OLAS
+#endif
 	SansTypeface = loadfont(DejaVuSans_glyphPoints,
 				DejaVuSans_glyphPointIndices,
 				DejaVuSans_glyphInstructions,
@@ -240,8 +273,15 @@ void init(int *w, int *h) {
 				DejaVuSansMono_glyphInstructionCounts,
 				DejaVuSansMono_glyphAdvances, DejaVuSansMono_characterMap, DejaVuSansMono_glyphCount);
 
-	*w = state->screen_width;
-	*h = state->screen_height;
+    *w = state->screen_width;
+    *h = state->screen_height;
+
+    fillPaint = vgCreatePaint();
+
+    paint = vgCreatePaint();
+
+    strokePaint = vgCreatePaint();
+
 }
 
 // finish cleans up
@@ -249,12 +289,14 @@ void finish() {
 	unloadfont(SansTypeface.Glyphs, SansTypeface.Count);
 	unloadfont(SerifTypeface.Glyphs, SerifTypeface.Count);
 	unloadfont(MonoTypeface.Glyphs, MonoTypeface.Count);
+#ifdef BCMHOST
 	glClear(GL_COLOR_BUFFER_BIT);
 	eglSwapBuffers(state->display, state->surface);
 	eglMakeCurrent(state->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
 	eglDestroySurface(state->display, state->surface);
 	eglDestroyContext(state->display, state->context);
 	eglTerminate(state->display);
+#endif
 }
 
 //
@@ -287,20 +329,19 @@ void Scale(VGfloat x, VGfloat y) {
 
 // setfill sets the fill color
 void setfill(VGfloat color[4]) {
-	VGPaint fillPaint = vgCreatePaint();
 	vgSetParameteri(fillPaint, VG_PAINT_TYPE, VG_PAINT_TYPE_COLOR);
 	vgSetParameterfv(fillPaint, VG_PAINT_COLOR, 4, color);
 	vgSetPaint(fillPaint, VG_FILL_PATH);
-	vgDestroyPaint(fillPaint);
+	//vgDestroyPaint(fillPaint);
 }
 
 // setstroke sets the stroke color
 void setstroke(VGfloat color[4]) {
-	VGPaint strokePaint = vgCreatePaint();
+        //VGPaint strokePaint = vgCreatePaint();
 	vgSetParameteri(strokePaint, VG_PAINT_TYPE, VG_PAINT_TYPE_COLOR);
 	vgSetParameterfv(strokePaint, VG_PAINT_COLOR, 4, color);
 	vgSetPaint(strokePaint, VG_STROKE_PATH);
-	vgDestroyPaint(strokePaint);
+    //vgDestroyPaint(strokePaint);
 }
 
 // StrokeWidth sets the stroke width
@@ -367,21 +408,21 @@ void setstop(VGPaint paint, VGfloat * stops, int n) {
 // LinearGradient fills with a linear gradient
 void FillLinearGradient(VGfloat x1, VGfloat y1, VGfloat x2, VGfloat y2, VGfloat * stops, int ns) {
 	VGfloat lgcoord[4] = { x1, y1, x2, y2 };
-	VGPaint paint = vgCreatePaint();
+        //VGPaint paint = vgCreatePaint();
 	vgSetParameteri(paint, VG_PAINT_TYPE, VG_PAINT_TYPE_LINEAR_GRADIENT);
 	vgSetParameterfv(paint, VG_PAINT_LINEAR_GRADIENT, 4, lgcoord);
 	setstop(paint, stops, ns);
-	vgDestroyPaint(paint);
+        //vgDestroyPaint(paint);
 }
 
 // RadialGradient fills with a linear gradient
 void FillRadialGradient(VGfloat cx, VGfloat cy, VGfloat fx, VGfloat fy, VGfloat radius, VGfloat * stops, int ns) {
 	VGfloat radialcoord[5] = { cx, cy, fx, fy, radius };
-	VGPaint paint = vgCreatePaint();
+	//VGPaint paint = vgCreatePaint();
 	vgSetParameteri(paint, VG_PAINT_TYPE, VG_PAINT_TYPE_RADIAL_GRADIENT);
 	vgSetParameterfv(paint, VG_PAINT_RADIAL_GRADIENT, 5, radialcoord);
 	setstop(paint, stops, ns);
-	vgDestroyPaint(paint);
+	//vgDestroyPaint(paint);
 }
 
 // ClipRect limits the drawing area to specified rectangle
@@ -568,9 +609,13 @@ void Start(int width, int height) {
 
 // End checks for errors, and renders to the display
 void End() {
+#ifdef BCMHOST
 	assert(vgGetError() == VG_NO_ERROR);
 	eglSwapBuffers(state->display, state->surface);
 	assert(eglGetError() == EGL_SUCCESS);
+#else
+    swap_buffers_glx();
+#endif
 }
 
 // SaveEnd dumps the raster before rendering to the display 
@@ -586,8 +631,10 @@ void SaveEnd(char *filename) {
 			fclose(fp);
 		}
 	}
+#ifdef BCMHOST
 	eglSwapBuffers(state->display, state->surface);
 	assert(eglGetError() == EGL_SUCCESS);
+#endif
 }
 
 // clear the screen to a solid background color
