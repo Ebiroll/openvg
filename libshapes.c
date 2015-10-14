@@ -15,6 +15,9 @@
 #include "bcm_host.h"
 #else
 #include "shContext.h"
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <GL/glut.h>
 #endif
 #include "DejaVuSans.inc"				   // font data
 #include "DejaVuSerif.inc"
@@ -246,6 +249,8 @@ void init(int *w, int *h) {
 #else
 	memset(state, 0, sizeof(*state));
     init_glx();
+
+
     vgCreateContextSH(800,600);
 
     state->screen_width=800;

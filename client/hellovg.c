@@ -15,8 +15,8 @@ int main() {
 	init(&width, &height);				   // Graphics initialization
     float color[]={0.0,1.0,0.0,1.0};
 
-    setstroke(color);
-    setfill(color);
+    //setstroke(color);
+    //setfill(color);
     do {
         Start(width, height);				   // Start the picture
         Background(0, 0, 0);				   // Black background

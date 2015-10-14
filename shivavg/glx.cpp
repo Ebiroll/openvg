@@ -52,7 +52,7 @@ struct System_context
 
     void init()
     {
-        GLint                   att[] = { GLX_RGBA, GLX_DOUBLEBUFFER,GLX_DEPTH_SIZE, 24, None }; //
+        GLint                   att[] = { GLX_RGBA, GLX_DOUBLEBUFFER,GLX_DEPTH_SIZE, 8,GLX_STENCIL_SIZE,8, None }; //
         Colormap                cmap;
 
         XInitThreads();
@@ -120,7 +120,7 @@ struct System_context
         char* argv[]={""};
         int argc =1;
 
-        XmbSetWMProperties (dpy, win, "SI_VIS", "SI_VIS", argv, argc, &hints, &wmHints, NULL);
+        XmbSetWMProperties (dpy, win, "OPENVG", "OPENVG", argv, argc, &hints, &wmHints, NULL);
 
 
 
@@ -141,7 +141,7 @@ struct System_context
 #endif
 	
         XMapWindow(dpy, win);
-        XStoreName(dpy, win, "SI_VIS");
+        XStoreName(dpy, win, "OpenVG");
 
 
         // --------------
