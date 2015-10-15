@@ -1,3 +1,4 @@
+#if 0
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include "eglstate.h"
@@ -96,3 +97,4 @@ extern void oglinit(STATE_T * state) {
 	float ratio = (float)state->screen_width / (float)state->screen_height;
 	glFrustumf(-ratio, ratio, -1.0f, 1.0f, 1.0f, 10.0f);
 }
+#endif

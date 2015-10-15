@@ -59,11 +59,11 @@ ELSE(WIN32)
 
 #Linux
 ADD_EXECUTABLE(shivavg
-shivavg/glx.cpp
+#shivavg/glx.c
 libshapes.c
 #client/hellovg.c
 client/shapedemo.c
-${shiva_SRC}
+#${shiva_SRC}
 )
 
 TARGET_LINK_LIBRARIES(shivavg X11 GLU glut dl GL m jpeg)

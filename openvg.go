@@ -1,13 +1,13 @@
 // Package openvg is a high-level 2D vector graphics library built on OpenVG
 package openvg
-
 /*
-#cgo CFLAGS:   -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads
-#cgo LDFLAGS:  -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
+#cgo CFLAGS:  -I shivavg  -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads
+#cgo LDFLAGS:  -lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
 #include "VG/openvg.h"
 #include "VG/vgu.h"
-#include "EGL/egl.h"
-#include "GLES/gl.h"
+#include <stdlib.h>
+//#include "EGL/egl.h"
+//#include "GLES/gl.h"
 #include "fontinfo.h" // font information
 #include "shapes.h"   // C API
 */

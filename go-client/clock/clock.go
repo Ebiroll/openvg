@@ -8,7 +8,7 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/ajstarks/openvg"
+	"github.com/Ebiroll/openvg"
 )
 
 const (
