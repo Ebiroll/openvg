@@ -14,7 +14,7 @@
 extern "C"
 {
 //#include "shContext.h"
-
+ bool vgCreateContextSH(int width, int height);
  void vgResizeSurfaceSH(int width, int height);
 
 }
@@ -248,6 +248,7 @@ struct System_context
 
         printf("vendor: %s\n", (const char*)glGetString(GL_VENDOR));
 
+		vgCreateContextSH(800,600);
 
 
     };
