@@ -7,6 +7,7 @@
 #ifndef _WIN32
 #include <termios.h>
 #include <jpeglib.h>
+#include <string.h>
 #endif
 #include <assert.h>
 #include "VG/openvg.h"
