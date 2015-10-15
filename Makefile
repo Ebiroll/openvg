@@ -1,17 +1,27 @@
 INCLUDEFLAGS=-I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads
-LIBFLAGS=-L/opt/vc/lib -lGLESv2 -lEGL -ljpeg
-FONTLIB=/usr/share/fonts/truetype/ttf-dejavu
+LIBFLAGS=-L/opt/vc/lib -lGLESv2 -lEGL -ljpeg 
+#FONTLIB=/usr/share/fonts/truetype/ttf-dejavu DejaVuSans.ttf
+FONTLIB=/usr/share/fonts/TTF/
 FONTFILES=DejaVuSans.inc  DejaVuSansMono.inc DejaVuSerif.inc
-all:	font2openvg fonts library	
+all:	font2openvg fonts library hello
 
 libshapes.o:	libshapes.c shapes.h fontinfo.h fonts
-	gcc -O2 -Wall $(INCLUDEFLAGS) -c libshapes.c
+	gcc -O2 -fPIC -Wall $(INCLUDEFLAGS)  -D BCMHOST -c libshapes.c
 
 gopenvg:	openvg.go
 	go install .
 
 oglinit.o:	oglinit.c
-	gcc -O2 -Wall $(INCLUDEFLAGS) -c oglinit.c
+	gcc -O2 -fPIC -Wall $(INCLUDEFLAGS) -D BCMHOST -c oglinit.c
+
+hello:	hello.o
+	gcc  $(LIBFLAGS) -lbcm_host -lpthread  hello.o libshapes.o oglinit.o   -o hello
+
+hello.o:	client/hellovg.c
+	gcc -g -fPIC -Wall $(INCLUDEFLAGS) -I . -o hello.o -c client/hellovg.c
+
+
+
 
 font2openvg:	fontutil/font2openvg.cpp
 	g++ -I/usr/include/freetype2 fontutil/font2openvg.cpp -o font2openvg -lfreetype
@@ -29,10 +39,10 @@ DejaVuSansMono.inc: font2openvg $(FONTLIB)/DejaVuSansMono.ttf
 
 clean:
 	rm -f *.o *.inc *.so font2openvg *.c~ *.h~
-	indent -linux -c 60 -brf -l 132  libshapes.c oglinit.c shapes.h fontinfo.h
+	#indent -linux -c 60 -brf -l 132  libshapes.c oglinit.c shapes.h fontinfo.h
 
 library: oglinit.o libshapes.o
-	gcc $(LIBFLAGS) -shared -o libshapes.so oglinit.o libshapes.o
+	gcc $(LIBFLAGS) -fPIC -shared -o libshapes.so oglinit.o libshapes.o
 
 install:
 	install -m 755 -p font2openvg /usr/bin/

@@ -392,7 +392,7 @@ void RGBA(unsigned int r, unsigned int g, unsigned int b, VGfloat a, VGfloat col
 }
 
 // RGB returns a solid color from a RGB triple
-void SRGB(unsigned int r, unsigned int g, unsigned int b, VGfloat color[4]) {
+void RGB(unsigned int r, unsigned int g, unsigned int b, VGfloat color[4]) {
 	RGBA(r, g, b, 1.0f, color);
 }
 
@@ -557,12 +557,12 @@ void poly(VGfloat * x, VGfloat * y, VGint n, VGbitfield flag) {
 }
 
 // Polygon makes a filled polygon with vertices in x, y arrays
-void SPolygon(VGfloat * x, VGfloat * y, VGint n) {
+void Polygon(VGfloat * x, VGfloat * y, VGint n) {
 	poly(x, y, n, VG_FILL_PATH);
 }
 
 // Polyline makes a polyline with vertices at x, y arrays
-void SPolyline(VGfloat * x, VGfloat * y, VGint n) {
+void Polyline(VGfloat * x, VGfloat * y, VGint n) {
 	poly(x, y, n, VG_STROKE_PATH);
 }
 
@@ -591,7 +591,7 @@ void Roundrect(VGfloat x, VGfloat y, VGfloat w, VGfloat h, VGfloat rw, VGfloat r
 }
 
 // Ellipse makes an ellipse at the specified location and dimensions
-void SEllipse(VGfloat x, VGfloat y, VGfloat w, VGfloat h) {
+void Ellipse(VGfloat x, VGfloat y, VGfloat w, VGfloat h) {
 	VGPath path = newpath();
 	vguEllipse(path, x, y, w, h);
 	vgDrawPath(path, VG_FILL_PATH | VG_STROKE_PATH);
@@ -600,11 +600,11 @@ void SEllipse(VGfloat x, VGfloat y, VGfloat w, VGfloat h) {
 
 // Circle makes a circle at the specified location and dimensions
 void Circle(VGfloat x, VGfloat y, VGfloat r) {
-	SEllipse(x, y, r, r);
+	Ellipse(x, y, r, r);
 }
 
 // Arc makes an elliptical arc at the specified location and dimensions
-void SArc(VGfloat x, VGfloat y, VGfloat w, VGfloat h, VGfloat sa, VGfloat aext) {
+void Arc(VGfloat x, VGfloat y, VGfloat w, VGfloat h, VGfloat sa, VGfloat aext) {
 	VGPath path = newpath();
 	vguArc(path, x, y, w, h, sa, aext, VGU_ARC_OPEN);
 	vgDrawPath(path, VG_FILL_PATH | VG_STROKE_PATH);

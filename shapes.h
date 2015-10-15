@@ -14,14 +14,14 @@ extern "C" {
 	extern VGfloat TextWidth(char *, Fontinfo, int);
 	extern void Cbezier(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void Qbezier(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
-	extern void SPolygon(VGfloat *, VGfloat *, VGint);
-	extern void SPolyline(VGfloat *, VGfloat *, VGint);
+	extern void Polygon(VGfloat *, VGfloat *, VGint);
+	extern void Polyline(VGfloat *, VGfloat *, VGint);
 	extern void Rect(VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void Line(VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void Roundrect(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
-	extern void SEllipse(VGfloat, VGfloat, VGfloat, VGfloat);
+	extern void Ellipse(VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void Circle(VGfloat, VGfloat, VGfloat);
-	extern void SArc(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
+	extern void Arc(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void Image(VGfloat, VGfloat, int, int, char *);
 	extern void Start(int, int);
 	extern void End();
@@ -36,7 +36,7 @@ extern "C" {
 	extern void Stroke(unsigned int, unsigned int, unsigned int, VGfloat);
 	extern void Fill(unsigned int, unsigned int, unsigned int, VGfloat);
 	extern void RGBA(unsigned int, unsigned int, unsigned int, VGfloat, VGfloat[4]);
-	extern void SRGB(unsigned int, unsigned int, unsigned int, VGfloat[4]);
+	extern void RGB(unsigned int, unsigned int, unsigned int, VGfloat[4]);
 	extern void FillLinearGradient(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat *, int);
 	extern void FillRadialGradient(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat *, int);
 	extern void ClipRect(VGint x, VGint y, VGint w, VGint h);
