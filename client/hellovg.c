@@ -2,7 +2,9 @@
 // Anthony Starks (ajstarks@gmail.com)
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 #include "VG/openvg.h"
 #include "VG/vgu.h"
 #include "fontinfo.h"
@@ -26,7 +28,7 @@ int main() {
         TextMid(width / 2, height / 2, "Hello, world", SerifTypeface, width / 10);	// Greetings
         End();						   // End the picture
     }
-    while (!process_events_glx());
+    while (!process_events_gls());
     //fgets(s, 2, stdin);				   // look at the pic, end with [RETURN]
 	finish();					   // Graphics cleanup
 	exit(0);

@@ -38,6 +38,26 @@ shivavg/shParams.c
 shivavg/shContext.c
 shivavg/shVgu.c)
 
+IF(WIN32)
+
+find_package(OpenGL REQUIRED)
+include_directories(${OPENGL_INCLUDE_DIR})
+
+
+ADD_EXECUTABLE(shivavg
+shivavg/glw.cpp
+libshapes.c
+client/hellovg.c
+${shiva_SRC}
+)
+
+
+TARGET_LINK_LIBRARIES(shivavg ${OPENGL_LIBRARIES})
+
+
+ELSE(WIN32)
+
+#Linux
 ADD_EXECUTABLE(shivavg
 shivavg/glx.cpp
 #../examples/test_tiger.c
@@ -49,3 +69,8 @@ ${shiva_SRC}
 )
 
 TARGET_LINK_LIBRARIES(shivavg X11 GLU glut dl GL m jpeg)
+
+ENDIF(WIN32)
+
+
+

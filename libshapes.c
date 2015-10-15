@@ -4,9 +4,11 @@
 //
 #include <stdio.h>
 #include <stdlib.h>
+#ifndef _WIN32
 #include <termios.h>
-#include <assert.h>
 #include <jpeglib.h>
+#endif
+#include <assert.h>
 #include "VG/openvg.h"
 #include "VG/vgu.h"
 #ifdef BCMHOST
@@ -17,14 +19,13 @@
 #include "shContext.h"
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/glut.h>
 #endif
 #include "DejaVuSans.inc"				   // font data
 #include "DejaVuSerif.inc"
 #include "DejaVuSansMono.inc"
 #include "eglstate.h"					   // data structures for graphics state
 #include "fontinfo.h"					   // font data structure
-
+#include "shapes.h"
 //
 // Libshape globals
 //
@@ -50,26 +51,34 @@ static const int MAXFONTPATH = 256;
 // Terminal settings
 //
 // terminal settings structures
+#ifndef _WIN32
 struct termios new_term_attr;
 struct termios orig_term_attr;
+#endif
 
 // saveterm saves the current terminal settings
 void saveterm() {
+#ifndef _WIN32
 	tcgetattr(fileno(stdin), &orig_term_attr);
+#endif
 }
 
 // rawterm sets the terminal to raw mode
 void rawterm() {
+#ifndef _WIN32
 	memcpy(&new_term_attr, &orig_term_attr, sizeof(struct termios));
 	new_term_attr.c_lflag &= ~(ICANON | ECHO | ECHOE | ECHOK | ECHONL | ECHOPRT | ECHOKE | ICRNL);
 	new_term_attr.c_cc[VTIME] = 0;
 	new_term_attr.c_cc[VMIN] = 0;
 	tcsetattr(fileno(stdin), TCSANOW, &new_term_attr);
+#endif
 }
 
 // restore resets the terminal to the previously saved setting
 void restoreterm() {
+#ifndef _WIN32
 	tcsetattr(fileno(stdin), TCSANOW, &orig_term_attr);
+#endif
 }
 
 //
@@ -119,6 +128,7 @@ void unloadfont(VGPath * glyphs, int n) {
 // createImageFromJpeg decompresses a JPEG image to the standard image format
 // source: https://github.com/ileben/ShivaVG/blob/master/examples/test_image.c
 VGImage createImageFromJpeg(const char *filename) {
+#ifndef _WIN32
 	FILE *infile;
 	struct jpeg_decompress_struct jdc;
 	struct jpeg_error_mgr jerr;
@@ -211,6 +221,9 @@ VGImage createImageFromJpeg(const char *filename) {
 	free(data);
 
 	return img;
+#else 
+	return 0;
+#endif
 }
 
 // makeimage makes an image from a raw raster of red, green, blue, alpha values
@@ -248,10 +261,7 @@ void init(int *w, int *h) {
 	oglinit(state);
 #else
 	memset(state, 0, sizeof(*state));
-    init_glx();
-
-
-    vgCreateContextSH(800,600);
+    init_gls();
 
     state->screen_width=800;
     state->screen_height=600;
@@ -382,7 +392,7 @@ void RGBA(unsigned int r, unsigned int g, unsigned int b, VGfloat a, VGfloat col
 }
 
 // RGB returns a solid color from a RGB triple
-void RGB(unsigned int r, unsigned int g, unsigned int b, VGfloat color[4]) {
+void SRGB(unsigned int r, unsigned int g, unsigned int b, VGfloat color[4]) {
 	RGBA(r, g, b, 1.0f, color);
 }
 
@@ -537,21 +547,22 @@ void interleave(VGfloat * x, VGfloat * y, int n, VGfloat * points) {
 
 // poly makes either a polygon or polyline
 void poly(VGfloat * x, VGfloat * y, VGint n, VGbitfield flag) {
-	VGfloat points[n * 2];
+	VGfloat *points=(VGfloat *)malloc(sizeof(VGfloat) * n * 2);
 	VGPath path = newpath();
 	interleave(x, y, n, points);
 	vguPolygon(path, points, n, VG_FALSE);
 	vgDrawPath(path, flag);
 	vgDestroyPath(path);
+	free (points);
 }
 
 // Polygon makes a filled polygon with vertices in x, y arrays
-void Polygon(VGfloat * x, VGfloat * y, VGint n) {
+void SPolygon(VGfloat * x, VGfloat * y, VGint n) {
 	poly(x, y, n, VG_FILL_PATH);
 }
 
 // Polyline makes a polyline with vertices at x, y arrays
-void Polyline(VGfloat * x, VGfloat * y, VGint n) {
+void SPolyline(VGfloat * x, VGfloat * y, VGint n) {
 	poly(x, y, n, VG_STROKE_PATH);
 }
 
@@ -580,7 +591,7 @@ void Roundrect(VGfloat x, VGfloat y, VGfloat w, VGfloat h, VGfloat rw, VGfloat r
 }
 
 // Ellipse makes an ellipse at the specified location and dimensions
-void Ellipse(VGfloat x, VGfloat y, VGfloat w, VGfloat h) {
+void SEllipse(VGfloat x, VGfloat y, VGfloat w, VGfloat h) {
 	VGPath path = newpath();
 	vguEllipse(path, x, y, w, h);
 	vgDrawPath(path, VG_FILL_PATH | VG_STROKE_PATH);
@@ -589,11 +600,11 @@ void Ellipse(VGfloat x, VGfloat y, VGfloat w, VGfloat h) {
 
 // Circle makes a circle at the specified location and dimensions
 void Circle(VGfloat x, VGfloat y, VGfloat r) {
-	Ellipse(x, y, r, r);
+	SEllipse(x, y, r, r);
 }
 
 // Arc makes an elliptical arc at the specified location and dimensions
-void Arc(VGfloat x, VGfloat y, VGfloat w, VGfloat h, VGfloat sa, VGfloat aext) {
+void SArc(VGfloat x, VGfloat y, VGfloat w, VGfloat h, VGfloat sa, VGfloat aext) {
 	VGPath path = newpath();
 	vguArc(path, x, y, w, h, sa, aext, VGU_ARC_OPEN);
 	vgDrawPath(path, VG_FILL_PATH | VG_STROKE_PATH);
@@ -619,7 +630,7 @@ void End() {
 	eglSwapBuffers(state->display, state->surface);
 	assert(eglGetError() == EGL_SUCCESS);
 #else
-    swap_buffers_glx();
+    swap_buffers_gls();
 #endif
 }
 

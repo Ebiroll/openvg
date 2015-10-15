@@ -719,7 +719,7 @@ static System_context context;
 #endif
 
 
-extern "C" void init_glx()
+extern "C" void init_gls()
 {
     context.init();
 };
@@ -727,7 +727,6 @@ extern "C" void init_glx()
 
 void shutdown()
 {
-
 
     context.shutdown();
 
@@ -746,12 +745,12 @@ void make_current()
 
 }
 
-extern "C" void swap_buffers_glx()
+extern "C" void swap_buffers_gls()
 {
    context.swap_buffers();
 }
 
-extern "C" bool process_events_glx()
+extern "C" bool process_events_gls()
 {
     context.process_events();
 
