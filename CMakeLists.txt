@@ -60,11 +60,9 @@ ELSE(WIN32)
 #Linux
 ADD_EXECUTABLE(shivavg
 shivavg/glx.cpp
-#../examples/test_tiger.c
-#../examples/test_tiger_paths.c
-#../examples/test.c
 libshapes.c
-client/hellovg.c
+#client/hellovg.c
+client/shapedemo.c
 ${shiva_SRC}
 )
 

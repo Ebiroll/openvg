@@ -13,6 +13,8 @@ To build, do
 > cd build
 > cmake ..
 > make
+cp ../client/*.jpg .
+./shivavg demo 5
 
 If you use it on Windows, be sure to turn off precompiled headers.
 As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI mess 
