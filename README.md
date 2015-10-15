@@ -2,6 +2,21 @@
 
 <a href="http://www.flickr.com/photos/ajstarks/7811750326/" title="rotext by ajstarks, on Flickr"><img src="http://farm8.staticflickr.com/7249/7811750326_614ea891ae.jpg" width="500" height="281" alt="rotext"></a>
 
+## Additions made by Ebiroll
+
+I added the ShivaVG library in order to be able to test on a regular linux box
+before deploying on the raspberry.
+http://ivanleben.blogspot.se/2007/07/shivavg-open-source-ansi-c-openvg.html
+
+To build, do 
+> mkdir build
+> cd build
+> cmake ..
+> make
+
+If you use it on Windows, be sure to turn off precompiled headers.
+As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI mess 
+
 ## First program
 
 Here is the graphics equivalent of "hello, world"
