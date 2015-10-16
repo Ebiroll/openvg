@@ -592,28 +592,28 @@ void advert(int w, int h) {
 }
 
 // demo shows a timed demonstration
-void demo(int w, int h, int sec) {
-	refcard(w, h);
+void demo(int *w, int *h, int sec) {
+    refcard(*w, *h);
 	sleep(sec);
-	rshapes(w, h, 50);
+    rshapes(*w, *h, 50);
 	sleep(sec);
-	testpattern(w, h, "OpenVG on RasPi");
+    testpattern(*w, *h, "OpenVG on RasPi");
 	sleep(sec);
-	imagetable(w, h);
+    imagetable(*w, *h);
 	sleep(sec);
-	rotext(w, h, 30, "Raspi");
+    rotext(*w, *h, 30, "Raspi");
 	sleep(sec);
-	tb(w, h);
+    tb(*w, *h);
 	sleep(sec);
-	fontrange(w, h);
+    fontrange(*w, *h);
 	sleep(sec);
-	sunearth(w, h);
+    sunearth(*w, *h);
 	sleep(sec);
-	raspi(w, h, "The Raspberry Pi");
+    raspi(*w, *h, "The Raspberry Pi");
 	sleep(sec);
-	gradient(w,h);
+    gradient(*w,*h);
 	sleep(sec);
-	advert(w, h);
+    advert(*w, *h);
 }
 
 // wait for a specific character 
@@ -665,7 +665,7 @@ int main(int argc, char **argv) {
 			if (n < 1 || n > 30) {
 				n = 5;
 			}
-			demo(w, h, n);
+            demo(&w, &h, n);
 		} else if (strncmp(argv[1], "rand", 4) == 0) {
 			if (n < 1 || n > 1000) {
 				n = 100;

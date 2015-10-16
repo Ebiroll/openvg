@@ -488,6 +488,15 @@
                case Expose:
                     XGetWindowAttributes(dpy, win, &gwa);
                     glViewport(0, 0, gwa.width, gwa.height);
+                    if (width_ptr)
+                    {
+                        *width_ptr=gwa.height;
+                    }
+                    if (heigth_ptr) {
+                        *heigth_ptr=gwa.height;
+                    }
+
+                    vgResizeSurfaceSH(gwa.width,gwa.height);
                     glXSwapBuffers(dpy, win);
                 break;
 
@@ -499,7 +508,7 @@
                             *width_ptr=xev.xconfigure.width;
                         }
                         if (heigth_ptr) {
-                            *heigth_ptr=xev.xconfigure.heigth;
+                            *heigth_ptr=xev.xconfigure.height;
                         }
 
 
