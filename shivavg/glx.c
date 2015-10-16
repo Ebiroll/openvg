@@ -11,6 +11,7 @@
 //#include <Xm/MwmUtil.h>
 #include "input.h"
 #include "VG/openvg.h"
+#include<stdlib.h>
 
 //#include "shContext.h"
  VGboolean vgCreateContextSH(int width, int height);
@@ -36,8 +37,12 @@
 
 
 
-    //Input_handler* input_handler;
+    Input_handler* input_handler=NULL;
 
+
+    void mouseH(int32_t x, int32_t y) {};
+    void buttonH(uint8_t btn, VGboolean state) {};
+    void keyH(key_code key, VGboolean state) {};
 
 
 
@@ -48,6 +53,13 @@
     {
         GLint                   att[] = { GLX_RGBA, GLX_DOUBLEBUFFER,GLX_DEPTH_SIZE, 8,GLX_STENCIL_SIZE,8, None }; //
         Colormap                cmap;
+
+
+        input_handler=(Input_handler *)malloc(sizeof(Input_handler));
+        input_handler->button=buttonH;
+        input_handler->key=keyH;
+        input_handler->mouse=mouseH;
+
 
         XInitThreads();
 
@@ -481,14 +493,14 @@
                case KeyRelease:
                   {
                       int mykey = translateKey(xev.xkey.keycode);
-                      //if (input_handler) input_handler->key(mykey,false);
+                      if (input_handler) input_handler->key(mykey,VG_FALSE);
                       printf ("Got keyrelease\n" );
                   }
                break;
                case KeyPress:
                   {
                      int mykey = translateKey(xev.xkey.keycode);
-                     //if (input_handler) input_handler->key(mykey,true);
+                     if (input_handler) input_handler->key(mykey,VG_TRUE);
                      printf ("Got keypress %c\n" , xev.xkey.keycode);
                      if (mykey == KEY_ESC)
                      {
@@ -506,17 +518,17 @@
 
                 if (xev.xbutton.button == Button1)
                 {
-                    //if (input_handler) input_handler->button(0,true);
+                    if (input_handler) input_handler->button(0,VG_TRUE);
                      //printf ("Got button 1\n" );
                 }
                 else if (xev.xbutton.button == Button2)
                 {
-                    //if (input_handler) input_handler->button(2,true);
+                    if (input_handler) input_handler->button(2,VG_TRUE);
                      //printf ("Got button 2\n" );
                 }
                 else if (xev.xbutton.button == Button3)
                 {
-                    //if (input_handler) input_handler->button(1,true);
+                    if (input_handler) input_handler->button(1,VG_TRUE);
                     //printf ("Got button 3\n" );
                 }
                 break;
@@ -524,17 +536,17 @@
             case ButtonRelease:
                 if (xev.xbutton.button == Button1)
                 {
-                    //if (input_handler) input_handler->button(0,false);
+                    if (input_handler) input_handler->button(0,VG_FALSE);
                      //printf ("Rel button 1\n" );
                 }
                 else if (xev.xbutton.button == Button2)
                 {
-                    //if (input_handler) input_handler->button(2,false);
+                    if (input_handler) input_handler->button(2,VG_FALSE);
                      //printf ("Rel button 2\n" );
                 }
                 else if (xev.xbutton.button == Button3)
                 {
-                    //if (input_handler) input_handler->button(1,false);
+                    if (input_handler) input_handler->button(1,VG_FALSE);
                     //printf ("Rel button 3\n" );
                 }
                 break;
@@ -547,7 +559,7 @@
                     const int y = xev.xmotion.y;
 
                     //printf ("Motion %d,%d\n",x,y );
-                    //if (input_handler) input_handler->mouse(x,y);
+                    if (input_handler) input_handler->mouse(x,y);
 
                 }
             break;
@@ -585,6 +597,7 @@
 
         bf[4095] = 0;
 
+        printf("%s",bf);
         //trlog::write_msg(file, func, line, bf);
     }
 #endif

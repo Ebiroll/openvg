@@ -48,7 +48,11 @@
 #endif
 #endif
 
-
+#ifndef BCMHOST
+// These should be put in header file
+extern void init_gls();
+extern void swap_buffers_gls();
+#endif
 
 //
 // Libshape globals
@@ -328,6 +332,9 @@ void finish() {
 	unloadfont(SansTypeface.Glyphs, SansTypeface.Count);
 	unloadfont(SerifTypeface.Glyphs, SerifTypeface.Count);
 	unloadfont(MonoTypeface.Glyphs, MonoTypeface.Count);
+    vgDestroyPaint(fillPaint);
+    vgDestroyPaint(paint);
+    vgDestroyPaint(strokePaint);
 #ifdef BCMHOST
 	glClear(GL_COLOR_BUFFER_BIT);
 	eglSwapBuffers(state->display, state->surface);
