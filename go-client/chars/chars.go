@@ -3,7 +3,7 @@ package main
 
 import (
 	"bufio"
-	"github.com/ajstarks/openvg"
+	"github.com/Ebiroll/openvg"
 	"os"
 	"fmt"
 )

@@ -5,8 +5,7 @@
 ## Additions made by Ebiroll
 
 I added the ShivaVG library in order to be able to test on a regular linux box
-before deploying on the raspberry.
-http://ivanleben.blogspot.se/2007/07/shivavg-open-source-ansi-c-openvg.html
+before deploying on the raspberry. http://ivanleben.blogspot.se/2007/07/shivavg-open-source-ansi-c-openvg.html
 
 To build, do 
 > mkdir build
@@ -16,8 +15,21 @@ To build, do
 cp ../client/*.jpg .
 ./shivavg demo 5
 
-If you use it on Windows, be sure to turn off precompiled headers.
-As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI mess 
+
+As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI these are renamed with a macro.
+
+## GO clients
+
+To use do, setup your GOPATH, i.e. export GOPATH=~/GO
+ cd ~/GO
+ go get github.com/Ebiroll/openvg
+ go install github.com/Ebiroll/openvg
+
+ Currently this is only tested on linux but I will try to get it work on the raspberry again.
+ On windows its untested. It compiles fine with latest qt-creator
+ Also some of the clients does not work properly. i.e. vgplot, chars ,hgrad
+ Images are also do not work so weel, Only the red channel is shown
+
 
 ## First program
 

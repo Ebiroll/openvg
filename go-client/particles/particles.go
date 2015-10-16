@@ -6,9 +6,10 @@ package main
 
 import (
 	"flag"
-	"github.com/ajstarks/openvg"
+	"github.com/Ebiroll/openvg"
 	"math/rand"
 	"time"
+	//"fmt"
 )
 
 const (
@@ -35,15 +36,15 @@ func initParticles(w, h openvg.VGfloat) {
 	for i := 0; i < nparticles; i++ {
 		particles[i].x = 0
 		particles[i].y = 0
-		particles[i].vx = openvg.VGfloat(rand.Intn(maxrand)%30) + 30
-		particles[i].vy = openvg.VGfloat(rand.Intn(maxrand)%20) + 40
+		particles[i].vx = openvg.VGfloat(rand.Intn(maxrand)%30) + 30/100
+		particles[i].vy = openvg.VGfloat(rand.Intn(maxrand)%20) + 40/100
 		particles[i].r = uint8(rand.Intn(255))
 		particles[i].g = uint8(rand.Intn(255))
 		particles[i].b = uint8(rand.Intn(255))
 		particles[i].radius = openvg.VGfloat(rand.Intn(maxrand)%20) + 20
 
 		if directionRTL {
-			particles[i].vx *= -1
+			particles[i].vx *= -0.01
 			particles[i].x = w
 		}
 	}
@@ -139,6 +140,8 @@ func main() {
 	i := 0
 	for {
 		draw(width, height)
+		time.Sleep(2*time.Millisecond)
+		//fmt.Printf(".")
 		i++
 		if alternate && i == nswitch { // switch launch direction every nswitch draws
 			directionRTL = !directionRTL

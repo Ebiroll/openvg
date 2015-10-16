@@ -4,7 +4,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/ajstarks/openvg"
+	"github.com/Ebiroll/openvg"
 	"math/rand"
 	"os"
 	"strconv"

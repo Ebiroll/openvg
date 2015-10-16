@@ -8,8 +8,7 @@ import (
 	"io"
 	"math"
 	"os"
-
-	"github.com/ajstarks/openvg"
+	"github.com/Ebiroll/openvg"
 )
 
 // rawdata defines data as openvg.VGfloat x,y coordinates
@@ -297,16 +296,21 @@ func plotgrid(x, y openvg.VGfloat, files []string) {
 // grid where plotc specifies the number of columns.
 func main() {
 	w, h := openvg.Init()
-	openvg.Start(w, h)
-	openvg.FillColor("white")
-	openvg.Rect(0, 0, gwidth, gheight)
-	filenames := flag.Args()
-	if len(filenames) == 0 {
+	  i := 1
+	  filenames := flag.Args()
+
+         for i <= 1000 {
+  	  openvg.Start(w, h)
+	  openvg.FillColor("white")
+	  openvg.Rect(0, 0, gwidth, gheight)
+	  if len(filenames) == 0 {
 		doplot(beginx, beginy, "")
-	} else {
+	  } else {
 		plotgrid(beginx, beginy, filenames)
+	  }
+	  openvg.End()
+	  i = i + 1
 	}
-	openvg.End()
 	bufio.NewReader(os.Stdin).ReadByte()
 	openvg.Finish()
 }

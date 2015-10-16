@@ -5,7 +5,7 @@ package main
 
 import (
 	"bufio"
-	"github.com/ajstarks/openvg"
+	"github.com/Ebiroll/openvg"
 	"os"
 )
 
@@ -14,7 +14,7 @@ func main() {
 	message := "Now is the time for all good men to come to the aid of the party"
 
 	w, h := openvg.Init()
-	var speed openvg.VGfloat = 15.0
+	var speed openvg.VGfloat = 0.5
 	var x openvg.VGfloat = 0
 	midy = (h / 2)
 	fontsize := w / 50
