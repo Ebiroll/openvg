@@ -8,6 +8,7 @@
 #include "input.h"
 //#include <iostream>
 #include "VG/openvg.h"
+#include "shgl.h"
 
 #pragma comment(lib, "opengl32")
 #pragma comment(lib, "glu32")
@@ -298,7 +299,7 @@ PFGLDEBUGMESSAGECALLBACKARB       glDebugMessageCallbackARB;
 
 
 
-        void init_gls()
+        void init_gls(uint32_t *width,uint32_t *heigth)
 		{
             input_handler=(Input_handler *)malloc(sizeof(Input_handler));
             input_handler->button=buttonH;
@@ -348,7 +349,7 @@ PFGLDEBUGMESSAGECALLBACKARB       glDebugMessageCallbackARB;
 				}
 			}
 
-			RECT wr = { 0, 0, 800, 600 };
+            RECT wr = { 0, 0, *width, *heigth };
 			AdjustWindowRectEx(&wr, style, 0, xstyle);
 			int w = wr.right - wr.left;
 			int h = wr.bottom - wr.top;
@@ -448,7 +449,7 @@ PFGLDEBUGMESSAGECALLBACKARB       glDebugMessageCallbackARB;
 			ShowWindow(wnd, SW_SHOW);
 			UpdateWindow(wnd);
 
-			vgCreateContextSH(800, 600);
+            vgCreateContextSH(*width, *heigth);
 		}
 
 		void init_keytable()

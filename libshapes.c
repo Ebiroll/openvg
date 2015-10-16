@@ -49,9 +49,7 @@
 #endif
 
 #ifndef BCMHOST
-// These should be put in header file
-extern void init_gls();
-extern void swap_buffers_gls();
+#include "shgl.h"
 #endif
 
 //
@@ -289,10 +287,11 @@ void init(int *w, int *h) {
 	oglinit(state);
 #else
 	memset(state, 0, sizeof(*state));
-    init_gls();
+    state->screen_width=960;
+    state->screen_height=720;
 
-    state->screen_width=800;
-    state->screen_height=600;
+    init_gls(&state->screen_width,&state->screen_height);
+
     // OLAS
 #endif
 	SansTypeface = loadfont(DejaVuSans_glyphPoints,

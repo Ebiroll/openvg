@@ -12,6 +12,7 @@
 #include "input.h"
 #include "VG/openvg.h"
 #include<stdlib.h>
+#include "shgl.h"
 
 //#include "shContext.h"
  VGboolean vgCreateContextSH(int width, int height);
@@ -36,6 +37,9 @@
     XSizeHints hints;
 
 
+    uint32_t *width_ptr=NULL;
+    uint32_t *heigth_ptr=NULL;
+
 
     Input_handler* input_handler=NULL;
 
@@ -49,10 +53,13 @@
     // Se also, https://www.opengl.org/wiki/Programming_OpenGL_in_Linux:_GLX_and_Xlib
     // http://www-f9.ijs.si/~matevz/docs/007-2392-003/sgi_html/ch03.html#LE54269-PARENT
 
-    void init_gls()
+    void init_gls(uint32_t *width,uint32_t *heigth)
     {
         GLint                   att[] = { GLX_RGBA, GLX_DOUBLEBUFFER,GLX_DEPTH_SIZE, 8,GLX_STENCIL_SIZE,8, None }; //
         Colormap                cmap;
+
+        width_ptr=width;
+        heigth_ptr=heigth;
 
 
         input_handler=(Input_handler *)malloc(sizeof(Input_handler));
@@ -100,7 +107,7 @@
         XWindowAttributes getWinAttr;
         XGetWindowAttributes(dpy, testw, &getWinAttr);
 
-        win = XCreateWindow(dpy, RootWindow(dpy, vi->screen ), 0, 0, 800, 600, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+        win = XCreateWindow(dpy, RootWindow(dpy, vi->screen ), 0, 0, *width, *heigth, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
 
 #ifdef FULLSCREEN
 	
@@ -254,7 +261,7 @@
 
         printf("vendor: %s\n", (const char*)glGetString(GL_VENDOR));
 
-		vgCreateContextSH(800,600);
+        vgCreateContextSH(*width,*heigth);
 
 
     };
@@ -487,6 +494,15 @@
                 case ConfigureNotify:
                         glViewport(0, 0, xev.xconfigure.width,
                         xev.xconfigure.height);
+                        if (width_ptr)
+                        {
+                            *width_ptr=xev.xconfigure.width;
+                        }
+                        if (heigth_ptr) {
+                            *heigth_ptr=xev.xconfigure.heigth;
+                        }
+
+
                         vgResizeSurfaceSH(xev.xconfigure.width,xev.xconfigure.height);
                         glXMakeCurrent(dpy, win, glc);
                 break;

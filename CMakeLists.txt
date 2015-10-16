@@ -18,6 +18,7 @@ INCLUDE_DIRECTORIES(shivavg .)
 
 
 SET(shiva_SRC
+shivavg/shgl.h
 shivavg/shDefs.h
 shivavg/shExtensions.h
 shivavg/shArrayBase.h
