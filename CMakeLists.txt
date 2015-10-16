@@ -10,6 +10,8 @@ find_library(GLEW_LIBRARY NAMES GLEW glew32 glew glew32s PATH_SUFFIXES lib64)
 include(CheckIncludeFile)
 CHECK_INCLUDE_FILE(/opt/vc/include/bcm_host.h BCMHOST)
 
+add_definitions(-DCMAKE_BUILD)
+
 INCLUDE_DIRECTORIES(../include/vg ../include)
 
 INCLUDE_DIRECTORIES(shivavg .)
@@ -43,11 +45,20 @@ IF(WIN32)
 find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
 
+IF(MSVC)
+
+# Ignore precompile headers
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Y-")
+
+ENDIF(MSVC)
+
 
 ADD_EXECUTABLE(shivavg
-shivavg/glw.cpp
 libshapes.c
+shivavg/glw.c
 client/hellovg.c
+shivavg/VG/openvg.h
+shivavg/VG/vgu.h
 ${shiva_SRC}
 )
 

@@ -405,7 +405,7 @@ typedef enum {
 } VGStringID;
 
 /* Function Prototypes */
-
+#if 0
 #if defined(_WIN32) || defined(__VC32__)
 #	if defined(VG_API_EXPORT)
 #		define VG_API_CALL __declspec(dllexport)
@@ -415,6 +415,11 @@ typedef enum {
 #else
 #	define VG_API_CALL extern
 #endif
+#endif
+
+// In This provect we dont use shiva in a dll
+#define VG_API_CALL extern
+
 
 #if defined (__cplusplus)
 extern "C" {

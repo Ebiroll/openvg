@@ -27,6 +27,29 @@
 #include "eglstate.h"					   // data structures for graphics state
 #include "fontinfo.h"					   // font data structure
 #include "shapes.h"
+
+// This is a temporary solution to be able to build openvg.go
+#if !BCMHOST && !CMAKE_BUILD
+#include "shivavg/shArrays.c"
+#include "shivavg/shGeometry.c"
+#include "shivavg/shParams.c"
+#include "shivavg/shVectors.c"
+#include "shivavg/shContext.c"
+#include "shivavg/shImage.c"
+#include "shivavg/shPath.c"
+#include "shivavg/shVgu.c"
+#include "shivavg/shExtensions.c"
+#include "shivavg/shPaint.c"
+#include "shivavg/shPipeline.c"
+#ifdef WIN32
+#include "shivavg/glw.c"
+#else
+#include "shivavg/glx.c"
+#endif
+#endif
+
+
+
 //
 // Libshape globals
 //
@@ -667,17 +690,3 @@ void BackgroundRGB(unsigned int r, unsigned int g, unsigned int b, VGfloat a) {
 }
 
 
-#ifndef BCMHOST
-#include "shivavg/shArrays.c"      
-#include "shivavg/shGeometry.c"
-#include "shivavg/shParams.c"    
-#include "shivavg/shVectors.c"
-#include "shivavg/shContext.c"     
-#include "shivavg/shImage.c"     
-#include "shivavg/shPath.c"      
-#include "shivavg/shVgu.c"
-#include "shivavg/shExtensions.c"  
-#include "shivavg/shPaint.c"     
-#include "shivavg/shPipeline.c"
-#include "shivavg/glx.c"
-#endif

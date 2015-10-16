@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include "VG/openvg.h"
 #include<inttypes.h>
 
 
@@ -14,12 +15,20 @@
                 KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN, KEY_PLUS, KEY_MINUS
 	} key_code;
 
+       typedef void (MOUSEHANDLER) (int32_t x, int32_t y);
+       typedef void (BUTTONHANDLER) (uint8_t btn, VGboolean state);
+       typedef void (KEYHANDLER) (key_code keyc, VGboolean state);
 
-	struct Input_handler
+
+
+        typedef struct
 	{
-        int dummy;
+        MOUSEHANDLER*  mouse;
+        BUTTONHANDLER* button;
+        KEYHANDLER*    key;
+
         //virtual void mouse(int32_t x, int32_t y) {}
         //virtual void button(uint8_t btn, bool state) {}
         //virtual void key(uint8_t key, bool state) {}
-	};
+        } Input_handler;
 

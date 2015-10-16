@@ -1,6 +1,15 @@
 #include <VG/openvg.h>
 #include <VG/vgu.h>
 #include "fontinfo.h"
+#ifdef WIN32
+// Windows GDI defines these too. :-P, This is a workaround
+#define Polygon Polygon_shiva
+#define Polyline Polyline_shiva
+#define Ellipse Ellipse_shiva
+#define Arc Arc_shiva
+#define RGB RGB_shiva
+#endif
+
 #if defined(__cplusplus)
 extern "C" {
 #endif
