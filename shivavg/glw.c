@@ -10,6 +10,10 @@
 #include "VG/openvg.h"
 #include "shgl.h"
 
+#ifndef MAPVK_VSC_TO_VK_EX
+#define MAPVK_VSC_TO_VK_EX 3
+#endif
+
 #pragma comment(lib, "opengl32")
 #pragma comment(lib, "glu32")
 #include <gl/gl.h>
@@ -52,7 +56,7 @@ bool TRACE(TCHAR *format, ...)
 
      bf[4095] = 0;
 
-     printf(stderr,"%s",bf);
+     printf("%s",bf);
  }
 
 #ifndef __GNUC__
@@ -131,6 +135,13 @@ bool TRACE(TCHAR *format, ...)
 
 #define GL_DEBUG_OUTPUT_SYNCHRONOUS_ARB               0x8242
 
+#ifdef WINAPI
+#undef WINAPI
+#endif
+
+#define WINAPI __stdcall
+
+
 typedef HGLRC(WINAPI * PFNWGLCREATECONTEXTATTRIBSARBPROC) (HDC hDC,
 	HGLRC
 	hShareContext,
@@ -145,9 +156,9 @@ typedef GLvoid(APIENTRY *GLDEBUGPROCARB)(GLenum source, GLenum type,
 
 typedef GLvoid(APIENTRY * PFGLDEBUGMESSAGECALLBACKARB)(GLDEBUGPROCARB callback, GLvoid* userParam);
 
-PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
-PFNWGLCHOOSEPIXELFORMATPROC       wglChoosePixelFormatARB;
-PFGLDEBUGMESSAGECALLBACKARB       glDebugMessageCallbackARB;
+PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB=NULL;
+PFNWGLCHOOSEPIXELFORMATPROC       wglChoosePixelFormatARB=NULL;
+PFGLDEBUGMESSAGECALLBACKARB       glDebugMessageCallbackARB=NULL;
 
 
 
@@ -294,8 +305,8 @@ PFGLDEBUGMESSAGECALLBACKARB       glDebugMessageCallbackARB;
 
 
         void mouseH(int32_t x, int32_t y) {};
-        void buttonH(uint8_t btn, int state) {};
-        void keyH(uint8_t key, int state) {};
+        void buttonH(uint8_t btn, VGboolean state) {};
+        void keyH(key_code key, VGboolean state) {};
 
 
 

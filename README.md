@@ -8,14 +8,51 @@ I added the ShivaVG library in order to be able to test on a regular linux box
 before deploying on the raspberry. http://ivanleben.blogspot.se/2007/07/shivavg-open-source-ansi-c-openvg.html
 
 To build, do 
-> mkdir build
-> cd build
-> cmake ..
-> make
-cp ../client/*.jpg .
-./shivavg demo 5
+  mkdir build
+  cd build
+  cmake ..
+  make
+  cp ../client/*.jpg .
+  ./shivavg demo 5
+
+To build the go library do 
+   go get github.com/Ebiroll/openvg
+
+ Currently this is only tested on linux but I will try to get it work on the raspberry again.
+ On windows the CMakeLists.txt compiles fine with latest qt-creator.
+ On linux some of the clients does not work properly. i.e. vgplot, chars ,hgrad
+ Images are also do not work so weel, Only the red channel is shown
+
+## Patches to make it run om raspberry pi with openvg by hw
+
+ (openvg.go) You must manually patch #cgo LDFLAGS:
+ #cgo LDFLAGS: -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
+ Also remove comment on the lines
+   #include "EGL/egl.h"
+   #include "GLES/gl.h"
+  
+ (libshapes.c) You must add the line:
+   #define BCMHOST 1
 
 
+## Windows version of openvg GO library
+
+ For some reason _WI32 was not defined
+ 
+ (openvg.go) You must manually patch #cgo LDFLAGS:
+ Linux
+ #cgo LDFLAGS:-lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
+ Windows 
+ #cgo LDFLAGS:-lopengl32
+ 
+ 
+ If you are using MSYS2
+ pacman -S base-devel
+ pacman -S mingw-w64-i686-mesa
+ #This one is normally already installed
+ pacman -S  msys2-w32api-headers
+ pacman -S mingw-w64-x86_64-freeglut 
+ 
 As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI these are renamed with a macro.
 
 ## GO clients
@@ -25,10 +62,23 @@ To use do, setup your GOPATH, i.e. export GOPATH=~/GO
  go get github.com/Ebiroll/openvg
  go install github.com/Ebiroll/openvg
 
- Currently this is only tested on linux but I will try to get it work on the raspberry again.
- On windows its untested. It compiles fine with latest qt-creator
- Also some of the clients does not work properly. i.e. vgplot, chars ,hgrad
- Images are also do not work so weel, Only the red channel is shown
+
+## Windows version of openvg GO library
+
+ I did not get it to work. For some reason _WI32 was not defined.
+ 
+ You must also manually patch #cgo LDFLAGS:
+ Linux
+ #cgo LDFLAGS:-lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
+ Windows 
+ #cgo LDFLAGS:-lopengl32
+  
+ If you are using MSYS2
+ pacman -S base-devel
+ pacman -S  msys2-w32api-headers
+ pacman -S mingw-w64-x86_64-freeglut 
+ 
+As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI these are renamed with a macro.
 
 
 ## First program
