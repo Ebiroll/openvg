@@ -1,4 +1,4 @@
-#if 0
+#ifdef __arm__
 #include <EGL/egl.h>
 #include <GLES/gl.h>
 #include "eglstate.h"

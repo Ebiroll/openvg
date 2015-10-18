@@ -25,12 +25,13 @@ To build the go library do
 
 ## Patches to make it run om raspberry pi with openvg by hw
 
- (openvg.go) You must manually patch #cgo LDFLAGS:
+ (openvg.go) You must manually patch some #cgo flags :
  #cgo LDFLAGS: -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
  Also remove comment on the lines
    #include "EGL/egl.h"
    #include "GLES/gl.h"
-  
+#cgo CFLAGS, remove -I shivavg
+
  (libshapes.c) You must add the line:
    #define BCMHOST 1
 

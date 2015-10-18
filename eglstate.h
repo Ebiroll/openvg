@@ -4,13 +4,13 @@ typedef struct {
 	uint32_t screen_width;
 	uint32_t screen_height;
 	// OpenGL|ES objects
-#ifdef BCMHOST
+#ifdef __arm__
 	EGLDisplay display;
 	EGLSurface surface;
 	EGLContext context;
 #endif
 } STATE_T;
 
-#ifdef BCMHOST
+#ifdef __arm__
 extern void oglinit(STATE_T *);
 #endif
