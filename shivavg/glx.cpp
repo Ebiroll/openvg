@@ -487,14 +487,14 @@ struct System_context
                case KeyRelease:
                   {
                       int mykey = translateKey(xev.xkey.keycode);
-                      if (input_handler) input_handler->key(mykey,false);
+                      //if (input_handler) input_handler->key(mykey,false);
                       printf ("Got keyrelease\n" );
                   }
                break;
                case KeyPress:
                   {
                      int mykey = translateKey(xev.xkey.keycode);
-                     if (input_handler) input_handler->key(mykey,true);
+                     //if (input_handler) input_handler->key(mykey,true);
                      printf ("Got keypress %c\n" , xev.xkey.keycode);
                      if (mykey == KEY_ESC)
                      {
@@ -512,12 +512,12 @@ struct System_context
 
                 if (xev.xbutton.button == Button1)
                 {
-                    if (input_handler) input_handler->button(0,true);
+                    //if (input_handler) input_handler->button(0,true);
                      //printf ("Got button 1\n" );
                 }
                 else if (xev.xbutton.button == Button2)
                 {
-                    if (input_handler) input_handler->button(2,true);
+                    //if (input_handler) input_handler->button(2,true);
                      //printf ("Got button 2\n" );
                 }
                 else if (xev.xbutton.button == Button3)

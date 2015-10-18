@@ -1,0 +1,397 @@
+#This is a description of how the api works, in swedish :-P
+
+https://www.trafiklab.se/
+
+Svarsstruktur
+
+Namn          Datatyp       Beskrivning
+StatusCode      Integer        Innehåller statuskod för det eventuella meddelandet.
+Message         String         Innehåller eventuellt anropsrelaterade meddelanden som t.ex. felmeddelanden. Se ”Felmeddelanden” nedan.
+ExecutionTime   Long           Anger hur lång tid (i ms) det tog för servern att generera svaret.
+ResponseData    Departure      Innehåller själva svarsdata från tjänsten. Se ”Svarsdata” nedan.
+
+Svarsdata
+
+Namn,Datatyp   Beskrivning
+=============================
+
+LatestUpdate, DateTime  Anger när realtidsinformationen (DPS) senast uppdaterades.
+DataAge, Integer  Antal sekunder sedan tidsstämpeln LatestUpdate.
+Buses, List  Lista över samtliga bussavgångar för givet siteId (se nedan för detaljer).
+Metros, List Lista över samtliga tunnelbaneavgångar för givet siteId (se nedan för detaljer).
+Trains, List   Lista över samtliga pendeltågsavgångar för givet siteId (se nedan för detaljer).
+Trams, List    Lista över samtliga lokalbaneavgångar för givet siteId (se nedan för detaljer).
+Ships, List Lista över samtliga båtavgångar för givet siteId (se nedan för detaljer).
+StopPointDeviations, List  Lista över hållplatsområdesspecifika avvikelser/störningar. D.v.s. störningar som inte är knutna till en specifik avgång.
+
+
+Gemensamt för Bussar, Pendeltåg, Lokalbana och Båt
+Namn,Datatyp  Beskrivning
+=========================
+SiteId,Integer, Id för sökt hållplatsområde.
+TransportMode,String  Trafikslag: ”BUS”, ”TRAIN”, ”TRAM” eller ”SHIP”.
+StopAreaName,String   Hållplatsnamn.
+StopAreaNumber,Integer  Id för aktuell hållplats.
+StopPointNumber, Integer   Id för aktuellt stoppställe.
+LineNumber,String  Linjebeteckning/nummer.
+Destination, String  Slutstation för avgången.
+TimeTabledDateTime, DateTime  Avgångstid enligt tidtabell. 
+ExpectedDateTime   DateTime  Förväntad avgångstid.
+Om det finns tillhörande störning med tillräckligt hög prioritet så kan denna ha null/tomt värde. Detta fram till ett par minuter innan avgång.
+
+DisplayTime,String         Avgångstid för presentation. Kan anta formaten x min, HH:mm eller Nu. Om det finns tillhörande störning med tillräckligt hög prioritet så kan denna ha värdet ”-”. Detta fram till ett par minuter innan avgång.
+Deviation,List  Innehåller typen ”Deviation” nedan. Denna kan vara tom, eller innehålla 1 till flera avvikelser.
+JourneyDirection, Integer  Reseriktnings-id.
+
+
+Deviation  Namn, Datatyp   Beskrivning
+============================
+
+Consequence, String  Konsekvensbeskrivning för aktuell avvikelse.
+ImportanceLevel, Integer  Signifikationsnivå för aktuell avvikelse. 0-9 där 9 är mest allvarlig.
+Text,String Beskrivning av aktuell avvikelse.
+
+Tillägg för Bussar Namn,Datatyp   Beskrivning
+==============================================
+
+GroupOfLine, String  Anger om det är en blå buss. Om det är en blå buss står det ”blåbuss”, annars är strängen tom.
+
+StopPointDesignation, String  Ytterligare identifierare för stoppställe, t.ex. bokstav för busskur eller spår för pendeltåg.
+
+Tillägg för Pendeltåg Namn, Datatyp   Beskrivning
+=================================================
+
+
+SecondaryDestinationName,String   Namn på delmål.
+
+StopPointDesignation, String Ytterligare identifierare för stoppställe, t.ex. bokstav för busskur eller spår för pendeltåg.
+
+
+
+Tillägg för Lokalbana  Namn,Datatyp   Beskrivning
+
+GroupOfLine String  Linjegrupp, t.ex. “Tvärbanan” eller “Roslagsbanan”.
+
+StopPointDesignation,String
+	
+
+Ytterligare identifierare för stoppställe, t.ex. bokstav för busskur eller spår för pendeltåg.
+
+Tillägg för Båtar
+
+Namn
+	
+
+Datatyp
+	
+
+Beskrivning
+
+GroupOfLine
+	
+
+String
+	
+
+Anger om det är pendlarbåt eller Waxholmsbolaget.
+
+Tunnelbana
+
+Namn
+	
+
+Datatyp
+	
+
+Beskrivning
+
+DepartureGroupId
+	
+
+Integer
+	
+
+Gruppering av metroavgångar per fysisk färdriktningsskylt på en plattform. T.ex. grön linje vid tcentralen har två riktningar. Denna parameter kommer ha 1 eller 2 för de olika riktningarna. Samma för röd och blå.
+
+Destination
+	
+
+String
+	
+
+Destination för aktuell avgång.
+
+DisplayTime
+	
+
+String
+	
+
+Beräknad avgång från hållplatsen.
+
+GroupOfLine
+	
+
+String
+	
+
+Linjegruppering. Röd/grön/blå linje.
+
+GroupOfLineId
+	
+
+Integer
+	
+
+Linjegrupperingsid. Grön = 1. Röd = 2. Blå = 3.
+
+JourneyDirection
+	
+
+Integer
+	
+
+Reseriktnings-id. Fungerar som DepartureGroupId.
+
+LineNumber
+	
+
+String
+	
+
+Linjenummer för aktuell avgång.
+
+PlatformMessage
+	
+
+String
+	
+
+Informationsmeddelande för aktuell linjegrupp. Detta är det som syns på en riktig skylt på en plattform. T.ex. ”Vänligen lämna plats för avstigande..”.
+
+SiteId
+	
+
+Integer
+	
+
+Id för sökt hållplatsområde.
+
+StopAreaName
+	
+
+String
+	
+
+Hållplatsnamn.
+
+TransportMode
+	
+
+String
+	
+
+Trafikslag: ”METRO”.
+
+StopPointDeviations
+
+Namn
+	
+
+Datatyp
+	
+
+Beskrivning
+
+StopInfo
+	
+
+StopInfo
+	
+
+1 StopInfo. Kan vara tom. ”StopInfo” finns nedan.
+
+Deviation
+	
+
+Deviation
+	
+
+1 Deviation. Kan vara tom. ”Deviation” finns nedan.
+
+Deviation
+
+Namn
+	
+
+Datatyp
+	
+
+Beskrivning
+
+Consequence
+	
+
+String
+	
+
+Konsekvensbeskrivning för aktuell avvikelse.
+
+ImportanceLevel
+	
+
+Integer
+	
+
+Signifikationsnivå för aktuell avvikelse. 0-9 där 9 är mest allvarlig.
+
+Text
+	
+
+String
+	
+
+Beskrivning av aktuell avvikelse.
+
+StopInfo
+
+Namn
+	
+
+Datatyp
+	
+
+Beskrivning
+
+GroupOfLine
+	
+
+String
+	
+
+Om TransportMode är ”TRAM” så innehåller noden något av följande värden: ”Lidingöbanan”, ”Nockebybanan”, ”Roslagsbanan”, ”Saltsjöbanan”, ”Spårväg City”, ”Tvärbanan”. Annars blankt(kan komma att ändras).
+
+StopAreaName
+	
+
+String
+	
+
+Namn på hållplatsen som avvikelsen gäller.
+
+StopAreaNumber
+	
+
+Integer
+	
+
+Id för hållplatsen som avvikelsen gäller. Är noll om TransportMode inte är BUS.
+
+TransportMode
+	
+
+String
+	
+
+”METRO”, ”BUS”, ”TRAIN”, ”TRAM” eller ospecificerat.
+
+Felmeddelanden
+
+Statuskod
+	
+
+Meddelande
+
+1001
+	
+
+problem with request: Key is undefined
+
+Nyckel hare ej skickats med.
+
+1002
+	
+
+problem with request: Key is invalid
+
+Nyckel är ogiltig
+
+1003
+	
+
+Invalid api
+
+Ogiltigt api
+
+1004
+	
+
+ 
+
+problem with request: This api is currently not available for keys with priority above 2
+
+1005
+	
+
+Nyckel finns, men ej för detta api
+
+problem with request: Invalid api for key
+
+1006
+	
+
+To many requests per minute
+
+För många anrop per minut, för den profil som används
+
+1007
+	
+
+To many requests per month
+
+För många anrop per månad, för den profil som används
+
+4001
+	
+
+SiteId måste gå att konvertera till heltal.
+
+5321
+	
+
+Kunde varken hämta information från TPI (tunnelbanan) eller DPS (övriga trafikslag).
+
+5322
+	
+
+Kunde inte hämta information från DPS.
+
+5323
+	
+
+Kunde inte hämta information från TPI.
+
+5324
+	
+
+Kunde varken hämta information från TPI (tunnelbanan) eller DPS (övriga trafikslag) p.g.a. inaktuell DPS-data. Detta uppstår om DPS-datan är äldre än 2 minuter vid svarstillfället.
+
+
+// http://api.sl.se/api2/realtimedepartures.json?key=245e126ccbf0451cbca8d3fcc428b0b9&siteid=9702&timewindow=20
+
+
+{"StatusCode":0,"Message":null,"ExecutionTime":1093,"ResponseData":
+{"LatestUpdate":"2015-05-09T01:58:40","DataAge":30,"Metros":[],
+"Buses":[{"JourneyDirection":2,"GroupOfLine":null,"StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55814,"StopPointDesignation":"Q","TimeTabledDateTime":"2015-05-09T02:26:00","ExpectedDateTime":"2015-05-09T02:26:00","DisplayTime":"02:26","Deviations":null,"TransportMode":"BUS","LineNumber":"591","Destination":"Stockholm C","SiteId":9702},
+         {"JourneyDirection":2,"GroupOfLine":null,"StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55814,"StopPointDesignation":"Q","TimeTabledDateTime":"2015-05-09T02:56:00","ExpectedDateTime":"2015-05-09T02:56:00","DisplayTime":"02:56","Deviations":null,"TransportMode":"BUS","LineNumber":"591","Destination":"Stockholm C","SiteId":9702}],
+"Trains":[],"Trams":[],"Ships":[],"StopPointDeviations":[]}}
+
+
+
+
+{"StatusCode":0,"Message":null,"ExecutionTime":984,"ResponseData":{"LatestUpdate":"2015-05-09T08:45:43","DataAge":14,
+"Metros":[],
+"Buses":[{"JourneyDirection":2,"GroupOfLine":"blåbuss","StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55801,"StopPointDesignation":"A","TimeTabledDateTime":"2015-05-09T08:50:00","ExpectedDateTime":"2015-05-09T08:50:00","DisplayTime":"08:50","Deviations":null,"TransportMode":"BUS","LineNumber":"178","Destination":"Mörby station","SiteId":9702},{"JourneyDirection":1,"GroupOfLine":null,"StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55807,"StopPointDesignation":"G","TimeTabledDateTime":"2015-05-09T08:52:00","ExpectedDateTime":"2015-05-09T08:52:21","DisplayTime":"6 min","Deviations":null,"TransportMode":"BUS","LineNumber":"544","Destination":"Söderhöjden","SiteId":9702},{"JourneyDirection":1,"GroupOfLine":null,"StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55806,"StopPointDesignation":"F","TimeTabledDateTime":"2015-05-09T08:54:00","ExpectedDateTime":"2015-05-09T08:54:00","DisplayTime":"08:54","Deviations":null,"TransportMode":"BUS","LineNumber":"551","Destination":"Bruttovägen","SiteId":9702},{"JourneyDirection":1,"GroupOfLine":null,"StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55809,"StopPointDesignation":"J","TimeTabledDateTime":"2015-05-09T08:54:00","ExpectedDateTime":"2015-05-09T08:54:00","DisplayTime":"08:54","Deviations":null,"TransportMode":"BUS","LineNumber":"542","Destination":"Kallhälls station","SiteId":9702},{"JourneyDirection":1,"GroupOfLine":null,"StopAreaName":"Jakobsbergs centrum","StopAreaNumber":51693,"StopPointNumber":51693,"StopPointDesignation":"P","TimeTabledDateTime":"2015-05-09T08:54:05","ExpectedDateTime":"2015-05-09T08:54:26","DisplayTime":"8 min","Deviations":[{"Text":"Stannar inte vid Jakobsbergs centrum pga vägarbete","Consequence":"INFORMATION","ImportanceLevel":7}],"TransportMode":"BUS","LineNumber":"544","Destination":"Söderhöjden","SiteId":9702},{"JourneyDirection":1,"GroupOfLine":null,"StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55805,"StopPointDesignation":"E","TimeTabledDateTime":"2015-05-09T08:55:00","ExpectedDateTime":"2015-05-09T08:55:00","DisplayTime":"9 min","Deviations":null,"TransportMode":"BUS","LineNumber":"552","Destination":"Bruttovägen","SiteId":9702},{"JourneyDirection":1,"GroupOfLine":null,"StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55808,"StopPointDesignation":"H","TimeTabledDateTime":"2015-05-09T08:55:00","ExpectedDateTime":"2015-05-09T08:55:00","DisplayTime":"08:55","Deviations":null,"TransportMode":"BUS","LineNumber":"541","Destination":"Vällingby","SiteId":9702},{"JourneyDirection":2,"GroupOfLine":null,"StopAreaName":"Jakobsbergs station","StopAreaNumber":51586,"StopPointNumber":55803,"StopPointDesignation":"C","TimeTabledDateTime":"2015-05-09T08:56:00","ExpectedDateTime":"2015-05-09T08:56:00","DisplayTime":"08:56","Deviations":[{"Text":"Stannar inte vid Stora torget pga väghinder resenärer hänvisas till hållplats Herrestavägen.","Consequence":"INFORMATION","ImportanceLevel":7}],"TransportMode":"BUS","LineNumber":"567","Destination":"Sollentuna station","SiteId":9702}],
+"Trains":[{"JourneyDirection":2,"SecondaryDestinationName":null,"StopAreaName":"Jakobsberg","StopAreaNumber":6061,"StopPointNumber":6062,"StopPointDesignation":"2","TimeTabledDateTime":"2015-05-09T08:48:00","ExpectedDateTime":"2015-05-09T08:48:00","DisplayTime":"2 min","Deviations":null,"TransportMode":"TRAIN","LineNumber":"35","Destination":"Bålsta","SiteId":9702},{"JourneyDirection":1,"SecondaryDestinationName":"Stockholm C","StopAreaName":"Jakobsberg","StopAreaNumber":6061,"StopPointNumber":6061,"StopPointDesignation":"1","TimeTabledDateTime":"2015-05-09T08:57:00","ExpectedDateTime":"2015-05-09T08:57:00","DisplayTime":"08:57","Deviations":null,"TransportMode":"TRAIN","LineNumber":"35","Destination":"Västerhaninge","SiteId":9702}],
+"Trams":[],
+"Ships":[],"StopPointDeviations":[]}}
