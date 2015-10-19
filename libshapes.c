@@ -222,16 +222,32 @@ VGImage createImageFromJpeg(const char *filename) {
 		for (x = 0; x < width; ++x, drow += dbpp, brow += bbpp) {
 			switch (bbpp) {
 			case 4:
+#ifdef BCMHOST
 				drow[0] = brow[0];
 				drow[1] = brow[1];
 				drow[2] = brow[2];
 				drow[3] = brow[3];
+#else
+                // jpeg has no alpha channel? This should not happen?
+                drow[3] = brow[0];
+                drow[2] = brow[1];
+                drow[1] = brow[2];
+                drow[0] = brow[3];
+#endif
 				break;
 			case 3:
+#ifdef BCMHOST
 				drow[0] = brow[0];
 				drow[1] = brow[1];
 				drow[2] = brow[2];
 				drow[3] = 255;
+#else
+                // I dont know if shiva or libshapes is broken but this fixes the problem
+                drow[3] = brow[0];
+				drow[2] = brow[1];
+				drow[1] = brow[2];
+				drow[0] = 255;
+#endif
 				break;
 			}
 		}
@@ -255,7 +271,12 @@ VGImage createImageFromJpeg(const char *filename) {
 // makeimage makes an image from a raw raster of red, green, blue, alpha values
 void makeimage(VGfloat x, VGfloat y, int w, int h, VGubyte * data) {
 	unsigned int dstride = w * 4;
+#ifdef BCMHOST
+    // This seems to work on the raspberry, just leave it
 	VGImageFormat rgbaFormat = VG_sABGR_8888;
+#else
+    VGImageFormat rgbaFormat = VG_sRGBA_8888;
+#endif
 	VGImage img = vgCreateImage(rgbaFormat, w, h, VG_IMAGE_QUALITY_BETTER);
 	vgImageSubData(img, (void *)data, dstride, rgbaFormat, 0, 0, w, h);
 	vgSetPixels(x, y, img, 0, 0, w, h);

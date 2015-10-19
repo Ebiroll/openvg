@@ -2,3 +2,7 @@ font2openvg
 *~
 *.o
 *.so
+go-client/clock
+go-client/planets/planets
+go-client/sl2go/srv/srv
+CMakeLists.txt.user

@@ -2,15 +2,21 @@ package main
 
 import (
 	"io"
+	"io/ioutil"
 	"net/http"
 )
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, "Hello world!")
+func jsondata(w http.ResponseWriter, r *http.Request) {
+	//f, err := os.Open("testdata.json")
+	//if err != nil {
+    //    panic(err)
+    //}
+	contents,_ := ioutil.ReadFile("testdata.json")
+	io.WriteString(w, string(contents))
 }
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", hello)
+	mux.HandleFunc("/", jsondata)
 	http.ListenAndServe(":8000", mux)
 }

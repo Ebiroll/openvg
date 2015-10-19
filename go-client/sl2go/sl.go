@@ -8,9 +8,39 @@ import (
 	"bufio"
 	"github.com/Ebiroll/openvg"
 	"log"
+	"fmt"
+    "net/http"
+    "io/ioutil"
 	"os"
 	"os/exec"
+	"encoding/json"
 )
+
+type SLData struct {
+	StatusCode  int `json:"StatusCode"`
+	Message  string `json:"Message"`
+	ExecutionTime int `json:"ExecutionTime"`
+	ResponseData struct {
+		LatestUpdate string `json:"LatestUpdate"`
+		DataAge int `json:"DataAge"`
+		Buses [] struct {
+			JourneyDirection int `json:"JourneyDirection"`
+ 	        GroupOfLine  string `json:"GroupOfLine"`
+			StopAreaName string `json:"StopAreaName"`
+			StopAreaNumber int `json:"StopAreaNumber"`
+			StopPointNumber int `json:"StopPointNumber"`
+ 	        StopPointDesignation  string `json:"StopPointDesignation"`
+ 	        TimeTabledDateTime  string `json:"TimeTabledDateTime"`
+			ExpectedDateTime  string `json:"TimeTabledDateTime"`
+			DisplayTime string `json:"DisplayTime"`
+			Deviations string `json:"Deviations"`			
+		}
+	}
+}
+
+
+
+
 
 func Show(name string) {
 	command := "open"
@@ -24,10 +54,11 @@ func Show(name string) {
 }
 
 func main() {
-	var cx, cy, cw, ch, midy int
+	var sreenHeight  , cx, cy, cw, ch, midy int
 	message := "Now is the time for all good men to come to the aid of the party"
 
 	w, h := openvg.Init()
+	sreenHeight= h
 	var speed openvg.VGfloat = 0.5
 	var x openvg.VGfloat = 0
 	midy = (h / 2)
@@ -36,30 +67,58 @@ func main() {
 	ch = fontsize * 2
 	cw = w
 	cy = midy - (ch / 2)
+	
+	response, err := http.Get("http://localhost:8000")
+	
+	if err == nil {
+	    defer response.Body.Close()
+        contents, err := ioutil.ReadAll(response.Body)
+        if err != nil {
+            fmt.Printf("Error reading http data, %s", err)
+        } else {
+           fmt.Printf("Got: %s\n", string(contents))	
+		   
+		    var jsonData SLData
+
+		   
+		   if err := json.Unmarshal(contents, &jsonData); err != nil {
+              panic(err)
+           }
+           fmt.Println(jsonData)
+		   
+		   
+	    }
+	}
+	
 	openvg.Start(w, h)
 	imgw,imgh := 0 , 0
-	openvg.Image(0, 450, imgw, imgh, "../img/SL.jpg")
-
 	openvg.Background(255, 255, 255)
-
+	
+    //SLHeight = 60
+	var imgPosY = openvg.VGfloat(sreenHeight - 70 )
+	openvg.Image(4, imgPosY , imgw, imgh, "SL.jpg")
 
     rx1,  rw1, rh1 := openvg.VGfloat(cx),  openvg.VGfloat(cw), openvg.VGfloat(ch)
 	ty := 0
-	tix := 0
-	for ty = 400 ; ty>0; ty -= 20 {
+	rix := 0
+	for ty = sreenHeight - (80 + int(rh1)) ; ty>0; ty -= ch {
 	    tempy := openvg.VGfloat(ty)
 		//ry := openvg.VGfloat(ty)
-		tix++
-		if  tix%1 == 0 {
+		rix = rix+1
+		if  rix%2 == 0 {
 		  openvg.FillRGB(0, 0, 0, .2)
+		  //openvg.Rect(rx1, tempy, rw1, rh1)	
+		  openvg.FillRGB(0, 0, 0, 1)
+		  openvg.Text(rx1, tempy, "591    \t12:29", "sans", fontsize)
 		} else {
-		  openvg.FillRGB(0, 0, 0, .4)			
+		  openvg.FillRGB(0, 0, 0, .4)
+		  openvg.Rect(rx1, tempy, rw1, rh1)	
+  		  openvg.FillRGB(0, 0, 0, 1)			
+		  openvg.Text(rx1, tempy, "593    \t12:22", "sans", fontsize)
 		}
 		//openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
 		//openvg.Background(255,255,0)
-		openvg.Text(rx1, tempy, "591    12:22", "sans", fontsize)
 
-		openvg.Rect(rx1, tempy, rw1, rh1)	
 		
 	}
 	openvg.End()

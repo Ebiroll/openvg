@@ -19,10 +19,6 @@
  void vgResizeSurfaceSH(int width, int height);
 
 
-
-
-
-
     Display                 *dpy;
     Window                  root;
 
@@ -74,7 +70,7 @@
 
         if(dpy == NULL) {
            printf("\n\tcannot connect to X server\n\n");
-               //exit(0);
+               exit(0);
         }
 
         root = DefaultRootWindow(dpy);
@@ -83,16 +79,16 @@
 
         if(vi == NULL) {
            printf("\n\tno appropriate visual found\n\n");
-               //exit(0);
+               exit(0);
         }
         else {
-           printf("\n\tvisual %p selected\n", (void *)vi->visualid); // %p creates hexadecimal output like in glxinfo
+           //printf("\n\tvisual %p selected\n", (void *)vi->visualid); // %p creates hexadecimal output like in glxinfo
            //printf("\n\tvisual %p found\n", (void *)vi->visual); // %p creates hexadecimal output like in glxinfo
         }
 
 
         cmap = XCreateColormap(dpy, RootWindow(dpy, vi->screen ), vi->visual, AllocNone);
-        printf("\n\tColormap %d created\n", cmap); 
+        //printf("\n\tColormap %d created\n", cmap); 
 
 
         swa.colormap = cmap;
@@ -112,6 +108,10 @@
 #ifdef FULLSCREEN
 	
         //win = XCreateWindow(dpy, RootWindow(dpy, vi->screen ), 0, 0, getWinAttr.width, getWinAttr.height, 0, vi->depth, InputOutput, vi->visual, CWColormap | CWEventMask, &swa);
+
+         *width = getWinAttr.widt;
+         *height =  getWinAttr.height;
+
 
         // Attempt to sett fullscreen, Tell windowmanager
 
@@ -235,8 +235,8 @@
                 }
 
                 /* try it out */
-                printf("vendor: %s\n", (const char*)glGetString(GL_VENDOR));
-
+                //printf("vendor  : %s\n", (const char*)glGetString(GL_VENDOR));
+                printf("version : %s\n", (const char*)glGetString(GL_VERSION));
 
 #endif
 
@@ -259,7 +259,9 @@
         //}
 
 
-        printf("vendor: %s\n", (const char*)glGetString(GL_VENDOR));
+        //printf("vendor  : %s\n", (const char*)glGetString(GL_VENDOR));
+        //printf("version : %s\n", (const char*)glGetString(GL_VERSION));
+
 
         vgCreateContextSH(*width,*heigth);
 
@@ -664,11 +666,11 @@
 
 
         /* Suggest where to position the window: */
-          myhint.x = 200;
-          myhint.y = 200;
-          myhint.width = 400;
-          myhint.height = 150;
-          myhint.flags = PPosition | PSize;
+        myhint.x = 200;
+        myhint.y = 200;
+        myhint.width = 400;
+        myhint.height = 150;
+        myhint.flags = PPosition | PSize;
         /* Create a window - not displayed yet however: */
         mywindow = XCreateSimpleWindow(mydisplay,DefaultRootWindow(mydisplay), myhint.x,myhint.y,myhint.width,myhint.height,5,myforeground,mybackground);
 
@@ -738,10 +740,6 @@
         return 1;
     }
 #endif
-
-
-
-
 
 
 
