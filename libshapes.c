@@ -2,6 +2,9 @@
 // libshapes: high-level OpenVG API
 // Anthony Starks (ajstarks@gmail.com)
 //
+#ifdef __arm__
+#define BCMHOST 1
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #ifndef _WIN32
