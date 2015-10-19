@@ -26,7 +26,8 @@ func main() {
 	openvg.Circle(w2, 0, w)                                   // The "world"
 	openvg.FillColor("white")                                 // White text
 	openvg.TextMid(w2, h2, "hello, world", "serif", width/10) // Greetings
-	openvg.SaveEnd("hvg.raw")                                 // End the picture
+	//openvg.SaveEnd("hvg.raw")                                 // End the picture
+	openvg.End()
 	bufio.NewReader(os.Stdin).ReadBytes('\n')                 // Pause until [RETURN]
 	openvg.Finish()                                           // Graphics cleanup
 }

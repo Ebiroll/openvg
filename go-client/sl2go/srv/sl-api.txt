@@ -63,145 +63,55 @@ Tillägg för Pendeltåg Namn, Datatyp   Beskrivning
 
 
 SecondaryDestinationName,String   Namn på delmål.
-
 StopPointDesignation, String Ytterligare identifierare för stoppställe, t.ex. bokstav för busskur eller spår för pendeltåg.
 
 
 
 Tillägg för Lokalbana  Namn,Datatyp   Beskrivning
-
+=================================================
 GroupOfLine String  Linjegrupp, t.ex. “Tvärbanan” eller “Roslagsbanan”.
-
 StopPointDesignation,String
 	
 
 Ytterligare identifierare för stoppställe, t.ex. bokstav för busskur eller spår för pendeltåg.
 
 Tillägg för Båtar
+==================
+Namn Datatyp  Beskrivning
 
-Namn
-	
+GroupOfLine String   Anger om det är pendlarbåt eller Waxholmsbolaget.
 
-Datatyp
-	
-
-Beskrivning
-
-GroupOfLine
-	
-
-String
-	
-
-Anger om det är pendlarbåt eller Waxholmsbolaget.
-
-Tunnelbana
-
-Namn
-	
-
-Datatyp
-	
-
-Beskrivning
-
-DepartureGroupId
-	
-
-Integer
+Tunnelbana Namn Datatyp Beskrivning
+=====================================
+DepartureGroupId Integer
 	
 
 Gruppering av metroavgångar per fysisk färdriktningsskylt på en plattform. T.ex. grön linje vid tcentralen har två riktningar. Denna parameter kommer ha 1 eller 2 för de olika riktningarna. Samma för röd och blå.
 
-Destination
-	
+Destination String Destination för aktuell avgång.
+DisplayTime String Beräknad avgång från hållplatsen.
 
-String
-	
-
-Destination för aktuell avgång.
-
-DisplayTime
-	
-
-String
-	
-
-Beräknad avgång från hållplatsen.
-
-GroupOfLine
-	
-
-String
+GroupOfLine String
 	
 
 Linjegruppering. Röd/grön/blå linje.
 
-GroupOfLineId
-	
+GroupOfLineId Integer  Linjegrupperingsid. Grön = 1. Röd = 2. Blå = 3.
 
-Integer
-	
+JourneyDirection Integer Reseriktnings-id. Fungerar som DepartureGroupId.
+LineNumber String Linjenummer för aktuell avgång.
 
-Linjegrupperingsid. Grön = 1. Röd = 2. Blå = 3.
+PlatformMessage String Informationsmeddelande för aktuell linjegrupp. Detta är det som syns på en riktig skylt på en plattform. T.ex. ”Vänligen lämna plats för avstigande..”.
 
-JourneyDirection
-	
+SiteId Integer Id för sökt hållplatsområde.
 
-Integer
-	
+StopAreaName String Hållplatsnamn.
 
-Reseriktnings-id. Fungerar som DepartureGroupId.
-
-LineNumber
-	
-
-String
-	
-
-Linjenummer för aktuell avgång.
-
-PlatformMessage
-	
-
-String
-	
-
-Informationsmeddelande för aktuell linjegrupp. Detta är det som syns på en riktig skylt på en plattform. T.ex. ”Vänligen lämna plats för avstigande..”.
-
-SiteId
-	
-
-Integer
-	
-
-Id för sökt hållplatsområde.
-
-StopAreaName
-	
-
-String
-	
-
-Hållplatsnamn.
-
-TransportMode
-	
-
-String
-	
-
-Trafikslag: ”METRO”.
+TransportMode String Trafikslag: ”METRO”.
 
 StopPointDeviations
 
-Namn
-	
-
-Datatyp
-	
-
-Beskrivning
+Namn Datatyp Beskrivning
 
 StopInfo
 	
@@ -211,173 +121,75 @@ StopInfo
 
 1 StopInfo. Kan vara tom. ”StopInfo” finns nedan.
 
-Deviation
-	
-
-Deviation
+Deviation  Deviation
 	
 
 1 Deviation. Kan vara tom. ”Deviation” finns nedan.
 
 Deviation
 
-Namn
-	
+Namn Datatyp Beskrivning
 
-Datatyp
-	
+Consequence String Konsekvensbeskrivning för aktuell avvikelse.
 
-Beskrivning
+ImportanceLevel Integer Signifikationsnivå för aktuell avvikelse. 0-9 där 9 är mest allvarlig.
 
-Consequence
-	
+Text String Beskrivning av aktuell avvikelse.
 
-String
-	
+StopInfo 
 
-Konsekvensbeskrivning för aktuell avvikelse.
+Namn Datatyp Beskrivning
 
-ImportanceLevel
-	
-
-Integer
-	
-
-Signifikationsnivå för aktuell avvikelse. 0-9 där 9 är mest allvarlig.
-
-Text
-	
-
-String
-	
-
-Beskrivning av aktuell avvikelse.
-
-StopInfo
-
-Namn
-	
-
-Datatyp
-	
-
-Beskrivning
-
-GroupOfLine
-	
-
-String
+GroupOfLine String
 	
 
 Om TransportMode är ”TRAM” så innehåller noden något av följande värden: ”Lidingöbanan”, ”Nockebybanan”, ”Roslagsbanan”, ”Saltsjöbanan”, ”Spårväg City”, ”Tvärbanan”. Annars blankt(kan komma att ändras).
 
-StopAreaName
-	
-
-String
+StopAreaName String
 	
 
 Namn på hållplatsen som avvikelsen gäller.
 
-StopAreaNumber
-	
+StopAreaNumber Integer Id för hållplatsen som avvikelsen gäller. Är noll om TransportMode inte är BUS.
 
-Integer
-	
-
-Id för hållplatsen som avvikelsen gäller. Är noll om TransportMode inte är BUS.
-
-TransportMode
-	
-
-String
+TransportMode String
 	
 
 ”METRO”, ”BUS”, ”TRAIN”, ”TRAM” eller ospecificerat.
 
-Felmeddelanden
+Felmeddelanden 
 
 Statuskod
 	
 
-Meddelande
-
-1001
-	
-
-problem with request: Key is undefined
+Meddelande 1001 problem with request: Key is undefined
 
 Nyckel hare ej skickats med.
 
-1002
-	
+1002 problem with request: Key is invalid, Nyckel är ogiltig
 
-problem with request: Key is invalid
+1003 Invalid api , Ogiltigt api
 
-Nyckel är ogiltig
+1004 problem with request: This api is currently not available for keys with priority above 2
 
-1003
-	
+1005 Nyckel finns, men ej för detta api problem with request: Invalid api for key
 
-Invalid api
+1006 To many requests per minute För många anrop per minut, för den profil som används
 
-Ogiltigt api
+1007 To many requests per month För många anrop per månad, för den profil som används
 
-1004
-	
+4001 SiteId måste gå att konvertera till heltal.
 
- 
+5321 Kunde varken hämta information från TPI (tunnelbanan) eller DPS (övriga trafikslag).
 
-problem with request: This api is currently not available for keys with priority above 2
+5322 Kunde inte hämta information från DPS.
 
-1005
-	
+5323 Kunde inte hämta information från TPI.
 
-Nyckel finns, men ej för detta api
-
-problem with request: Invalid api for key
-
-1006
-	
-
-To many requests per minute
-
-För många anrop per minut, för den profil som används
-
-1007
-	
-
-To many requests per month
-
-För många anrop per månad, för den profil som används
-
-4001
-	
-
-SiteId måste gå att konvertera till heltal.
-
-5321
-	
-
-Kunde varken hämta information från TPI (tunnelbanan) eller DPS (övriga trafikslag).
-
-5322
-	
-
-Kunde inte hämta information från DPS.
-
-5323
-	
-
-Kunde inte hämta information från TPI.
-
-5324
-	
-
-Kunde varken hämta information från TPI (tunnelbanan) eller DPS (övriga trafikslag) p.g.a. inaktuell DPS-data. Detta uppstår om DPS-datan är äldre än 2 minuter vid svarstillfället.
+5324 Kunde varken hämta information från TPI (tunnelbanan) eller DPS (övriga trafikslag) p.g.a. inaktuell DPS-data. Detta uppstår om DPS-datan är äldre än 2 minuter vid svarstillfället.
 
 
-// http://api.sl.se/api2/realtimedepartures.json?key=245e126ccbf0451cbca8d3fcc428b0b9&siteid=9702&timewindow=20
+// http://api.sl.se/api2/realtimedepartures.json?key=XXXXXXXXXXXX&siteid=YYYYY&timewindow=20
 
 
 {"StatusCode":0,"Message":null,"ExecutionTime":1093,"ResponseData":

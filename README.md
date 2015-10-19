@@ -20,21 +20,56 @@ To build the go library do
 
  Currently this is only tested on linux but I will try to get it work on the raspberry again.
  On windows the CMakeLists.txt compiles fine with latest qt-creator.
- On linux some of the clients does not work properly. i.e. vgplot, chars ,hgrad
- Images are also do not work so weel, Only the red channel is shown
+ On linux some of the clients does not work properly. i.e. vgplot
 
 ## Patches to make it run om raspberry pi with openvg by hw
 
  (openvg.go) You must manually patch some #cgo flags :
  #cgo LDFLAGS: -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
  Also remove comment on the lines
-   #include "EGL/egl.h"
-   #include "GLES/gl.h"
-#cgo CFLAGS, remove -I shivavg
+	#include "EGL/egl.h"
+	#include "GLES/gl.h"
+	#cgo CFLAGS, remove -I shivavg
 
- (libshapes.c) You must add the line:
-   #define BCMHOST 1
+## GO clients
 
+To use do, setup your GOPATH, i.e. export GOPATH=~/GO
+ cd ~/GO
+ go get github.com/Ebiroll/openvg
+ go install github.com/Ebiroll/openvg
+
+
+## Visual Studio Code
+	Works great for go in linux
+	
+	Download and install.
+	Open Folder src github.com/Ebiroll/openvg
+    Ctrl-Shift P   ->   Type Tasks and find : Configure Task Runner
+	Add the following, FIRST in file. Comment the old task runner. Save
+	{
+		"version": "0.1.0",
+		"command": "go",
+		"isShellCommand": true,
+		"showOutput": "always",
+		"args": ["run","${file}"],
+		"isBuildCommand": true,
+		"taskSelector": "/t:",
+		"problemMatcher": {
+			"owner": "go",
+			// The file name for reported problems is relative to the current working directory.
+			"fileLocation": ["relative", "${cwd}"],
+			// The actual pattern to match problems in the output.
+			"pattern": {
+				"regexp": "^(.+)\\:(\\d+)\\:(.+)$",
+				"file": 1,
+				"location":2,
+				"message": 3	
+			}
+		}
+	}
+	When editing a go file you can now press. Ctrl-Shift B
+    If compilation is successfull it will also run the file.
+ 
 
 ## Windows version of openvg GO library
 
@@ -56,13 +91,6 @@ To build the go library do
  
 As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI these are renamed with a macro.
 
-## GO clients
-
-To use do, setup your GOPATH, i.e. export GOPATH=~/GO
- cd ~/GO
- go get github.com/Ebiroll/openvg
- go install github.com/Ebiroll/openvg
-
 
 ## Windows version of openvg GO library
 
@@ -75,9 +103,9 @@ To use do, setup your GOPATH, i.e. export GOPATH=~/GO
  #cgo LDFLAGS:-lopengl32
   
  If you are using MSYS2
- pacman -S base-devel
- pacman -S  msys2-w32api-headers
- pacman -S mingw-w64-x86_64-freeglut 
+	pacman -S base-devel
+	pacman -S  msys2-w32api-headers
+	pacman -S mingw-w64-x86_64-freeglut 
  
 As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI these are renamed with a macro.
 

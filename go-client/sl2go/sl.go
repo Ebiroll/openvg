@@ -25,15 +25,76 @@ type SLData struct {
 		DataAge int `json:"DataAge"`
 		Buses [] struct {
 			JourneyDirection int `json:"JourneyDirection"`
- 	        GroupOfLine  string `json:"GroupOfLine"`
+			SiteId int `json:"SiteId"`
+			TransportMode string `json:"TransportMode"` 
+			StopAreaName string `json:"StopAreaName"`
+			StopPointDesignation  string `json:"StopPointDesignation"`
+			StopAreaNumber int `json:"StopAreaNumber"`
+			StopPointNumber int `json:"StopPointNumber"`
+			LineNumber string `json:"LineNumber"`
+			Destination string `json:"Destination"`
+ 	        TimeTabledDateTime  string `json:"TimeTabledDateTime"`
+			ExpectedDateTime  string `json:"ExpectedDateTime"`
+			DisplayTime string `json:"DisplayTime"`
+			Deviation [] struct {
+				Consequence string `json:"Consequence"`
+				ImportanceLevel int `json:"ImportanceLevel"`
+				Text string `json:"Text"`
+			} `json:"Deviations"`
+
+ 	        //GroupOfLine  string `json:"GroupOfLine"`
+		} `json:"Buses"`
+		
+		Trains [] struct {
+			SiteId int `json:"SiteId"`
+			TransportMode string `json:"TransportMode"` 
 			StopAreaName string `json:"StopAreaName"`
 			StopAreaNumber int `json:"StopAreaNumber"`
 			StopPointNumber int `json:"StopPointNumber"`
- 	        StopPointDesignation  string `json:"StopPointDesignation"`
+			LineNumber string `json:"LineNumber"`
+			Destination string `json:"Destination"`
+			TimeTabledDateTime  string `json:"TimeTabledDateTime"`
+			ExpectedDateTime  string `json:"TimeTabledDateTime"`
+			DisplayTime string `json:"DisplayTime"`
+			Deviations [] struct {
+				Consequence string `json:"Consequence"`
+				ImportanceLevel int `json:"ImportanceLevel"`
+				Text string `json:"Text"`
+			} `json:"Deviations"`
+		} `json:"Trains"`
+		Trams [] struct {
+			SiteId int `json:"SiteId"`
+			TransportMode string `json:"TransportMode"` 
+			StopAreaName string `json:"StopAreaName"`
+			StopAreaNumber int `json:"StopAreaNumber"`
+			StopPointNumber int `json:"StopPointNumber"`
+			LineNumber string `json:"LineNumber"`
+			Destination string `json:"Destination"`
  	        TimeTabledDateTime  string `json:"TimeTabledDateTime"`
 			ExpectedDateTime  string `json:"TimeTabledDateTime"`
 			DisplayTime string `json:"DisplayTime"`
-			Deviations string `json:"Deviations"`			
+			Deviation [] struct {
+				Consequence string `json:"Consequence"`
+				ImportanceLevel int `json:"ImportanceLevel"`
+				Text string `json:"Text"`
+			}
+		}
+		Ships [] struct {
+			SiteId int `json:"SiteId"`
+			TransportMode string `json:"TransportMode"` 
+			StopAreaName string `json:"StopAreaName"`
+			StopAreaNumber int `json:"StopAreaNumber"`
+			StopPointNumber int `json:"StopPointNumber"`
+			LineNumber string `json:"LineNumber"`
+			Destination string `json:"Destination"`
+ 	        TimeTabledDateTime  string `json:"TimeTabledDateTime"`
+			ExpectedDateTime  string `json:"TimeTabledDateTime"`
+			DisplayTime string `json:"DisplayTime"`
+			Deviation [] struct {
+				Consequence string `json:"Consequence"`
+				ImportanceLevel int `json:"ImportanceLevel"`
+				Text string `json:"Text"`
+			}
 		}
 	}
 }
@@ -53,9 +114,10 @@ func Show(name string) {
 	}
 }
 
+
 func main() {
 	var sreenHeight  , cx, cy, cw, ch, midy int
-	message := "Now is the time for all good men to come to the aid of the party"
+	message := "Scrolling texts could be useful if the information does not fit on screen"
 
 	w, h := openvg.Init()
 	sreenHeight= h
@@ -67,6 +129,7 @@ func main() {
 	ch = fontsize * 2
 	cw = w
 	cy = midy - (ch / 2)
+    var jsonData SLData
 	
 	response, err := http.Get("http://localhost:8000")
 	
@@ -77,16 +140,12 @@ func main() {
             fmt.Printf("Error reading http data, %s", err)
         } else {
            fmt.Printf("Got: %s\n", string(contents))	
-		   
-		    var jsonData SLData
-
-		   
+		   		   		   
 		   if err := json.Unmarshal(contents, &jsonData); err != nil {
               panic(err)
            }
            fmt.Println(jsonData)
-		   
-		   
+		   		   
 	    }
 	}
 	
@@ -98,26 +157,35 @@ func main() {
 	var imgPosY = openvg.VGfloat(sreenHeight - 70 )
 	openvg.Image(4, imgPosY , imgw, imgh, "SL.jpg")
 
+	var TAB1 = openvg.VGfloat(80.0)
+
     rx1,  rw1, rh1 := openvg.VGfloat(cx),  openvg.VGfloat(cw), openvg.VGfloat(ch)
 	ty := 0
 	rix := 0
-	for ty = sreenHeight - (80 + int(rh1)) ; ty>0; ty -= ch {
+	for ty = sreenHeight - (80 + int(rh1)) ; ty>0 && rix < len(jsonData.ResponseData.Buses) ; ty -= ch {
 	    tempy := openvg.VGfloat(ty)
 		//ry := openvg.VGfloat(ty)
-		rix = rix+1
 		if  rix%2 == 0 {
 		  openvg.FillRGB(0, 0, 0, .2)
 		  //openvg.Rect(rx1, tempy, rw1, rh1)	
 		  openvg.FillRGB(0, 0, 0, 1)
-		  openvg.Text(rx1, tempy, "591    \t12:29", "sans", fontsize)
+		  tempy = tempy + 6.0
+
+		  openvg.Text(rx1, tempy, jsonData.ResponseData.Buses[rix].LineNumber , "sans", fontsize)
+		  openvg.Text(rx1 + TAB1, tempy, jsonData.ResponseData.Buses[rix].DisplayTime , "sans", fontsize)
+
 		} else {
 		  openvg.FillRGB(0, 0, 0, .4)
 		  openvg.Rect(rx1, tempy, rw1, rh1)	
+		  tempy = tempy + 6.0
   		  openvg.FillRGB(0, 0, 0, 1)			
-		  openvg.Text(rx1, tempy, "593    \t12:22", "sans", fontsize)
+		  openvg.Text(rx1, tempy, jsonData.ResponseData.Buses[rix].LineNumber , "sans", fontsize)
+		  openvg.Text(rx1 + TAB1, tempy, jsonData.ResponseData.Buses[rix].DisplayTime , "sans", fontsize)
+
 		}
 		//openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
 		//openvg.Background(255,255,0)
+		rix = rix+1
 
 		
 	}

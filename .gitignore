@@ -5,4 +5,9 @@ font2openvg
 go-client/clock
 go-client/planets/planets
 go-client/sl2go/srv/srv
+go-client/bubtrail/bubtrail
+go-client/clip/clip
+go-client/chars/chars
+go-client/colortab/colortab
+go-client/particles/particles
 CMakeLists.txt.user
