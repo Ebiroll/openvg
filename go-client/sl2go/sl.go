@@ -13,6 +13,7 @@ import (
     "io/ioutil"
 	"os"
 	"os/exec"
+	"time"
 	"encoding/json"
 )
 
@@ -130,66 +131,69 @@ func main() {
 	cw = w
 	cy = midy - (ch / 2)
     var jsonData SLData
-	
-	response, err := http.Get("http://localhost:8000")
-	
-	if err == nil {
-	    defer response.Body.Close()
-        contents, err := ioutil.ReadAll(response.Body)
-        if err != nil {
-            fmt.Printf("Error reading http data, %s", err)
-        } else {
-           fmt.Printf("Got: %s\n", string(contents))	
-		   		   		   
-		   if err := json.Unmarshal(contents, &jsonData); err != nil {
-              panic(err)
-           }
-           fmt.Println(jsonData)
-		   		   
-	    }
-	}
-	
-	openvg.Start(w, h)
-	imgw,imgh := 0 , 0
-	openvg.Background(255, 255, 255)
-	
-    //SLHeight = 60
-	var imgPosY = openvg.VGfloat(sreenHeight - 70 )
-	openvg.Image(4, imgPosY , imgw, imgh, "SL.jpg")
 
-	var TAB1 = openvg.VGfloat(80.0)
-
-    rx1,  rw1, rh1 := openvg.VGfloat(cx),  openvg.VGfloat(cw), openvg.VGfloat(ch)
-	ty := 0
-	rix := 0
-	for ty = sreenHeight - (80 + int(rh1)) ; ty>0 && rix < len(jsonData.ResponseData.Buses) ; ty -= ch {
-	    tempy := openvg.VGfloat(ty)
-		//ry := openvg.VGfloat(ty)
-		if  rix%2 == 0 {
-		  openvg.FillRGB(0, 0, 0, .2)
-		  //openvg.Rect(rx1, tempy, rw1, rh1)	
-		  openvg.FillRGB(0, 0, 0, 1)
-		  tempy = tempy + 6.0
-
-		  openvg.Text(rx1, tempy, jsonData.ResponseData.Buses[rix].LineNumber , "sans", fontsize)
-		  openvg.Text(rx1 + TAB1, tempy, jsonData.ResponseData.Buses[rix].DisplayTime , "sans", fontsize)
-
-		} else {
-		  openvg.FillRGB(0, 0, 0, .4)
-		  openvg.Rect(rx1, tempy, rw1, rh1)	
-		  tempy = tempy + 6.0
-  		  openvg.FillRGB(0, 0, 0, 1)			
-		  openvg.Text(rx1, tempy, jsonData.ResponseData.Buses[rix].LineNumber , "sans", fontsize)
-		  openvg.Text(rx1 + TAB1, tempy, jsonData.ResponseData.Buses[rix].DisplayTime , "sans", fontsize)
-
-		}
-		//openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
-		//openvg.Background(255,255,0)
-		rix = rix+1
-
+	for {	
+		response, err := http.Get("http://localhost:8000")
 		
+		if err == nil {
+			defer response.Body.Close()
+			contents, err := ioutil.ReadAll(response.Body)
+			if err != nil {
+				fmt.Printf("Error reading http data, %s", err)
+			} else {
+			fmt.Printf("Got: %s\n", string(contents))	
+							
+			if err := json.Unmarshal(contents, &jsonData); err != nil {
+				panic(err)
+			}
+			fmt.Println(jsonData)
+					
+			}
+		}
+	
+		openvg.Start(w, h)
+		imgw,imgh := 0 , 0
+		openvg.Background(255, 255, 255)
+		
+		//SLHeight = 60
+		var imgPosY = openvg.VGfloat(sreenHeight - 70 )
+		openvg.Image(4, imgPosY , imgw, imgh, "SL.jpg")
+	
+		var TAB1 = openvg.VGfloat(80.0)
+		//var TAB2 = openvg.VGfloat(140.0)
+	
+		rx1,  rw1, rh1 := openvg.VGfloat(cx),  openvg.VGfloat(cw), openvg.VGfloat(ch)
+		ty := 0
+		rix := 0
+		for ty = sreenHeight - (80 + int(rh1)) ; ty>0 && rix < len(jsonData.ResponseData.Buses) ; ty -= ch {
+			tempy := openvg.VGfloat(ty)
+			//ry := openvg.VGfloat(ty)
+			if  rix%2 == 0 {
+			openvg.FillRGB(0, 0, 0, .2)
+			//openvg.Rect(rx1, tempy, rw1, rh1)	
+			openvg.FillRGB(0, 0, 0, 1)
+			tempy = tempy + 6.0
+			} else {
+			openvg.FillRGB(0, 0, 0, .4)
+			openvg.Rect(rx1, tempy, rw1, rh1)	
+			tempy = tempy + 6.0
+			openvg.FillRGB(0, 0, 0, 1)			
+			}
+			openvg.Text(rx1, tempy, jsonData.ResponseData.Buses[rix].LineNumber , "sans", fontsize)
+			openvg.Text(rx1 + TAB1, tempy, jsonData.ResponseData.Buses[rix].DisplayTime , "sans", fontsize)
+			//openvg.Text(rx1 + TAB2, tempy, jsonData.ResponseData.Buses[rix].Destination , "sans", fontsize)
+	
+			
+			//openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
+			//openvg.Background(255,255,0)
+			rix = rix+1
+	
+			
+		}
+		openvg.End()
+	
+		time.Sleep(60*time.Second);	
 	}
-	openvg.End()
 
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
 
