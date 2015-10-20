@@ -1,4 +1,11 @@
-#Testbed for exploring OpenVG on the Raspberry Pi.
+#Library cloned for the purpose of building an real time timetable with OpenVG on the Raspberry Pi.
+
+## SL2GO
+
+This repository hold the sourcecode for a realtime timetable with data from, https://www.trafiklab.se
+
+It is written in 
+
 
 <a href="http://www.flickr.com/photos/ajstarks/7811750326/" title="rotext by ajstarks, on Flickr"><img src="http://farm8.staticflickr.com/7249/7811750326_614ea891ae.jpg" width="500" height="281" alt="rotext"></a>
 
@@ -8,15 +15,17 @@ I added the ShivaVG library in order to be able to test on a regular linux box
 before deploying on the raspberry. http://ivanleben.blogspot.se/2007/07/shivavg-open-source-ansi-c-openvg.html
 
 To build, do 
-  mkdir build
-  cd build
-  cmake ..
-  make
-  cp ../client/*.jpg .
-  ./shivavg demo 5
+    mkdir build
+	cd build
+	cmake ..
+	make
+	cp ../client/*.jpg .
+	./shivavg demo 5
 
 To build the go library do 
-   go get github.com/Ebiroll/openvg
+    go get github.com/Ebiroll/openvg
+    go install github.com/Ebiroll/openvg
+	
 
  Currently this is only tested on linux but I will try to get it work on the raspberry again.
  On windows the CMakeLists.txt compiles fine with latest qt-creator.
@@ -25,7 +34,7 @@ To build the go library do
 ## Patches to make it run om raspberry pi with openvg by hw
 
  (openvg.go) You must manually patch some #cgo flags :
- #cgo LDFLAGS: -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
+    #cgo LDFLAGS: -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
  Also remove comment on the lines
 	#include "EGL/egl.h"
 	#include "GLES/gl.h"

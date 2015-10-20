@@ -2,12 +2,15 @@
 package openvg
 /*
 #cgo CFLAGS:  -I shivavg  -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads
-#cgo LDFLAGS:  -lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
+#cgo linux LDFLAGS:  -lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
+#cgo arm LDFLAGS:  -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
 #include "VG/openvg.h"
 #include "VG/vgu.h"
 #include <stdlib.h>
-//#include "EGL/egl.h"
-//#include "GLES/gl.h"
+#ifdef __arm__
+#include "EGL/egl.h"
+#include "GLES/gl.h"
+#endif
 #include "fontinfo.h" // font information
 #include "shapes.h"   // C API
 */

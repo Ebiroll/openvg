@@ -506,6 +506,113 @@ void ClipEnd() {
 	vgSeti(VG_SCISSORING, VG_FALSE);
 }
 
+#define IS_IN_RANGE(c, f, l)    (((c) >= (f)) && ((c) <= (l)))
+
+char *readNextChar(char *p, int *character) {
+	// TODO: since UTF-8 is a variable-length
+	// encoding, you should pass in the input
+	// buffer's actual byte length so that you
+	// can determine if a malformed UTF-8
+	// sequence would exceed the end of the buffer...
+
+    int i;
+	char c1, c2, *ptr = p;
+	int uc = 0;
+	int seqlen;
+	int datalen = strlen(p);
+
+	if (datalen < 1) {
+		// malformed data, do something !!!
+		return NULL;
+	}
+
+	c1 = ptr[0];
+
+	if ((c1 & 0x80) == 0) {
+		uc = (unsigned long)(c1 & 0x7F);
+		seqlen = 1;
+	} else if ((c1 & 0xE0) == 0xC0) {
+		uc = (unsigned long)(c1 & 0x1F);
+		seqlen = 2;
+	} else if ((c1 & 0xF0) == 0xE0) {
+		uc = (unsigned long)(c1 & 0x0F);
+		seqlen = 3;
+	} else if ((c1 & 0xF8) == 0xF0) {
+		uc = (unsigned long)(c1 & 0x07);
+		seqlen = 4;
+	} else {
+		// malformed data, do something !!!
+		return NULL;
+	}
+
+	if (seqlen > datalen) {
+		// malformed data, do something !!!
+		return NULL;
+	}
+
+    for ( i = 1; i < seqlen; ++i) {
+		c1 = ptr[i];
+
+		if ((c1 & 0xC0) != 0x80) {
+			// malformed data, do something !!!
+			return NULL;
+		}
+	}
+
+	switch (seqlen) {
+	case 2:
+		{
+            c1 = ptr[0];
+
+            // Something is wrong here?
+            //if (!IS_IN_RANGE(c1, 0xC2, 0xDF)) {
+                // malformed data, do something !!!
+            //    return NULL;
+            //}
+
+			break;
+		}
+
+	case 3:
+		{
+			c1 = ptr[0];
+			c2 = ptr[1];
+
+			if (((c1 == 0xE0) && !IS_IN_RANGE(c2, 0xA0, 0xBF)) ||
+			    ((c1 == 0xED) && !IS_IN_RANGE(c2, 0x80, 0x9F)) ||
+			    (!IS_IN_RANGE(c1, 0xE1, 0xEC) && !IS_IN_RANGE(c1, 0xEE, 0xEF))) {
+				// malformed data, do something !!!
+				return NULL;
+			}
+
+			break;
+		}
+
+	case 4:
+		{
+			c1 = ptr[0];
+			c2 = ptr[1];
+
+			if (((c1 == 0xF0) && !IS_IN_RANGE(c2, 0x90, 0xBF)) ||
+			    ((c1 == 0xF4) && !IS_IN_RANGE(c2, 0x80, 0x8F)) || !IS_IN_RANGE(c1, 0xF1, 0xF3)) {
+				// malformed data, do something !!!
+				return NULL;
+			}
+
+			break;
+		}
+	}
+
+    for (i = 1; i < seqlen; ++i) {
+		uc = ((uc << 6) | (unsigned long)(ptr[i] & 0x3F));
+	}
+
+	*character = uc;
+	p += seqlen;
+	return p;
+}
+
+
 // Text renders a string of text at a specified location, size, using the specified font glyphs
 // derived from http://web.archive.org/web/20070808195131/http://developer.hybrid.fi/font2openvg/renderFont.cpp.txt
 void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {
@@ -513,8 +620,14 @@ void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {
 	int i;
 
 	vgGetMatrix(mm);
-	for (i = 0; i < (int)strlen(s); i++) {
-		unsigned int character = (unsigned int)s[i];
+	
+	int character;
+    unsigned char *ss = s;
+    //int error;
+	while ((ss = readNextChar(ss, &character)) != NULL) {
+	
+	    //for (i = 0; i < (int)strlen(s); i++) {
+		//unsigned int character = (unsigned int)s[i];
 		int glyph = f.CharacterMap[character];
 		if (glyph == -1) {
 			continue;			   //glyph is undefined
@@ -537,9 +650,14 @@ VGfloat TextWidth(char *s, Fontinfo f, int pointsize) {
 	int i;
 	VGfloat tw = 0.0;
 	VGfloat size = (VGfloat) pointsize;
-	for (i = 0; i < (int)strlen(s); i++) {
-		unsigned int character = (unsigned int)s[i];
-		int glyph = f.CharacterMap[character];
+    int glyph;
+    int character;
+    char *ss = s;
+    int error;
+    while ((ss = readNextChar(ss, &character)) != NULL) {
+        //for (i = 0; i < (int)strlen(s); i++) {
+        //unsigned int character = (unsigned int)s[i];
+        int glyph = f.CharacterMap[character];
 		if (glyph == -1) {
 			continue;			   //glyph is undefined
 		}
@@ -704,6 +822,8 @@ void SaveEnd(char *filename) {
 #ifdef BCMHOST
 	eglSwapBuffers(state->display, state->surface);
 	assert(eglGetError() == EGL_SUCCESS);
+#else
+    swap_buffers_gls();
 #endif
 }
 
@@ -719,4 +839,142 @@ void BackgroundRGB(unsigned int r, unsigned int g, unsigned int b, VGfloat a) {
 	Rect(0, 0, state->screen_width, state->screen_height);
 }
 
+#if 0
 
+#include FT_FREETYPE_H
+#include FT_OUTLINE_H
+
+#define FONTLIB	"/usr/share/fonts/TTF/HanaMinA.ttf"
+
+
+
+
+
+
+void Text(VGfloat x, VGfloat y, char *s, int pointsize) {
+	float size = (VGfloat) pointsize, xx = x, mm[9];
+
+	vgGetMatrix(mm);
+	int character;
+	char *ss = s;
+	int error;
+	while ((ss = readNextChar(ss, &character)) != NULL) {
+		int glyphIndex = FT_Get_Char_Index(face, character);
+
+		error = FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP | FT_LOAD_NO_HINTING | FT_LOAD_IGNORE_TRANSFORM);
+		assert(error == 0);
+
+		int *points = NULL;
+		int point_len = 0;
+		unsigned char *instructions = NULL;
+		int instruction_len = 0;
+		FT_Outline outline = face->glyph->outline;
+		float minx = 0.0f, miny = 0.0f, maxx = 0.0f, maxy = 0.0f;
+		int s = 0, e;
+		for (int con = 0; con < outline.n_contours; ++con) {
+			int pnts = 1;
+			e = outline.contours[con] + 1;
+
+			//read the contour start point
+			instruction_len += 1;
+			instructions = realloc(instructions, instruction_len * sizeof(unsigned char));
+			instructions[instruction_len - 1] = 2;
+			point_len += 2;
+			points = realloc(points, point_len * sizeof(int));
+			points[point_len - 2] = outline.points[s].x * 16.0f;
+			points[point_len - 1] = outline.points[s].y * 16.0f;
+
+			int i = s + 1;
+			while (i <= e) {
+				int c = (i == e) ? s : i;
+				int n = (i == e - 1) ? s : (i + 1);
+				if (outline.tags[c] & 1) { //line
+					++i;
+					instruction_len += 1;
+					instructions = realloc(instructions, instruction_len * sizeof(unsigned char));
+					instructions[instruction_len - 1] = 4;
+					point_len += 2;
+					points = realloc(points, point_len * sizeof(int));
+					points[point_len - 2] = outline.points[c].x * 16.0f;
+					points[point_len - 1] = outline.points[c].y * 16.0f;
+					pnts += 1;
+				} else {		   //spline
+					instruction_len += 1;
+					instructions = realloc(instructions, instruction_len * sizeof(unsigned char));
+					instructions[instruction_len - 1] = 10;
+					point_len += 2;
+					points = realloc(points, point_len * sizeof(int));
+					points[point_len - 2] = outline.points[c].x * 16.0f;
+					points[point_len - 1] = outline.points[c].y * 16.0f;
+					if (outline.tags[n] & 1) {	//next on
+						point_len += 2;
+						points = realloc(points, point_len * sizeof(int));
+						points[point_len - 2] = outline.points[n].x * 16.0f;
+						points[point_len - 1] = outline.points[n].y * 16.0f;
+						i += 2;
+					} else {	   //next off, use middle point
+						point_len += 2;
+						points = realloc(points, point_len * sizeof(int));
+						points[point_len - 2] = (outline.points[c].x + outline.points[c].x) * 16.0f * 0.5f;
+						points[point_len - 1] = (outline.points[c].y + outline.points[c].y) * 16.0f * 0.5f;
+						++i;
+					}
+					pnts += 2;
+				}
+			}
+			instruction_len += 1;
+			instructions = realloc(instructions, instruction_len * sizeof(unsigned char));
+			instructions[instruction_len - 1] = 0;
+			s = e;
+		}
+
+		for (unsigned int i = 0; i < point_len / 2; ++i) {
+			if (points[i * 2] < minx)
+				minx = points[i * 2];
+			if (points[i * 2] > maxx)
+				maxx = points[i * 2];
+			if (points[i * 2 + 1] < miny)
+				miny = points[i * 2 + 1];
+			if (points[i * 2 + 1] > maxy)
+				maxy = points[i * 2 + 1];
+		}
+
+		VGPath path = vgCreatePath(VG_PATH_FORMAT_STANDARD, VG_PATH_DATATYPE_S_32,
+					   1.0f / 65536.0f, 0.0f, 0, 0,
+					   VG_PATH_CAPABILITY_ALL);
+		if (instruction_len > 0) {
+			vgAppendPathData(path, instruction_len, instructions, points);
+		}
+
+		VGfloat mat[9] = {
+			size, 0.0f, 0.0f,
+			0.0f, size, 0.0f,
+			xx, y, 1.0f
+		};
+		free(points);
+		free(instructions);
+		vgLoadMatrix(mm);
+		vgMultMatrix(mat);
+		vgDrawPath(path, VG_FILL_PATH);
+		xx += size * (float)face->glyph->advance.x / 4096.0f;
+	}
+	vgLoadMatrix(mm);
+}
+
+// TextWidth returns the width of a text string at the specified font and size.
+VGfloat TextWidth(char *s, int pointsize) {
+	VGfloat tw = 0.0;
+	VGfloat size = (VGfloat) pointsize;
+	int character;
+	char *ss = s;
+	int error;
+	while ((ss = readNextChar(ss, &character)) != NULL) {
+		int glyphIndex = FT_Get_Char_Index(face, character);
+
+		error = FT_Load_Glyph(face, glyphIndex, FT_LOAD_NO_BITMAP | FT_LOAD_NO_HINTING | FT_LOAD_IGNORE_TRANSFORM);
+		assert(error == 0);
+		tw += size * (float)face->glyph->advance.x / 4096.0f;
+	}
+	return tw;
+}
+#endif
