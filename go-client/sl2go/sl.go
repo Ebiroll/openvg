@@ -15,8 +15,10 @@ import (
 	"os/exec"
 	"time"
 	"encoding/json"
+	"strings"
 )
 
+// Data received from interface
 type SLData struct {
 	StatusCode  int `json:"StatusCode"`
 	Message  string `json:"Message"`
@@ -45,7 +47,23 @@ type SLData struct {
 
  	        //GroupOfLine  string `json:"GroupOfLine"`
 		} `json:"Buses"`
-		
+		Metros [] struct {
+			SiteId int `json:"SiteId"`
+			TransportMode string `json:"TransportMode"` 
+			StopAreaName string `json:"StopAreaName"`
+			StopAreaNumber int `json:"StopAreaNumber"`
+			StopPointNumber int `json:"StopPointNumber"`
+			LineNumber string `json:"LineNumber"`
+			Destination string `json:"Destination"`
+			TimeTabledDateTime  string `json:"TimeTabledDateTime"`
+			ExpectedDateTime  string `json:"TimeTabledDateTime"`
+			DisplayTime string `json:"DisplayTime"`
+			Deviations [] struct {
+				Consequence string `json:"Consequence"`
+				ImportanceLevel int `json:"ImportanceLevel"`
+				Text string `json:"Text"`
+			} `json:"Deviations"`
+		} `json:"Metros"`
 		Trains [] struct {
 			SiteId int `json:"SiteId"`
 			TransportMode string `json:"TransportMode"` 
@@ -79,7 +97,7 @@ type SLData struct {
 				ImportanceLevel int `json:"ImportanceLevel"`
 				Text string `json:"Text"`
 			}
-		}
+		} `json:"Trams"`
 		Ships [] struct {
 			SiteId int `json:"SiteId"`
 			TransportMode string `json:"TransportMode"` 
@@ -96,13 +114,21 @@ type SLData struct {
 				ImportanceLevel int `json:"ImportanceLevel"`
 				Text string `json:"Text"`
 			}
-		}
+		} `json:"Ships"`
 	}
 }
 
-
-
-
+// Config file 
+type Config struct {
+	key  string `json:"key"`
+	siteid  int `json:"siteid"`
+	buses [] struct {
+		lineNumber string `json:"lineNumber"`
+		destination string `json:"destination"`
+		timeToStop int `json:"timeToStop"`
+		timeToDest int `json:"timeToDest"`		
+	} `json:"buses"`		
+}
 
 func Show(name string) {
 	command := "open"
@@ -115,6 +141,16 @@ func Show(name string) {
 	}
 }
 
+func replaceAO(in string) string {
+	var ret string
+	ret=strings.Replace(in, "Å", "A", -1)
+	ret=strings.Replace(ret, "Ä", "A", -1)
+	ret=strings.Replace(ret, "Ö", "O", -1)
+	ret=strings.Replace(ret, "å", "a", -1)
+	ret=strings.Replace(ret, "ä", "a", -1)
+	ret=strings.Replace(ret, "ö", "o", -1)
+	return ret
+}
 
 func main() {
 	var sreenHeight  , cx, cy, cw, ch, midy int
@@ -125,7 +161,7 @@ func main() {
 	var speed openvg.VGfloat = 0.5
 	var x openvg.VGfloat = 0
 	midy = (h / 2)
-	fontsize := w / 50
+	fontsize := w / 30
 	cx = 0
 	ch = fontsize * 2
 	cw = w
@@ -159,8 +195,8 @@ func main() {
 		var imgPosY = openvg.VGfloat(sreenHeight - 70 )
 		openvg.Image(4, imgPosY , imgw, imgh, "SL.jpg")
 	
-		var TAB1 = openvg.VGfloat(80.0)
-		//var TAB2 = openvg.VGfloat(140.0)
+		var TAB1 = openvg.VGfloat(2*w/10)
+		var TAB2 = openvg.VGfloat(4*w/10)
 	
 		rx1,  rw1, rh1 := openvg.VGfloat(cx),  openvg.VGfloat(cw), openvg.VGfloat(ch)
 		ty := 0
@@ -181,7 +217,9 @@ func main() {
 			}
 			openvg.Text(rx1, tempy, jsonData.ResponseData.Buses[rix].LineNumber , "sans", fontsize)
 			openvg.Text(rx1 + TAB1, tempy, jsonData.ResponseData.Buses[rix].DisplayTime , "sans", fontsize)
-			//openvg.Text(rx1 + TAB2, tempy, jsonData.ResponseData.Buses[rix].Destination , "sans", fontsize)
+			var dest = jsonData.ResponseData.Buses[rix].Destination
+			dest = replaceAO(dest)
+			openvg.Text(rx1 + TAB2, tempy, dest , "sans", fontsize)
 	
 			
 			//openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
