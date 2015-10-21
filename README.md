@@ -1,13 +1,20 @@
-#Library cloned for the purpose of building an real time timetable with OpenVG on the Raspberry Pi.
+# A real time timetable with OpenVG on the Raspberry Pi.
+
+Library was cloned for the purpose of building An real time timetable with OpenVG on the Raspberry Pi.
+
 
 ## SL2GO
 
 This repository hold the sourcecode for a realtime timetable with data from, https://www.trafiklab.se
+The application is written in GO and runs on a raspberry PI 2 or Linux.
 
-The application is written in GO and runs on a rasberry PI 2 or Linux
+
+sl2go is found here https://github.com/Ebiroll/openvg/tree/master/go-client/sl2go
+
+You will need to get your own api-key from trafiklabb.se or run the test server located in srv https://github.com/Ebiroll/openvg/tree/master/go-client/srv
 
 
-<a href="https://farm6.staticflickr.com/5834" title="rotext by Olof, on Flickr"><img src="https://farm6.staticflickr.com/5834/22318139536_f249a86979_z_d.jpg" width="640" height="512" alt="rotext"></a>
+<a href="https://farm6.staticflickr.com/5834/22318139536_f249a86979_z_d.jpg" title="rotext by Olof, on Flickr"><img src="https://farm6.staticflickr.com/5834/22318139536_f249a86979_z_d.jpg" width="640" height="512" alt="rotext"></a>
 
 ## Additions made by Ebiroll
 
@@ -15,7 +22,8 @@ I added the ShivaVG library in order to be able to test on a regular linux box
 before deploying on the raspberry. http://ivanleben.blogspot.se/2007/07/shivavg-open-source-ansi-c-openvg.html
 
 To build, do 
-    mkdir build
+
+	mkdir build
 	cd build
 	cmake ..
 	make
@@ -23,38 +31,27 @@ To build, do
 	./shivavg demo 5
 
 To build the go library do 
-    go get github.com/Ebiroll/openvg
+	go get github.com/Ebiroll/openvg
     go install github.com/Ebiroll/openvg
 	
+ On windows the CMakeLists.txt compiles fine with latest qt-creator, but I was not able to test it with go yet.
 
- Currently this is only tested on linux but I will try to get it work on the raspberry again.
- On windows the CMakeLists.txt compiles fine with latest qt-creator.
- On linux some of the clients does not work properly. i.e. vgplot
-
-## Patches to make it run om raspberry pi with openvg by hw
-
- (openvg.go) You must manually patch some #cgo flags :
-    #cgo LDFLAGS: -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
- Also remove comment on the lines
-	#include "EGL/egl.h"
-	#include "GLES/gl.h"
-	#cgo CFLAGS, remove -I shivavg
 
 ## GO clients
 
 To use do, setup your GOPATH, i.e. export GOPATH=~/GO
- cd ~/GO
- go get github.com/Ebiroll/openvg
- go install github.com/Ebiroll/openvg
+	cd ~/GO
+	go get github.com/Ebiroll/openvg
+	go install github.com/Ebiroll/openvg
 
 
 ## Visual Studio Code
-	Works great for go in linux
-	
-	Download and install.
-	Open Folder src github.com/Ebiroll/openvg
+Works great for editing go code in linux
+Download and install. https://code.visualstudio.com/
+
+	Open the folder src/github.com/Ebiroll/openvg
     Ctrl-Shift P   ->   Type Tasks and find : Configure Task Runner
-	Add the following, FIRST in file. Comment the old task runner. Save
+	Add the following, FIRST in file. Comment the old task runner. Save file.
 	{
 		"version": "0.1.0",
 		"command": "go",
@@ -82,41 +79,16 @@ To use do, setup your GOPATH, i.e. export GOPATH=~/GO
 
 ## Windows version of openvg GO library
 
- For some reason _WI32 was not defined
  
- (openvg.go) You must manually patch #cgo LDFLAGS:
- Linux
- #cgo LDFLAGS:-lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
- Windows 
- #cgo LDFLAGS:-lopengl32
- 
- 
- If you are using MSYS2
- pacman -S base-devel
- pacman -S mingw-w64-i686-mesa
- #This one is normally already installed
- pacman -S  msys2-w32api-headers
- pacman -S mingw-w64-x86_64-freeglut 
- 
-As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI these are renamed with a macro.
-
-
-## Windows version of openvg GO library
-
- I did not get it to work. For some reason _WI32 was not defined.
- 
- You must also manually patch #cgo LDFLAGS:
- Linux
- #cgo LDFLAGS:-lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
- Windows 
- #cgo LDFLAGS:-lopengl32
-  
- If you are using MSYS2
+ If you are using MSYS2 with GO
 	pacman -S base-devel
+	pacman -S mingw-w64-i686-mesa
+	#This one is normally already installed
 	pacman -S  msys2-w32api-headers
 	pacman -S mingw-w64-x86_64-freeglut 
- 
-As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI these are renamed with a macro.
+
+Not tested but should work with some mior fixes.  
+As the functions Polygon, Arc, RGB defined somewhere in the Windows.h/GDI these are renamed with a macro. This confuses the CGO compiler. Abetter solution is required to get it to work.
 
 
 ## First program

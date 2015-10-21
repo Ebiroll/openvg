@@ -3,6 +3,7 @@ package openvg
 /*
 #cgo CFLAGS:  -I shivavg  -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads
 #cgo linux LDFLAGS:  -lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
+#cgo windows LDFLAGS: -lm -lopengl32
 #cgo arm LDFLAGS:  -L/opt/vc/lib -lGLESv2 -lEGL -lbcm_host -ljpeg
 #include "VG/openvg.h"
 #include "VG/vgu.h"
