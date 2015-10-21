@@ -4,10 +4,10 @@
 
 This repository hold the sourcecode for a realtime timetable with data from, https://www.trafiklab.se
 
-It is written in 
+The application is written in GO and runs on a rasberry PI 2 or Linux
 
 
-<a href="http://www.flickr.com/photos/ajstarks/7811750326/" title="rotext by ajstarks, on Flickr"><img src="http://farm8.staticflickr.com/7249/7811750326_614ea891ae.jpg" width="500" height="281" alt="rotext"></a>
+<a href="https://farm6.staticflickr.com/5834" title="rotext by Olof, on Flickr"><img src="https://farm6.staticflickr.com/5834/22318139536_f249a86979_z_d.jpg" width="500" height="281" alt="rotext"></a>
 
 ## Additions made by Ebiroll
 
