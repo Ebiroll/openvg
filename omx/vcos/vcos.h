@@ -93,8 +93,47 @@ VideoCore OS Abstraction Layer - public header file
 #ifndef VCOS_H
 #define VCOS_H
 
+#include "vcos_types.h"
 #include "vcos_assert.h"
 #include "vcos_generic_event_flags.h"
+#include "vcos_msgqueue.h"
+#include "vcos_logging.h"
+
+
+// We dont need all
+void *vcos_malloc(VCOS_UNSIGNED size, const char *description);
+
+void *vcos_calloc(VCOS_UNSIGNED num, VCOS_UNSIGNED size, const char *description);
+
+void vcos_free(void *ptr);
+
+void vcos_logging_init(void);
+
+VCOS_STATUS_T vcos_semaphore_create(VCOS_SEMAPHORE_T *sem,
+                                                        const char *name,
+                                                        VCOS_UNSIGNED initial_count);
+
+void vcos_log_set_level(VCOS_LOG_CAT_T *category, VCOS_LOG_LEVEL_T level);
+
+
+
+VCOS_STATUS_T vcos_timer_init(void);
+
+
+VCOS_STATUS_T vcos_init(void);
+
+void vcos_deinit(void);
+
+void vcos_semaphore_delete(VCOS_SEMAPHORE_T *sem);
+
+
+VCOS_STATUS_T vcos_event_flags_create(VCOS_EVENT_FLAGS_T *flags, const char *name);
+
+int vcos_snprintf(char *buf, size_t buflen, const char *fmt, ...);
+
+VCOS_STATUS_T vcos_semaphore_wait(VCOS_SEMAPHORE_T *sem);
+
+VCOS_STATUS_T vcos_semaphore_post(VCOS_SEMAPHORE_T *sem);
 
 #if 0
 #include "interface/vcos/vcos_init.h"

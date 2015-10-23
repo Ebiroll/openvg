@@ -54,9 +54,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "interface/vmcs_host/vchost.h"
 #include "IL/OMX_Broadcom.h"
 #else
-#include "../omx/include/OMX_Core.h"
-#include "../omx/vcos/vcos.h"
-#include "../omx/vcos/vcos_logging.h"
+#include "OMX_Core.h"
+#include "vcos.h"
+#include "vcos_logging.h"
 #endif
 
 #include "ilclient.h"
@@ -115,7 +115,7 @@ struct _COMPONENT_T {
    char name[32];
    char bufname[32];
    unsigned int error_mask;
-   unsigned int private;
+   unsigned int private_data;
    ILEVENT_T *list;
    ILCLIENT_T *client;
 };
@@ -484,17 +484,17 @@ void ilclient_state_transition(COMPONENT_T *list[], OMX_STATETYPE state)
       for (i=0; i<num; i++)
          list[i]->error_mask |= ILCLIENT_ERROR_UNPOPULATED;
    for (i=0; i<num; i++)
-      list[i]->private = ((rand() >> 13) & 0xff)+1;
+      list[i]->private_data = ((rand() >> 13) & 0xff)+1;
 
    for (i=0; i<num; i++)
    {
       // transition the components in a random order
       int j, min = -1;
       for (j=0; j<num; j++)
-         if (list[j]->private && (min == -1 || list[min]->private > list[j]->private))
+         if (list[j]->private_data && (min == -1 || list[min]->private_data > list[j]->private_data))
             min = j;
 
-      list[min]->private = 0;
+      list[min]->private_data = 0;
 
       random_wait();
       //Clear error event for this component
@@ -808,7 +808,7 @@ void ilclient_enable_port(COMPONENT_T *comp, int portIndex)
 int ilclient_enable_port_buffers(COMPONENT_T *comp, int portIndex,
                                  ILCLIENT_MALLOC_T ilclient_malloc,
                                  ILCLIENT_FREE_T ilclient_free,
-                                 void *private)
+                                 void *private_data)
 {
    OMX_ERRORTYPE error;
    OMX_PARAM_PORTDEFINITIONTYPE portdef;
@@ -839,7 +839,7 @@ int ilclient_enable_port_buffers(COMPONENT_T *comp, int portIndex,
    {
       unsigned char *buf;
       if(ilclient_malloc)
-         buf = ilclient_malloc(private, portdef.nBufferSize, portdef.nBufferAlignment, comp->bufname);
+         buf = ilclient_malloc(private_data, portdef.nBufferSize, portdef.nBufferAlignment, comp->bufname);
       else
          buf = vcos_malloc_aligned(portdef.nBufferSize, portdef.nBufferAlignment, comp->bufname);
 
@@ -850,7 +850,7 @@ int ilclient_enable_port_buffers(COMPONENT_T *comp, int portIndex,
       if(error != OMX_ErrorNone)
       {
          if(ilclient_free)
-            ilclient_free(private, buf);
+            ilclient_free(private_data, buf);
          else
             vcos_free(buf);
 
@@ -878,7 +878,7 @@ int ilclient_enable_port_buffers(COMPONENT_T *comp, int portIndex,
    if(i != portdef.nBufferCountActual ||
       ilclient_wait_for_command_complete(comp, OMX_CommandPortEnable, portIndex) < 0)
    {
-      ilclient_disable_port_buffers(comp, portIndex, NULL, ilclient_free, private);
+      ilclient_disable_port_buffers(comp, portIndex, NULL, ilclient_free,private_data );
 
       // at this point the first command might have terminated with an error, which means that
       // the port is disabled before the disable_port_buffers function is called, so we're left
@@ -904,7 +904,7 @@ int ilclient_enable_port_buffers(COMPONENT_T *comp, int portIndex,
 void ilclient_disable_port_buffers(COMPONENT_T *comp, int portIndex,
                                    OMX_BUFFERHEADERTYPE *bufferList,
                                    ILCLIENT_FREE_T ilclient_free,
-                                   void *private)
+                                   void *private_data)
 {
    OMX_ERRORTYPE error;
    OMX_BUFFERHEADERTYPE *list = bufferList;
@@ -974,7 +974,7 @@ void ilclient_disable_port_buffers(COMPONENT_T *comp, int portIndex,
          vc_assert(error == OMX_ErrorNone);
          
          if(ilclient_free)
-            ilclient_free(private, buf);
+            ilclient_free(private_data, buf);
          else
             vcos_free(buf);
          

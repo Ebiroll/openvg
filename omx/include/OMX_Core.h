@@ -33,6 +33,9 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#ifndef OMX_VERSION
+#define OMX_VERSION 112
+#endif
 
 /* Each OMX header shall include all required header files to allow the
  *  header to compile without errors.  The includes below are required

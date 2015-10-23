@@ -14,7 +14,7 @@ add_definitions(-DCMAKE_BUILD)
 
 INCLUDE_DIRECTORIES(../include/vg ../include)
 
-INCLUDE_DIRECTORIES(shivavg . ilclient omx omx/include)
+INCLUDE_DIRECTORIES(shivavg . ilclient omx omx/include omx/vcos)
 
 
 SET(shiva_SRC
@@ -124,7 +124,7 @@ ${omx_SRC}
 )
 
 
-TARGET_LINK_LIBRARIES(shivavg X11 GLU glut dl GL m jpeg)
+TARGET_LINK_LIBRARIES(shivavg X11 GLU glut dl GL m jpeg pthread rt)
 
 TARGET_LINK_LIBRARIES(omxregister-bellagio dl  m pthread)
 
