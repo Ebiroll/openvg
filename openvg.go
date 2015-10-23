@@ -1,7 +1,7 @@
 // Package openvg is a high-level 2D vector graphics library built on OpenVG
 package openvg
 /*
-#cgo CFLAGS:  -I shivavg  -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads
+#cgo CFLAGS:  -I shivavg -I omx -I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/opt/vc/include/interface/vcos/pthreads
 #cgo arm CFLAGS: -DSTANDALONE -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS -DTARGET_POSIX -D_LINUX -fPIC -DPIC -D_REENTRANT -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -U_FORTIFY_SOURCE -Wall -g -DHAVE_LIBOPENMAX=2 -DOMX -DOMX_SKIP64BIT -ftree-vectorize -pipe -DUSE_EXTERNAL_OMX -DHAVE_LIBBCM_HOST -DUSE_EXTERNAL_LIBBCM_HOST -DUSE_VCHIQ_ARM -Wno-psabi
 #cgo linux LDFLAGS:  -lX11 -lGLU -lglut -ldl -lGL -lm  -ljpeg
 #cgo windows LDFLAGS: -lm -lopengl32
@@ -509,6 +509,13 @@ func Text(x, y VGfloat, s string, font string, size int) {
 	t := C.CString(s)
 	C.Text(C.VGfloat(x), C.VGfloat(y), t, selectfont(font), C.int(size))
 	C.free(unsafe.Pointer(t))
+}
+
+// Text draws text whose aligment begins (x,y)
+func Video(x, y, w ,h VGfloat, path string) {
+	p := C.CString(path)
+	C.Video(C.VGfloat(x), C.VGfloat(y),C.VGfloat(w), C.VGfloat(h),p)
+	C.free(unsafe.Pointer(p))
 }
 
 // TextMid draws text centered at (x,y)

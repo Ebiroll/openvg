@@ -12,6 +12,9 @@ LIBFLAGS+=-L/opt/vc/lib/ -lGLESv2 -lEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_ar
 
 INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ 
 
+
+CGOFILES = openvg.go
+
 all:	font2openvg fonts library hello video
 
 libshapes.o:	libshapes.c shapes.h fontinfo.h fonts
@@ -56,8 +59,8 @@ clean:
 	rm -f *.o *.inc *.so font2openvg *.c~ *.h~ video hello
 	#indent -linux -c 60 -brf -l 132  libshapes.c oglinit.c shapes.h fontinfo.h
 
-library: oglinit.o libshapes.o
-	gcc $(LIBFLAGS) -fPIC -shared -o libshapes.so oglinit.o libshapes.o
+library: oglinit.o libshapes.o video.o
+	gcc $(LIBFLAGS) -fPIC -shared -o libshapes.so oglinit.o libshapes.o video.o
 
 install:
 	install -m 755 -p font2openvg /usr/bin/

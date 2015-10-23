@@ -109,6 +109,8 @@ void error_callback(void *userdata, COMPONENT_T *comp, OMX_U32 data) {
 
 int video_decode_test(char *filename,int x,int y,int w,int h)
 {
+ int status = 0;
+#ifdef __arm__  
    OMX_VIDEO_PARAM_PORTFORMATTYPE format;
    OMX_TIME_CONFIG_CLOCKSTATETYPE cstate;
    COMPONENT_T *video_decode = NULL, *video_scheduler = NULL, *video_render = NULL, *clock = NULL;
@@ -116,7 +118,6 @@ int video_decode_test(char *filename,int x,int y,int w,int h)
    TUNNEL_T tunnel[4];
    ILCLIENT_T *client;
    FILE *in;
-   int status = 0;
    unsigned int data_len = 0;
 
    memset(list, 0, sizeof(list));
@@ -315,24 +316,10 @@ int video_decode_test(char *filename,int x,int y,int w,int h)
    OMX_Deinit();
 
    ilclient_destroy(client);
+#endif   
    return status;
 }
 
-
-#ifdef MAIN
-#if 0
-int main (int argc, char **argv)
-{
-   if (argc < 2) {
-      printf("Usage: %s <filename>\n", argv[0]);
-      exit(1);
-   }
-   bcm_host_init();
-
-   return video_decode_test(argv[1],100,10,400,400);
-}
-#endif
-#endif
 
 #ifdef __arm__
 #include "il/ilclient.c"

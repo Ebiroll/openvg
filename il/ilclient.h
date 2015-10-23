@@ -59,10 +59,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <pthread.h>
 
 typedef unsigned int    VCOS_UNSIGNED;
-#define     OMX_BUFFERFLAG_TIME_UNKNOWN 0x0
-#define OMX_VERSION 11
-// From OMX_Broadcom.h 
-
+#ifndef OMX_BUFFERFLAG_TIME_UNKNOWN 
+#define OMX_BUFFERFLAG_TIME_UNKNOWN 0x0
+#endif
 
 #endif
 

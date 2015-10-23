@@ -52,9 +52,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "interface/vcos/vcos.h"
 #include "interface/vcos/vcos_logging.h"
 #include "interface/vmcs_host/vchost.h"
-
 #include "IL/OMX_Broadcom.h"
 #else
+#include "../omx/include/OMX_Core.h"
 #include "../omx/vcos/vcos.h"
 #include "../omx/vcos/vcos_logging.h"
 #endif
