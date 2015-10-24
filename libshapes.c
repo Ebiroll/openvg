@@ -317,7 +317,7 @@ void Video(VGfloat x, VGfloat y,  VGfloat w,  VGfloat  h, char *filename) {
     Rect(x,y,w,h);
     Fill(255, 255, 255, 1);				   // White text
 #else
-    video_decode_test(filename);
+    video_decode_test(filename,(int) x,(int) y,(int) w,(int) h);
 #endif
 }
 

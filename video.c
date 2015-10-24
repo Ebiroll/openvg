@@ -31,7 +31,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdlib.h>
 #include <string.h>
 
+#ifdef __arm__
 #include "bcm_host.h"
+#endif
 #include "il/ilclient.h"
 
 void printState(OMX_HANDLETYPE handle) {
@@ -104,7 +106,7 @@ void error_callback(void *userdata, COMPONENT_T *comp, OMX_U32 data) {
 
 
 
-static int video_decode_test(char *filename)
+static int video_decode_test(char *filename,int x,int y,int w,int h)
 {
    OMX_VIDEO_PARAM_PORTFORMATTYPE format;
    OMX_TIME_CONFIG_CLOCKSTATETYPE cstate;
@@ -229,6 +231,32 @@ static int video_decode_test(char *filename)
                status = -12;
                break;
             }
+
+#ifdef __arm__
+            ilclient_change_component_state(video_render, OMX_StateIdle);
+
+            OMX_CONFIG_DISPLAYREGIONTYPE configDisplay;
+            memset(&configDisplay, 0, sizeof(OMX_CONFIG_DISPLAYREGIONTYPE));
+            configDisplay.nSize = sizeof(OMX_CONFIG_DISPLAYREGIONTYPE);
+            configDisplay.nVersion.nVersion = OMX_VERSION;
+            configDisplay.nPortIndex = 90;
+            configDisplay.fullscreen = OMX_FALSE;
+            configDisplay.noaspect   = OMX_TRUE;
+            configDisplay.set = (OMX_DISPLAYSETTYPE)(OMX_DISPLAY_SET_DEST_RECT|OMX_DISPLAY_SET_SRC_RECT|OMX_DISPLAY_SET_FULLSCREEN|OMX_DISPLAY_SET_NOASPECT);
+            configDisplay.dest_rect.x_offset  = 50;
+            configDisplay.dest_rect.y_offset  = 50;
+            configDisplay.dest_rect.width     = 1280;
+            configDisplay.dest_rect.height    = 720;
+            configDisplay.src_rect.x_offset   = 0;
+            configDisplay.src_rect.y_offset   = 0;
+            configDisplay.src_rect.width      = 1280;
+            configDisplay.src_rect.height     = 720;
+
+            int stat = 0;
+            stat =  OMX_SetParameter(ILC_GET_HANDLE(video_render), OMX_IndexConfigDisplayRegion, &configDisplay);
+
+            printf ("stat= %#x\n", stat);
+#endif
 
             ilclient_change_component_state(video_render, OMX_StateExecuting);
          }
