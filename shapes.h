@@ -57,6 +57,9 @@ extern "C" {
 	extern void saveterm();
 	extern void restoreterm();
 	extern void rawterm();
+    extern void ScaledImage(VGfloat x, VGfloat y, int w, int h, char *filename);
+    extern void Video(VGfloat x, VGfloat y,VGfloat w, VGfloat h, char *filename);
+
 #if defined(__cplusplus)
 }
 #endif

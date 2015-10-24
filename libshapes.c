@@ -55,6 +55,8 @@
 #include "shgl.h"
 #endif
 
+#include "ilclient/ilclient.c"
+
 //
 // Libshape globals
 //
@@ -292,6 +294,34 @@ void Image(VGfloat x, VGfloat y, int w, int h, char *filename) {
 	vgSetPixels(x, y, img, 0, 0, w, h);
 	vgDestroyImage(img);
 }
+
+void ScaledImage(VGfloat x, VGfloat y, int w, int h, char *filename) {
+    VGImage img = createImageFromJpeg(filename);
+    #if 0 //vgSetPixels paints directly without scale and transform
+    vgSetPixels(x, y, img, 0, 0, w, h);
+    #else //vgDrawImage is better
+    vgSeti(VG_MATRIX_MODE, VG_MATRIX_IMAGE_USER_TO_SURFACE);
+    vgTranslate(x, y);
+    vgDrawImage(img);
+    vgTranslate(-x, -y);
+    vgSeti(VG_MATRIX_MODE, VG_MATRIX_PATH_USER_TO_SURFACE);
+    #endif
+    vgDestroyImage(img);
+}
+#ifdef __arm__
+#include "video.c"
+#endif
+
+void Video(VGfloat x, VGfloat y,  VGfloat w,  VGfloat  h, char *filename) {
+#ifndef __arm__
+    Fill(44, 77, 232, 1);				   // Big blue marble
+    Rect(x,y,w,h);
+    Fill(255, 255, 255, 1);				   // White text
+#else
+    video_decode_test(filename);
+#endif
+}
+
 
 // dumpscreen writes the raster
 void dumpscreen(int w, int h, FILE * fp) {
