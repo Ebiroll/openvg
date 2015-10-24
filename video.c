@@ -32,7 +32,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string.h>
 
 #include "bcm_host.h"
-#include "ilclient.h"
+#include "il/ilclient.h"
 
 void printState(OMX_HANDLETYPE handle) {
     OMX_STATETYPE state;
@@ -289,7 +289,7 @@ static int video_decode_test(char *filename)
 }
 
 
-#if 0
+#ifdef MAIN
 int main (int argc, char **argv)
 {
    if (argc < 2) {

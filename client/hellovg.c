@@ -25,9 +25,12 @@ int main() {
 	Circle(width / 2, 0, width);			   // The "world"
 	Fill(255, 255, 255, 1);				   // White text
 	TextMid(width / 2, height / 2, "hello, world", SerifTypeface, width / 10);	// Greetings 
-    TextMid(width / 2, height / 2 - width/5,testSWE , SerifTypeface, width / 10);	// Greetings in swedish
-
+	TextMid(width / 2, height / 2 - width/5,testSWE , SerifTypeface, width / 10);	// Greetings in swedish
 	End();						   // End the picture
+	
+	Video(0.0f,0.0f,100.0,100.0,"test.h264");
+
+
 
 	fgets(s, 2, stdin);				   // look at the pic, end with [RETURN]
 	finish();					   // Graphics cleanup

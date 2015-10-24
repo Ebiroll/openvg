@@ -55,7 +55,6 @@
 #include "shgl.h"
 #endif
 
-#include "ilclient/ilclient.c"
 
 //
 // Libshape globals
