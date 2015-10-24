@@ -506,110 +506,38 @@ void ClipEnd() {
 	vgSeti(VG_SCISSORING, VG_FALSE);
 }
 
-#define IS_IN_RANGE(c, f, l)    (((c) >= (f)) && ((c) <= (l)))
 
-char *readNextChar(char *p, int *character) {
-	// TODO: since UTF-8 is a variable-length
-	// encoding, you should pass in the input
-	// buffer's actual byte length so that you
-	// can determine if a malformed UTF-8
-	// sequence would exceed the end of the buffer...
+unsigned char *next_utf8_char(const unsigned char *utf8, int *codepoint)
+{
+    int seqlen;
+    int datalen = strlen(utf8);
+    unsigned char *p = utf8;
 
-    int i;
-	char c1, c2, *ptr = p;
-	int uc = 0;
-	int seqlen;
-	int datalen = strlen(p);
+    if (datalen < 1 || *utf8==0) {
+        // End of sfring
+        return NULL;
+    }
 
-	if (datalen < 1) {
-		// malformed data, do something !!!
-		return NULL;
-	}
+      if(!(utf8[0] & 0x80))      // 0xxxxxxx
+      {
+        *codepoint= (wchar_t)utf8[0];
+         seqlen = 1;
+      }
+      else if((utf8[0] & 0xE0) == 0xC0)  // 110xxxxx
+      {
+        *codepoint= (int)(((utf8[0] & 0x1F) << 6) | (utf8[1] & 0x3F));
+         seqlen = 2;
+      }
+      else if((utf8[0] & 0xF0) == 0xE0)  // 1110xxxx
+      {
+        *codepoint= (int)(((utf8[0] & 0x0F) << 12) | ((utf8[1] & 0x3F) << 6) | (utf8[2] & 0x3F));
+         seqlen = 3;
+      }
+      else
+        return NULL;  // No code points this high here
 
-	c1 = ptr[0];
-
-	if ((c1 & 0x80) == 0) {
-		uc = (unsigned long)(c1 & 0x7F);
-		seqlen = 1;
-	} else if ((c1 & 0xE0) == 0xC0) {
-		uc = (unsigned long)(c1 & 0x1F);
-		seqlen = 2;
-	} else if ((c1 & 0xF0) == 0xE0) {
-		uc = (unsigned long)(c1 & 0x0F);
-		seqlen = 3;
-	} else if ((c1 & 0xF8) == 0xF0) {
-		uc = (unsigned long)(c1 & 0x07);
-		seqlen = 4;
-	} else {
-		// malformed data, do something !!!
-		return NULL;
-	}
-
-	if (seqlen > datalen) {
-		// malformed data, do something !!!
-		return NULL;
-	}
-
-    for ( i = 1; i < seqlen; ++i) {
-		c1 = ptr[i];
-
-		if ((c1 & 0xC0) != 0x80) {
-			// malformed data, do something !!!
-			return NULL;
-		}
-	}
-
-	switch (seqlen) {
-	case 2:
-		{
-            c1 = ptr[0];
-
-            // Something is wrong here?
-            //if (!IS_IN_RANGE(c1, 0xC2, 0xDF)) {
-                // malformed data, do something !!!
-            //    return NULL;
-            //}
-
-			break;
-		}
-
-	case 3:
-		{
-			c1 = ptr[0];
-			c2 = ptr[1];
-
-			if (((c1 == 0xE0) && !IS_IN_RANGE(c2, 0xA0, 0xBF)) ||
-			    ((c1 == 0xED) && !IS_IN_RANGE(c2, 0x80, 0x9F)) ||
-			    (!IS_IN_RANGE(c1, 0xE1, 0xEC) && !IS_IN_RANGE(c1, 0xEE, 0xEF))) {
-				// malformed data, do something !!!
-				return NULL;
-			}
-
-			break;
-		}
-
-	case 4:
-		{
-			c1 = ptr[0];
-			c2 = ptr[1];
-
-			if (((c1 == 0xF0) && !IS_IN_RANGE(c2, 0x90, 0xBF)) ||
-			    ((c1 == 0xF4) && !IS_IN_RANGE(c2, 0x80, 0x8F)) || !IS_IN_RANGE(c1, 0xF1, 0xF3)) {
-				// malformed data, do something !!!
-				return NULL;
-			}
-
-			break;
-		}
-	}
-
-    for (i = 1; i < seqlen; ++i) {
-		uc = ((uc << 6) | (unsigned long)(ptr[i] & 0x3F));
-	}
-
-	*character = uc;
-	p += seqlen;
-	return p;
+      p += seqlen;
+      return p;
 }
 
 
@@ -620,14 +548,10 @@ void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {
 	int i;
 
 	vgGetMatrix(mm);
-	
-	int character;
+    int character;
     unsigned char *ss = s;
-    //int error;
-	while ((ss = readNextChar(ss, &character)) != NULL) {
-	
-	    //for (i = 0; i < (int)strlen(s); i++) {
-		//unsigned int character = (unsigned int)s[i];
+
+    while ((ss = next_utf8_char(ss, &character)) != NULL) {
 		int glyph = f.CharacterMap[character];
 		if (glyph == -1) {
 			continue;			   //glyph is undefined
@@ -650,13 +574,9 @@ VGfloat TextWidth(char *s, Fontinfo f, int pointsize) {
 	int i;
 	VGfloat tw = 0.0;
 	VGfloat size = (VGfloat) pointsize;
-    int glyph;
-    int character;
-    char *ss = s;
-    int error;
-    while ((ss = readNextChar(ss, &character)) != NULL) {
-        //for (i = 0; i < (int)strlen(s); i++) {
-        //unsigned int character = (unsigned int)s[i];
+        int character;
+	unsigned char *ss = s;
+        while ((ss = next_utf8_char(ss, &character)) != NULL) {
         int glyph = f.CharacterMap[character];
 		if (glyph == -1) {
 			continue;			   //glyph is undefined
