@@ -318,6 +318,7 @@ int video_decode_test(char *filename,int x,int y,int w,int h)
 
 
 #ifdef MAIN
+#if 0
 int main (int argc, char **argv)
 {
    if (argc < 2) {
@@ -328,7 +329,7 @@ int main (int argc, char **argv)
 
    return video_decode_test(argv[1],100,10,400,400);
 }
-
+#endif
 #endif
 
 #include "il/ilcore.c"

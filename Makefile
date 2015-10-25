@@ -17,7 +17,7 @@ INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc
 all:	font2openvg fonts library hello video
 
 libshapes.o:	libshapes.c shapes.h fontinfo.h fonts
-	gcc $(CFLAGS) -O2 -fPIC -Wall $(INCLUDEFLAGS)  -D BCMHOST -c libshapes.c
+	gcc $(CFLAGS) -O2 -fPIC -Wall $(INCLUDEFLAGS) -D BCMHOST -c libshapes.c
 
 gopenvg:	openvg.go
 	go install .
@@ -25,15 +25,15 @@ gopenvg:	openvg.go
 oglinit.o:	oglinit.c
 	gcc -O2 -fPIC -Wall $(INCLUDEFLAGS) -D BCMHOST -c oglinit.c
 
-hello:	hello.o
-	gcc  $(LDFLAGS) -lbcm_host -lvchiq_arm -ljpeg -lpthread -lrt -lm  hello.o libshapes.o oglinit.o   -o hello
+hello:	hello.o video.o oglinit.o libshapes.o
+	gcc  -g  $(LDFLAGS) -lbcm_host -lvchiq_arm -ljpeg -lpthread -lrt -lm  hello.o libshapes.o oglinit.o video.o   -o hello
 
 hello.o:	client/hellovg.c
-	gcc -g -fPIC -Wall $(INCLUDEFLAGS) -I . -o hello.o -c client/hellovg.c
+	gcc $(CFLAGS) -g -fPIC -Wall $(INCLUDEFLAGS) -I . -o hello.o -c client/hellovg.c
 
 
-video:	video.o
-	gcc  $(CFLAGS) $(LDFLAGS) video.o -Wl,--no-whole-archive -rdynamic -lbcm_host -lpthread  -o video
+video:	video.o vmain.c
+	gcc  $(CFLAGS) $(INCLUDEFLAGS) $(LDFLAGS) video.o -Wl,--no-whole-archive -rdynamic -lbcm_host -lpthread  -o video vmain.c 
 
 video.o:	video.c
 	gcc $(CFLAGS) -DMAIN -fPIC -Wall $(INCLUDEFLAGS) -I . -o video.o -c video.c
