@@ -307,9 +307,7 @@ void ScaledImage(VGfloat x, VGfloat y, int w, int h, char *filename) {
     #endif
     vgDestroyImage(img);
 }
-#ifdef __arm__
-#include "video.c"
-#endif
+
 
 void Video(VGfloat x, VGfloat y,  VGfloat w,  VGfloat  h, char *filename) {
 #ifndef __arm__
@@ -927,3 +925,6 @@ VGfloat TextWidth(char *s, int pointsize) {
 	return tw;
 }
 #endif
+
+
+

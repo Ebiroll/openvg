@@ -106,7 +106,7 @@ void error_callback(void *userdata, COMPONENT_T *comp, OMX_U32 data) {
 
 
 
-static int video_decode_test(char *filename,int x,int y,int w,int h)
+int video_decode_test(char *filename,int x,int y,int w,int h)
 {
    OMX_VIDEO_PARAM_PORTFORMATTYPE format;
    OMX_TIME_CONFIG_CLOCKSTATETYPE cstate;
@@ -242,15 +242,15 @@ static int video_decode_test(char *filename,int x,int y,int w,int h)
             configDisplay.nPortIndex = 90;
             configDisplay.fullscreen = OMX_FALSE;
             configDisplay.noaspect   = OMX_TRUE;
-            configDisplay.set = (OMX_DISPLAYSETTYPE)(OMX_DISPLAY_SET_DEST_RECT|OMX_DISPLAY_SET_SRC_RECT|OMX_DISPLAY_SET_FULLSCREEN|OMX_DISPLAY_SET_NOASPECT);
-            configDisplay.dest_rect.x_offset  = 50;
-            configDisplay.dest_rect.y_offset  = 50;
-            configDisplay.dest_rect.width     = 1280;
-            configDisplay.dest_rect.height    = 720;
+            configDisplay.set = (OMX_DISPLAYSETTYPE)(OMX_DISPLAY_SET_DEST_RECT | OMX_DISPLAY_SET_SRC_RECT | OMX_DISPLAY_SET_FULLSCREEN | OMX_DISPLAY_SET_NOASPECT);
+            configDisplay.dest_rect.x_offset  = x;
+            configDisplay.dest_rect.y_offset  = y;
+            configDisplay.dest_rect.width     = w;
+            configDisplay.dest_rect.height    = h;
             configDisplay.src_rect.x_offset   = 0;
             configDisplay.src_rect.y_offset   = 0;
-            configDisplay.src_rect.width      = 1280;
-            configDisplay.src_rect.height     = 720;
+            configDisplay.src_rect.width      = 1920;
+            configDisplay.src_rect.height     = 1080;
 
             int stat = 0;
             stat =  OMX_SetParameter(ILC_GET_HANDLE(video_render), OMX_IndexConfigDisplayRegion, &configDisplay);
@@ -326,9 +326,11 @@ int main (int argc, char **argv)
    }
    bcm_host_init();
 
-   return video_decode_test(argv[1]);
+   return video_decode_test(argv[1],100,10,400,400);
 }
+
 #endif
 
 #include "il/ilcore.c"
 #include "il/ilclient.c"
+
