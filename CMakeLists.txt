@@ -14,7 +14,7 @@ add_definitions(-DCMAKE_BUILD)
 
 INCLUDE_DIRECTORIES(../include/vg ../include)
 
-INCLUDE_DIRECTORIES(shivavg .)
+INCLUDE_DIRECTORIES(shivavg . ilclient omx omx/include)
 
 
 SET(shiva_SRC
@@ -40,6 +40,21 @@ shivavg/shPipeline.c
 shivavg/shParams.c
 shivavg/shContext.c
 shivavg/shVgu.c)
+
+
+SET(omx_SRC
+omx/common.c
+omx/content_pipe_file.c
+omx/queue.c
+omx/content_pipe_inet.c
+omx/st_static_component_loader.c
+omx/omxcore.c
+omx/tsemaphore.c
+omx/omx_create_loaders_linux.c
+omx/utils.c
+omx/omx_reference_resource_manager.c
+)
+
 
 IF(WIN32)
 
@@ -73,12 +88,34 @@ ELSE(WIN32)
 ADD_EXECUTABLE(shivavg
 shivavg/glx.c
 libshapes.c
-#client/hellovg.c
-client/shapedemo.c
+client/hellovg.c
+#client/shapedemo.c
+#video.c
 ${shiva_SRC}
+${omx_SRC}
+video.c
+il/ilcore.c
+il/ilclient.c
+omx/vcos/vcos_pthreads.c
+omx/vcos/vcos_assert.h
+omx/vcos/vcos_msgqueue.h
+omx/vcos/vcos_platform_types.h
+omx/vcos/vcos_types.h
+omx/vcos/vcos.h
+omx/vcos/vcos_platform.h
+omx/vcos/vcos_malloc.h
 )
 
+ADD_EXECUTABLE(omxregister-bellagio
+omx/omxregister.c
+${omx_SRC}
+)
+
+
 TARGET_LINK_LIBRARIES(shivavg X11 GLU glut dl GL m jpeg)
+
+TARGET_LINK_LIBRARIES(omxregister-bellagio dl  m pthread)
+
 
 ENDIF(WIN32)
 
