@@ -33,10 +33,10 @@ hello.o:	client/hellovg.c
 
 
 video:	video.o vmain.c
-	gcc  $(CFLAGS) $(INCLUDEFLAGS) $(LDFLAGS) video.o -Wl,--no-whole-archive -rdynamic -lbcm_host -lpthread  -o video vmain.c 
+	gcc  $(CFLAGS) -DMAIN  $(INCLUDEFLAGS) $(LDFLAGS) video.o -Wl,--no-whole-archive -rdynamic -lbcm_host -lpthread  -o video vmain.c 
 
 video.o:	video.c
-	gcc $(CFLAGS) -DMAIN -fPIC -Wall $(INCLUDEFLAGS) -I . -o video.o -c video.c
+	gcc $(CFLAGS) -fPIC -Wall $(INCLUDEFLAGS) -I . -o video.o -c video.c
 
 
 
@@ -55,7 +55,7 @@ DejaVuSansMono.inc: font2openvg $(FONTLIB)/DejaVuSansMono.ttf
 	./font2openvg $(FONTLIB)/DejaVuSansMono.ttf DejaVuSansMono.inc DejaVuSansMono
 
 clean:
-	rm -f *.o *.inc *.so font2openvg *.c~ *.h~
+	rm -f *.o *.inc *.so font2openvg *.c~ *.h~ video hello
 	#indent -linux -c 60 -brf -l 132  libshapes.c oglinit.c shapes.h fontinfo.h
 
 library: oglinit.o libshapes.o

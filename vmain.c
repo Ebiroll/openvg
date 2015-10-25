@@ -7,6 +7,7 @@
 
 int video_decode_test(char *filename,int x,int y,int w,int h);
 
+#ifdef MAIN
 int main (int argc, char **argv)
 {
    if (argc < 2) {
@@ -17,3 +18,4 @@ int main (int argc, char **argv)
 
    return video_decode_test(argv[1],100,10,400,400);
 }
+#endif
