@@ -1,3 +1,5 @@
+#ifdef __arm__
+
 /*
 Copyright (c) 2012, Broadcom Europe Ltd
 All rights reserved.
@@ -335,3 +337,4 @@ int main (int argc, char **argv)
 #include "il/ilcore.c"
 #include "il/ilclient.c"
 
+#endif
