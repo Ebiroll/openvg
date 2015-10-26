@@ -61,6 +61,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "ilclient.h"
 
+#define VCOS_LOG_CATEGORY (&ilclient_log_category)
+
+
+static  VCOS_LOG_CAT_T ilclient_log_category;
+
+#ifndef ILCLIENT_THREAD_DEFAULT_STACK_SIZE
+#define ILCLIENT_THREAD_DEFAULT_STACK_SIZE   (6<<10)
+#endif
+
+
 
 /******************************************************************************
 Static data and types used only in this file.

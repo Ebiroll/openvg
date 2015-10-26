@@ -4,15 +4,13 @@ INCLUDEFLAGS=-I/opt/vc/include -I/opt/vc/include/interface/vmcs_host/linux -I/op
 FONTLIB=/usr/share/fonts/TTF/
 FONTFILES=DejaVuSans.inc  DejaVuSansMono.inc DejaVuSerif.inc
 
-LIBFLAGS=-L/opt/vc/lib -lGLESv2 -lEGL -ljpeg
-
 CFLAGS+=-DSTANDALONE -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS -DTARGET_POSIX -D_LINUX -fPIC -DPIC -D_REENTRANT -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -U_FORTIFY_SOURCE -Wall -g -DHAVE_LIBOPENMAX=2 -DOMX -DOMX_SKIP64BIT -ftree-vectorize -pipe -DUSE_EXTERNAL_OMX -DHAVE_LIBBCM_HOST -DUSE_EXTERNAL_LIBBCM_HOST -DUSE_VCHIQ_ARM -Wno-psabi
 
 
-LDFLAGS+=-L/opt/vc/lib/ -lGLESv2 -lEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm 
+LIBFLAGS+=-L/opt/vc/lib/ -lGLESv2 -lEGL -lopenmaxil -lbcm_host -lvcos -lvchiq_arm -lpthread -lrt -lm 
 
 
-INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ -I../libs/ilclient -I../libs/vgfont
+INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc/include/interface/vmcs_host/linux -I./ 
 
 all:	font2openvg fonts library hello video
 
@@ -26,14 +24,14 @@ oglinit.o:	oglinit.c
 	gcc -O2 -fPIC -Wall $(INCLUDEFLAGS) -D BCMHOST -c oglinit.c
 
 hello:	hello.o video.o oglinit.o libshapes.o
-	gcc  -g  $(LDFLAGS) -lbcm_host -lvchiq_arm -ljpeg -lpthread -lrt -lm  hello.o libshapes.o oglinit.o video.o   -o hello
+	gcc  -g  $(LIBFLAGS) -lbcm_host -lvchiq_arm -ljpeg -lpthread -lrt -lm  hello.o libshapes.o oglinit.o video.o   -o hello
 
 hello.o:	client/hellovg.c
 	gcc $(CFLAGS) -g -fPIC -Wall $(INCLUDEFLAGS) -I . -o hello.o -c client/hellovg.c
 
 
 video:	video.o vmain.c
-	gcc  $(CFLAGS) -DMAIN  $(INCLUDEFLAGS) $(LDFLAGS) video.o -Wl,--no-whole-archive -rdynamic -lbcm_host -lpthread  -o video vmain.c 
+	gcc  $(CFLAGS) -DMAIN  $(INCLUDEFLAGS) $(LIBFLAGS) video.o -Wl,--no-whole-archive -rdynamic -lbcm_host -lpthread  -o video vmain.c 
 
 video.o:	video.c
 	gcc $(CFLAGS) -fPIC -Wall $(INCLUDEFLAGS) -I . -o video.o -c video.c

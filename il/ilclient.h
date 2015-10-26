@@ -48,41 +48,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "IL/OMX_Broadcom.h"
 #include "interface/vcos/vcos.h"
 
-#endif
+#else
 
 #include <inttypes.h>
 #include "vcos/vcos.h"
 #include "vcos/vcos_platform.h"
-
 #include "OMX_IVCommon.h"
 #include "OMX_Component.h"
-
 #include <semaphore.h>
 #include <pthread.h>
 
 typedef unsigned int    VCOS_UNSIGNED;
+#define     OMX_BUFFERFLAG_TIME_UNKNOWN 0x0
+#define OMX_VERSION 11
+// From OMX_Broadcom.h 
 
-//#define VCHPRE_
-//#define VCHPOST_
 
-
-#ifndef ILCLIENT_THREAD_DEFAULT_STACK_SIZE
-#define ILCLIENT_THREAD_DEFAULT_STACK_SIZE   (6<<10)
 #endif
 
-#define     OMX_BUFFERFLAG_TIME_UNKNOWN 0x0
-
-//typedef int      VCOS_SEMAPHORE_T;
-
-
-
-//typedef int      VCOS_EVENT_T;
-//typedef int          VCOS_MUTEX_T;
-
-
-#define OMX_VERSION 11
-
-// OMX_Broadcom.h
 
 
 
