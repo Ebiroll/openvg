@@ -335,6 +335,6 @@ int main (int argc, char **argv)
 #endif
 
 #ifdef __arm__
-#include "il/ilcore.c"
 #include "il/ilclient.c"
+#include "il/ilcore.c"
 #endif

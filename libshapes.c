@@ -308,6 +308,7 @@ void ScaledImage(VGfloat x, VGfloat y, int w, int h, char *filename) {
     vgDestroyImage(img);
 }
 
+void video_decode_test(char *filename,int x,int y,int w,int h);
 
 void Video(VGfloat x, VGfloat y,  VGfloat w,  VGfloat  h, char *filename) {
 #if 0   // __arm__
@@ -537,7 +538,7 @@ void ClipEnd() {
 unsigned const char *next_utf8_char(const unsigned char *utf8, int *codepoint)
 {
     int seqlen;
-    int datalen = strlen(utf8);
+    int datalen = strlen((const char *)utf8);
     const unsigned char *p = utf8;
 
     if (datalen < 1 || *utf8==0) {
@@ -572,13 +573,12 @@ unsigned const char *next_utf8_char(const unsigned char *utf8, int *codepoint)
 // derived from http://web.archive.org/web/20070808195131/http://developer.hybrid.fi/font2openvg/renderFont.cpp.txt
 void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {
 	VGfloat size = (VGfloat) pointsize, xx = x, mm[9];
-	int i;
 
 	vgGetMatrix(mm);
-    int character;
-    const unsigned char *ss = s;
+	int character;
+	const unsigned char *ss =(const unsigned char *)s;
 
-    while ((ss = next_utf8_char(ss, &character)) != NULL) {
+	while ((ss = next_utf8_char(ss, &character)) != NULL) {
 		int glyph = f.CharacterMap[character];
 		if (glyph == -1) {
 			continue;			   //glyph is undefined
@@ -598,11 +598,10 @@ void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {
 
 // TextWidth returns the width of a text string at the specified font and size.
 VGfloat TextWidth(char *s, Fontinfo f, int pointsize) {
-	int i;
 	VGfloat tw = 0.0;
 	VGfloat size = (VGfloat) pointsize;
         int character;
-        const unsigned char *ss = s;
+        const unsigned char *ss = (const unsigned char *) s;
         while ((ss = next_utf8_char(ss, &character)) != NULL) {
         int glyph = f.CharacterMap[character];
 		if (glyph == -1) {

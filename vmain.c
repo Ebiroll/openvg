@@ -4,6 +4,7 @@
 #include "bcm_host.h"
 #endif
 #include "il/ilclient.h"
+#include <stdio.h>
 
 int video_decode_test(char *filename,int x,int y,int w,int h);
 
