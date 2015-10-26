@@ -15,7 +15,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <stdio.h>
 #include <ctype.h>
 
-VCOS_LOG_CAT_T hostfs_log_cat;
 
 static VCOS_MUTEX_T lock;
 static int warned_loglevel;             // only warn about invalid log level once

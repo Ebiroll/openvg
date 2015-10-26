@@ -79,9 +79,6 @@ typedef struct VCOS_LOG_CAT_T
    } flags;
 } VCOS_LOG_CAT_T;
 
-extern VCOS_LOG_CAT_T hostfs_log_cat;
-
-#define VCOS_LOG_CATEGORY (&hostfs_log_cat)
 
 /** Log a message. Basic API. Normal code should not use this.
   * The platform needs to implement this function.
