@@ -40,15 +40,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * events can be checked or waited for.
 */
 
-#ifndef __arm__
-#include "ilclient.h"
-
-ILCLIENT_T *ilclient_init()
-{
-    return("SUCCESS");
-}
-
-#else
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,20 +48,19 @@ ILCLIENT_T *ilclient_init()
 #include <ctype.h>
 #include <assert.h>
 
+#ifdef __arm__
 #include "interface/vcos/vcos.h"
 #include "interface/vcos/vcos_logging.h"
 #include "interface/vmcs_host/vchost.h"
 
 #include "IL/OMX_Broadcom.h"
-#include "ilclient.h"
-
-#define VCOS_LOG_CATEGORY (&ilclient_log_category)
-
-#ifndef ILCLIENT_THREAD_DEFAULT_STACK_SIZE
-#define ILCLIENT_THREAD_DEFAULT_STACK_SIZE   (6<<10)
+#else
+#include "../omx/vcos/vcos.h"
+#include "../omx/vcos/vcos_logging.h"
 #endif
 
-static VCOS_LOG_CAT_T ilclient_log_category;
+#include "ilclient.h"
+
 
 /******************************************************************************
 Static data and types used only in this file.
@@ -1844,4 +1834,3 @@ unsigned int ilclient_stack_size(void)
    return ILCLIENT_THREAD_DEFAULT_STACK_SIZE;
 }
 
-#endif

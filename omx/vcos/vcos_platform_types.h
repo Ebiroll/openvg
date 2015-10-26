@@ -16,6 +16,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #define VCOSPRE_ extern
 #define VCOSPOST_
 
+typedef uint32_t              VCOS_UNSIGNED;
+
 //#define VCOS_BKPT vcos_abort()
 
 #define VCOS_ASSERT_LOGGING         1

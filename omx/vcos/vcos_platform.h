@@ -35,6 +35,18 @@ extern "C" {
 #include <signal.h>
 
 
+#define VCOS_HAVE_RTOS         0
+#define VCOS_HAVE_SEMAPHORE    0
+#define VCOS_HAVE_EVENT        1
+#define VCOS_HAVE_QUEUE        0
+#define VCOS_HAVE_LEGACY_ISR   0
+#define VCOS_HAVE_TIMER        1
+#define VCOS_HAVE_MEMPOOL      0
+#define VCOS_HAVE_ISR          0
+#define VCOS_HAVE_ATOMIC_FLAGS 0
+#define VCOS_HAVE_THREAD_AT_EXIT        1
+
+#if 0
 #define VCOS_HAVE_RTOS         1
 #define VCOS_HAVE_SEMAPHORE    1
 #define VCOS_HAVE_EVENT        1
@@ -45,6 +57,7 @@ extern "C" {
 #define VCOS_HAVE_ISR          0
 #define VCOS_HAVE_ATOMIC_FLAGS 1
 #define VCOS_HAVE_THREAD_AT_EXIT        1
+#endif
 
 #ifdef __linux__
 #ifndef ANDROID
@@ -162,6 +175,9 @@ typedef struct
 #include "interface/vcos/generic/vcos_generic_event_flags.h"
 #include "interface/vcos/generic/vcos_mem_from_malloc.h"
 #endif
+
+#include "vcos_generic_event_flags.h"
+
 
 extern pthread_key_t _vcos_thread_current_key;
 

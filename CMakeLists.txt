@@ -55,6 +55,25 @@ omx/utils.c
 omx/omx_reference_resource_manager.c
 )
 
+SET(vcos_SRC
+omx/vcos/vcos_generic_event_flags.c
+omx/vcos/vcos_generic_event_flags.h
+omx/vcos/vcos_pthreads.c
+omx/vcos/vcos_assert.h
+omx/vcos/vcos_msgqueue.h
+omx/vcos/vcos_platform_types.h
+omx/vcos/vcos_types.h
+omx/vcos/vcos.h
+omx/vcos/vcos_types.h
+omx/vcos/vcos_msgqueue.h
+omx/vcos/vcos_msgqueue.c
+omx/vcos/vcos_platform.h
+omx/vcos/vcos_malloc.h
+omx/vcos/vcos_logcat.c
+omx/vcos/vcos.c
+)
+
+
 
 IF(WIN32)
 
@@ -96,14 +115,7 @@ ${omx_SRC}
 video.c
 il/ilcore.c
 il/ilclient.c
-omx/vcos/vcos_pthreads.c
-omx/vcos/vcos_assert.h
-omx/vcos/vcos_msgqueue.h
-omx/vcos/vcos_platform_types.h
-omx/vcos/vcos_types.h
-omx/vcos/vcos.h
-omx/vcos/vcos_platform.h
-omx/vcos/vcos_malloc.h
+${vcos_SRC}
 )
 
 ADD_EXECUTABLE(omxregister-bellagio

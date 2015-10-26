@@ -1,4 +1,3 @@
-#ifdef __arm__
 
 /*
 Copyright (c) 2012, Broadcom Europe Ltd
@@ -304,7 +303,8 @@ int video_decode_test(char *filename,int x,int y,int w,int h)
    ilclient_disable_tunnel(tunnel);
    ilclient_disable_tunnel(tunnel+1);
    ilclient_disable_tunnel(tunnel+2);
-   ilclient_disable_port_buffers(video_decode, 130, NULL, NULL, NULL);
+   if (video_decode)
+      ilclient_disable_port_buffers(video_decode, 130, NULL, NULL, NULL);
    ilclient_teardown_tunnels(tunnel);
 
    ilclient_state_transition(list, OMX_StateIdle);
@@ -334,7 +334,7 @@ int main (int argc, char **argv)
 #endif
 #endif
 
+#ifdef __arm__
 #include "il/ilcore.c"
 #include "il/ilclient.c"
-
 #endif

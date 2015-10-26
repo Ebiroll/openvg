@@ -310,7 +310,7 @@ void ScaledImage(VGfloat x, VGfloat y, int w, int h, char *filename) {
 
 
 void Video(VGfloat x, VGfloat y,  VGfloat w,  VGfloat  h, char *filename) {
-#ifndef __arm__
+#if 0   // __arm__
     Fill(44, 77, 232, 1);				   // Big blue marble
     Rect(x,y,w,h);
     Fill(255, 255, 255, 1);				   // White text
@@ -534,11 +534,11 @@ void ClipEnd() {
 }
 
 
-unsigned char *next_utf8_char(const unsigned char *utf8, int *codepoint)
+unsigned const char *next_utf8_char(const unsigned char *utf8, int *codepoint)
 {
     int seqlen;
     int datalen = strlen(utf8);
-    unsigned char *p = utf8;
+    const unsigned char *p = utf8;
 
     if (datalen < 1 || *utf8==0) {
         // End of sfring
@@ -576,7 +576,7 @@ void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {
 
 	vgGetMatrix(mm);
     int character;
-    unsigned char *ss = s;
+    const unsigned char *ss = s;
 
     while ((ss = next_utf8_char(ss, &character)) != NULL) {
 		int glyph = f.CharacterMap[character];
@@ -602,7 +602,7 @@ VGfloat TextWidth(char *s, Fontinfo f, int pointsize) {
 	VGfloat tw = 0.0;
 	VGfloat size = (VGfloat) pointsize;
         int character;
-	unsigned char *ss = s;
+        const unsigned char *ss = s;
         while ((ss = next_utf8_char(ss, &character)) != NULL) {
         int glyph = f.CharacterMap[character];
 		if (glyph == -1) {

@@ -94,6 +94,7 @@ VideoCore OS Abstraction Layer - public header file
 #define VCOS_H
 
 #include "vcos_assert.h"
+#include "vcos_generic_event_flags.h"
 
 #if 0
 #include "interface/vcos/vcos_init.h"
@@ -120,7 +121,7 @@ VideoCore OS Abstraction Layer - public header file
 #endif
 
 #if VCOS_HAVE_TIMER
-#include "interface/vcos/vcos_timer.h"
+//#include "interface/vcos/vcos_timer.h"
 #endif
 
 #if VCOS_HAVE_MEMPOOL

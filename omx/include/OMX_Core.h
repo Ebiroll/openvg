@@ -1482,6 +1482,15 @@ OMX_API OMX_ERRORTYPE OMX_GetRolesOfComponent (
     OMX_INOUT   OMX_U32 *pNumRoles,
     OMX_OUT     OMX_U8 **roles);
 
+// This is probably from omx_broadcom.h
+typedef struct OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE {
+   OMX_U32 nSize;
+   OMX_VERSIONTYPE nVersion;
+   OMX_U32 nBufferSize;
+} OMX_PARAM_BRCMOUTPUTBUFFERSIZETYPE;
+
+
+
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */

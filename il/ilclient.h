@@ -48,185 +48,45 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "IL/OMX_Broadcom.h"
 #include "interface/vcos/vcos.h"
 
-#else
+#endif
 
 #include <inttypes.h>
+#include "vcos/vcos.h"
+#include "vcos/vcos_platform.h"
+
+#include "OMX_IVCommon.h"
+#include "OMX_Component.h"
+
+#include <semaphore.h>
+#include <pthread.h>
+
+typedef unsigned int    VCOS_UNSIGNED;
+
+//#define VCHPRE_
+//#define VCHPOST_
 
 
-typedef int8_t      SHint8;
-typedef uint8_t     OMX_U8;
-typedef int16_t     SHint16;
-typedef uint16_t    VCOS_UNSIGNED;
-typedef int32_t     SHint32;
-typedef uint32_t    OMX_U32;
-typedef float       SHfloat32;
-
-typedef OMX_U8*     OMX_PTR;
-
-#define VCHPRE_
-#define VCHPOST_
-
-typedef enum
-{
-    OMX_StateInvalid,
-    OMX_StateIdle,
-    OMX_StateLoaded,
-    OMX_StateExecuting,
-    OMX_StatePause,
-    OMX_StateWaitForResources
-} OMX_STATETYPE;
-
-typedef struct OMX_BUFFERHEADERTYPE
-{
-     OMX_U32 nSize;
-     //OMX_VERSIONTYPE nVersion;
-     OMX_U8* pBuffer;
-     OMX_U32 nAllocLen;
-     OMX_U32 nFilledLen;
-     OMX_U32 nOffset;
-     //OMX_PTR pAppPrivate;
-     //OMX_PTR pPlatformPrivate;
-     //OMX_PTR pInputPortPrivate;
-     //OMX_PTR pOutputPortPrivate;
-     //OMX_HANDLETYPE hMarkTargetComponent;
-     OMX_PTR pMarkData;
-     OMX_U32 nTickCount;
-     //OMX_TICKS nTimeStamp;
-     OMX_U32     nFlags;
-     OMX_U32 nOutputPortIndex;
-     OMX_U32 nInputPortIndex;
-
-} OMX_BUFFERHEADERTYPE;
-
-
-typedef enum OMX_EVENTTYPE
-{
-    OMX_EventCmdComplete,
-    OMX_EventError,
-    OMX_EventMark,
-    OMX_EventPortSettingsChanged,
-    OMX_EventBufferFlag,
-    OMX_EventResourcesAcquired,
-    OMX_EventComponentResumed,
-    OMX_EventDynamicResourcesAvailable,
-    OMX_EventPortFormatDetected,
-    OMX_EventMax = 0x7FFFFFFF
-} OMX_EVENTTYPE;
-
-
-typedef enum OMX_COMMANDTYPE
-{
-     OMX_CommandStateSet,
-     OMX_CommandFlush,
-     OMX_CommandPortDisable,
-     OMX_CommandPortEnable,
-     OMX_CommandMarkBuffer,
-     OMX_CommandMax = 0X7FFFFFFF
-} OMX_COMMANDTYPE;
-
-typedef void* OMX_HANDLETYPE;
-
-typedef enum OMX_DIRTYPE
-{
-     OMX_DirInput,
-     OMX_DirOutput,
-     OMX_DirMax = 0x7FFFFFFF
-} OMX_DIRTYPE;
-
-
-typedef enum OMX_PORTDOMAINTYPE {
-    OMX_PortDomainAudio,
-    OMX_PortDomainVideo,
-    OMX_PortDomainImage,
-    OMX_PortDomainOther,
-    OMX_PortDomainKhronosExtensions = 0x6F000000, /**< Reserved region for introducing Khronos Standard Extensions */
-    OMX_PortDomainVendorStartUnused = 0x7F000000, /**< Reserved region for introducing Vendor Extensions */
-    OMX_PortDomainMax = 0x7ffffff
-} OMX_PORTDOMAINTYPE;
-
-typedef struct OMX_VIDEO_PARAM_PORTFORMATTYPE {
-     OMX_U32 nSize;
-     //OMX_VERSIONTYPE nVersion;
-     OMX_U32 nPortIndex;
-     OMX_U32 nIndex;
-     //OMX_VIDEO_CODINGTYPE eCompressionFormat;
-     //OMX_COLOR_FORMATTYPE eColorFormat;
-     OMX_U32 xFramerate;
-} OMX_VIDEO_PARAM_PORTFORMATTYPE;
-
-
-typedef struct OMX_TIME_CONFIG_CLOCKSTATETYPE {
-     OMX_U32 nSize;
-     //OMX_VERSIONTYPE nVersion;
-     //OMX_TIME_CLOCKSTATE eState;
-     //OMX_TICKS nStartTime;
-     //OMX_TICKS nOffset;
-     OMX_U32 nWaitMask;
-} OMX_TIME_CONFIG_CLOCKSTATETYPE;
-
-typedef enum  	{
-  OMX_ErrorNone = 0, OMX_ErrorInsufficientResources = 0x80001000, OMX_ErrorUndefined = 0x80001001, OMX_ErrorInvalidComponentName = 0x80001002,
-  OMX_ErrorComponentNotFound = 0x80001003, OMX_ErrorInvalidComponent = 0x80001004, OMX_ErrorBadParameter = 0x80001005, OMX_ErrorNotImplemented = 0x80001006,
-  OMX_ErrorUnderflow = 0x80001007, OMX_ErrorOverflow = 0x80001008, OMX_ErrorHardware = 0x80001009, OMX_ErrorInvalidState = 0x8000100A,
-  OMX_ErrorStreamCorrupt = 0x8000100B, OMX_ErrorPortsNotCompatible = 0x8000100C, OMX_ErrorResourcesLost = 0x8000100D, OMX_ErrorNoMore = 0x8000100E,
-  OMX_ErrorVersionMismatch = 0x8000100F, OMX_ErrorNotReady = 0x80001010, OMX_ErrorTimeout = 0x80001011, OMX_ErrorSameState = 0x80001012,
-  OMX_ErrorResourcesPreempted = 0x80001013, OMX_ErrorPortUnresponsiveDuringAllocation = 0x80001014, OMX_ErrorPortUnresponsiveDuringDeallocation = 0x80001015, OMX_ErrorPortUnresponsiveDuringStop = 0x80001016,
-  OMX_ErrorIncorrectStateTransition = 0x80001017, OMX_ErrorIncorrectStateOperation = 0x80001018, OMX_ErrorUnsupportedSetting = 0x80001019, OMX_ErrorUnsupportedIndex = 0x8000101A,
-  OMX_ErrorBadPortIndex = 0x8000101B, OMX_ErrorPortUnpopulated = 0x8000101C, OMX_ErrorComponentSuspended = 0x8000101D, OMX_ErrorDynamicResourcesUnavailable = 0x8000101E,
-  OMX_ErrorMbErrorsInFrame = 0x8000101F, OMX_ErrorFormatNotDetected = 0x80001020, OMX_ErrorContentPipeOpenFailed = 0x80001021, OMX_ErrorContentPipeCreationFailed = 0x80001022,
-  OMX_ErrorSeperateTablesUsed = 0x80001023, OMX_ErrorTunnelingUnsupported = 0x80001024, OMX_ErrorMax = 0x7FFFFFFF
-} OMX_ERRORTYPE ;
-
-typedef enum {
-  OMX_IndexComponentStartUnused = 0x01000000, OMX_IndexParamPriorityMgmt, OMX_IndexParamAudioInit, OMX_IndexParamImageInit,
-  OMX_IndexParamVideoInit, OMX_IndexParamOtherInit, OMX_IndexParamNumAvailableStreams, OMX_IndexParamActiveStream,
-  OMX_IndexParamSuspensionPolicy, OMX_IndexParamComponentSuspended, OMX_IndexConfigCapturing, OMX_IndexConfigCaptureMode,
-  OMX_IndexAutoPauseAfterCapture, OMX_IndexParamContentURI, OMX_IndexParamCustomContentPipe, OMX_IndexParamDisableResourceConcealment,
-  OMX_IndexConfigMetadataItemCount, OMX_IndexConfigContainerNodeCount, OMX_IndexConfigMetadataItem, OMX_IndexConfigCounterNodeID,
-  OMX_IndexParamMetadataFilterType, OMX_IndexParamMetadataKeyFilter, OMX_IndexConfigPriorityMgmt, OMX_IndexParamStandardComponentRole,
-  OMX_IndexPortStartUnused = 0x02000000, OMX_IndexParamPortDefinition, OMX_IndexParamCompBufferSupplier, OMX_IndexReservedStartUnused = 0x03000000,
-  OMX_IndexAudioStartUnused = 0x04000000, OMX_IndexParamAudioPortFormat, OMX_IndexParamAudioPcm, OMX_IndexParamAudioAac,
-  OMX_IndexParamAudioRa, OMX_IndexParamAudioMp3, OMX_IndexParamAudioAdpcm, OMX_IndexParamAudioG723,
-  OMX_IndexParamAudioG729, OMX_IndexParamAudioAmr, OMX_IndexParamAudioWma, OMX_IndexParamAudioSbc,
-  OMX_IndexParamAudioMidi, OMX_IndexParamAudioGsm_FR, OMX_IndexParamAudioMidiLoadUserSound, OMX_IndexParamAudioG726,
-  OMX_IndexParamAudioGsm_EFR, OMX_IndexParamAudioGsm_HR, OMX_IndexParamAudioPdc_FR, OMX_IndexParamAudioPdc_EFR,
-  OMX_IndexParamAudioPdc_HR, OMX_IndexParamAudioTdma_FR, OMX_IndexParamAudioTdma_EFR, OMX_IndexParamAudioQcelp8,
-  OMX_IndexParamAudioQcelp13, OMX_IndexParamAudioEvrc, OMX_IndexParamAudioSmv, OMX_IndexParamAudioVorbis,
-  OMX_IndexConfigAudioMidiImmediateEvent, OMX_IndexConfigAudioMidiControl, OMX_IndexConfigAudioMidiSoundBankProgram, OMX_IndexConfigAudioMidiStatus,
-  OMX_IndexConfigAudioMidiMetaEvent, OMX_IndexConfigAudioMidiMetaEventData, OMX_IndexConfigAudioVolume, OMX_IndexConfigAudioBalance,
-  OMX_IndexConfigAudioChannelMute, OMX_IndexConfigAudioMute, OMX_IndexConfigAudioLoudness, OMX_IndexConfigAudioEchoCancelation,
-  OMX_IndexConfigAudioNoiseReduction, OMX_IndexConfigAudioBass, OMX_IndexConfigAudioTreble, OMX_IndexConfigAudioStereoWidening,
-  OMX_IndexConfigAudioChorus, OMX_IndexConfigAudioEqualizer, OMX_IndexConfigAudioReverberation, OMX_IndexConfigAudioChannelVolume,
-  OMX_IndexImageStartUnused = 0x05000000, OMX_IndexParamImagePortFormat, OMX_IndexParamFlashControl, OMX_IndexConfigFocusControl,
-  OMX_IndexParamQFactor, OMX_IndexParamQuantizationTable, OMX_IndexParamHuffmanTable, OMX_IndexConfigFlashControl,
-  OMX_IndexVideoStartUnused = 0x06000000, OMX_IndexParamVideoPortFormat, OMX_IndexParamVideoQuantization, OMX_IndexParamVideoFastUpdate,
-  OMX_IndexParamVideoBitrate, OMX_IndexParamVideoMotionVector, OMX_IndexParamVideoIntraRefresh, OMX_IndexParamVideoErrorCorrection,
-  OMX_IndexParamVideoVBSMC, OMX_IndexParamVideoMpeg2, OMX_IndexParamVideoMpeg4, OMX_IndexParamVideoWmv,
-  OMX_IndexParamVideoRv, OMX_IndexParamVideoAvc, OMX_IndexParamVideoH263, OMX_IndexParamVideoProfileLevelQuerySupported,
-  OMX_IndexParamVideoProfileLevelCurrent, OMX_IndexConfigVideoBitrate, OMX_IndexConfigVideoFramerate, OMX_IndexConfigVideoIntraVOPRefresh,
-  OMX_IndexConfigVideoIntraMBRefresh, OMX_IndexConfigVideoMBErrorReporting, OMX_IndexParamVideoMacroblocksPerFrame, OMX_IndexConfigVideoMacroBlockErrorMap,
-  OMX_IndexParamVideoSliceFMO, OMX_IndexConfigVideoAVCIntraPeriod, OMX_IndexConfigVideoNalSize, OMX_IndexCommonStartUnused = 0x07000000,
-  OMX_IndexParamCommonDeblocking, OMX_IndexParamCommonSensorMode, OMX_IndexParamCommonInterleave, OMX_IndexConfigCommonColorFormatConversion,
-  OMX_IndexConfigCommonScale, OMX_IndexConfigCommonImageFilter, OMX_IndexConfigCommonColorEnhancement, OMX_IndexConfigCommonColorKey,
-  OMX_IndexConfigCommonColorBlend, OMX_IndexConfigCommonFrameStabilisation, OMX_IndexConfigCommonRotate, OMX_IndexConfigCommonMirror,
-  OMX_IndexConfigCommonOutputPosition, OMX_IndexConfigCommonInputCrop, OMX_IndexConfigCommonOutputCrop, OMX_IndexConfigCommonDigitalZoom,
-  OMX_IndexConfigCommonOpticalZoom, OMX_IndexConfigCommonWhiteBalance, OMX_IndexConfigCommonExposure, OMX_IndexConfigCommonContrast,
-  OMX_IndexConfigCommonBrightness, OMX_IndexConfigCommonBacklight, OMX_IndexConfigCommonGamma, OMX_IndexConfigCommonSaturation,
-  OMX_IndexConfigCommonLightness, OMX_IndexConfigCommonExclusionRect, OMX_IndexConfigCommonDithering, OMX_IndexConfigCommonPlaneBlend,
-  OMX_IndexConfigCommonExposureValue, OMX_IndexConfigCommonOutputSize, OMX_IndexParamCommonExtraQuantData, OMX_IndexConfigCommonFocusRegion,
-  OMX_IndexConfigCommonFocusStatus, OMX_IndexOtherStartUnused = 0x08000000, OMX_IndexParamOtherPortFormat, OMX_IndexConfigOtherPower,
-  OMX_IndexConfigOtherStats, OMX_IndexTimeStartUnused = 0x09000000, OMX_IndexConfigTimeScale, OMX_IndexConfigTimeClockState,
-  OMX_IndexConfigTimeActiveRefClock, OMX_IndexConfigTimeCurrentMediaTime, OMX_IndexConfigTimeCurrentWallTime, OMX_IndexConfigTimeCurrentAudioReference,
-  OMX_IndexConfigTimeCurrentVideoReference, OMX_IndexConfigTimeMediaTimeRequest, OMX_IndexConfigTimeClientStartTime, OMX_IndexConfigTimePosition,
-  OMX_IndexConfigTimeSeekMode, OMX_IndexVendorStartUnused = 0x7F000000, OMX_IndexMax = 0x7FFFFFFF
-} OMX_INDEXTYPE;
+#ifndef ILCLIENT_THREAD_DEFAULT_STACK_SIZE
+#define ILCLIENT_THREAD_DEFAULT_STACK_SIZE   (6<<10)
+#endif
 
 #define     OMX_BUFFERFLAG_TIME_UNKNOWN 0x0
-#define 	OMX_BUFFERFLAG_EOS   0x00000001
-#define 	OMX_BUFFERFLAG_STARTTIME   0x00000002
-#define 	OMX_BUFFERFLAG_DECODEONLY   0x00000004
 
-#endif
+//typedef int      VCOS_SEMAPHORE_T;
+
+
+
+//typedef int      VCOS_EVENT_T;
+//typedef int          VCOS_MUTEX_T;
+
+
+#define OMX_VERSION 11
+
+// OMX_Broadcom.h
+
+
+
+
 
 /**
  * The <DFN>ILCLIENT_T</DFN> structure encapsulates the state needed for the IL

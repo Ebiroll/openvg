@@ -18,7 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <sys/time.h>
 #include <sys/param.h>
 
-#include "il/ilclient.h"
+#include "vcos_logging.h"
 
 #ifdef HAVE_PRCTL
 #include <sys/prctl.h>
@@ -212,6 +212,12 @@ VCOS_STATUS_T vcos_timer_init(void)
    return VCOS_SUCCESS;
 }
 
+void vcos_log_set_level(VCOS_LOG_CAT_T *category, VCOS_LOG_LEVEL_T level)
+{
+   category->level = level;
+}
+
+
 void vcos_log_impl(const VCOS_LOG_CAT_T *cat, const char *fmt, ...)
 {
    va_list ap;
@@ -354,7 +360,7 @@ void vcos_pthreads_logging_assert(const char *file, const char *func, unsigned i
    va_end(ap);
    fprintf(stderr, "\n");
 #ifdef VCOS_HAVE_BACKTRACE
-   vcos_backtrace_self();
+   //vcos_backtrace_self();
 #endif
 }
 
