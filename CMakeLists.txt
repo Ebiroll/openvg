@@ -123,10 +123,41 @@ omx/omxregister.c
 ${omx_SRC}
 )
 
+ADD_EXECUTABLE(listcomponents
+omx/test/listcomponents.c
+${omx_SRC}
+)
+
+
 
 TARGET_LINK_LIBRARIES(shivavg X11 GLU glut dl GL m jpeg pthread rt)
 
 TARGET_LINK_LIBRARIES(omxregister-bellagio dl  m pthread)
+
+
+TARGET_LINK_LIBRARIES(listcomponents dl  m pthread)
+
+
+# listcomponents.c
+#cc -g -DRASPBERRY_PI -I /opt/vc/include/IL -I /opt/vc/include \
+#   -I /opt/vc/include/interface/vcos/pthreads \
+#   -o listcomponents listcomponents.c \
+#   -L /opt/vc/lib -l openmaxil -l bcm_host
+
+
+#cc  -g -DBELLAGIO -I ../libomxil-bellagio-0.9.3/include/ \
+#    -o listcomponents listcomponents.c \
+#    -L ../libomxil-bellagio-0.9.3/src/.libs -l omxil-bellagio
+
+# and at run time
+
+
+#export LD_LIBRARY_PATH=../libomxil-bellagio-0.9.3/src/.libs/
+#./listcomponents
+
+
+
+
 
 
 ENDIF(WIN32)

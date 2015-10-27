@@ -15,7 +15,10 @@ INCLUDES+=-I/opt/vc/include/ -I/opt/vc/include/interface/vcos/pthreads -I/opt/vc
 
 CGOFILES = openvg.go
 
-all:	font2openvg fonts library hello video
+all:	font2openvg fonts library hello video listcomponents
+
+listcomponents: omx/test/listcomponents,c
+	gcc -g -DRASPBERRY_PI -I /opt/vc/include/IL -I /opt/vc/include  -I /opt/vc/include/interface/vcos/pthreads   -o listcomponents omx/test/listcomponents.c  -L /opt/vc/lib -l openmaxil -l bcm_host
 
 libshapes.o:	libshapes.c shapes.h fontinfo.h fonts
 	gcc $(CFLAGS) -O2 -fPIC -Wall $(INCLUDEFLAGS) -D BCMHOST -c libshapes.c
