@@ -1,0 +1,59 @@
+Component is OMX.broadcom.audio_capture
+  Num roles is 0
+Component is OMX.broadcom.audio_decode
+  Num roles is 0
+Component is OMX.broadcom.audio_encode
+  Num roles is 0
+Component is OMX.broadcom.audio_render
+  Num roles is 0
+Component is OMX.broadcom.audio_mixer
+  Num roles is 0
+Component is OMX.broadcom.audio_splitter
+  Num roles is 0
+Component is OMX.broadcom.audio_processor
+  Num roles is 0
+Component is OMX.broadcom.camera
+  Num roles is 0
+Component is OMX.broadcom.clock
+  Num roles is 0
+Component is OMX.broadcom.coverage
+  Num roles is 0
+Component is OMX.broadcom.egl_render
+  Num roles is 0
+Component is OMX.broadcom.image_fx
+  Num roles is 0
+Component is OMX.broadcom.image_decode
+  Num roles is 0
+Component is OMX.broadcom.image_encode
+  Num roles is 0
+Component is OMX.broadcom.image_read
+  Num roles is 0
+Component is OMX.broadcom.image_write
+  Num roles is 0
+Component is OMX.broadcom.read_media
+  Num roles is 0
+Component is OMX.broadcom.resize
+  Num roles is 0
+Component is OMX.broadcom.source
+  Num roles is 0
+Component is OMX.broadcom.text_scheduler
+  Num roles is 0
+Component is OMX.broadcom.transition
+  Num roles is 0
+Component is OMX.broadcom.video_decode
+  Num roles is 0
+Component is OMX.broadcom.video_encode
+  Num roles is 0
+Component is OMX.broadcom.video_render
+  Num roles is 0
+Component is OMX.broadcom.video_scheduler
+  Num roles is 0
+Component is OMX.broadcom.video_splitter
+  Num roles is 0
+Component is OMX.broadcom.visualisation
+  Num roles is 0
+Component is OMX.broadcom.write_media
+  Num roles is 0
+Component is OMX.broadcom.write_still
+  Num roles is 0
+No more components
