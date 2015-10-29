@@ -23,7 +23,9 @@
 
 /*
  * Opens a EGL context and tries to do, eglBindAPI(EGL_OPENVG_API);
- * This has never been testes nut migth work as a replacement fog oglinit.c
+ * This has never been tested but migth work as a replacement for oglinit.c 
+ * for non Broadcom boards with OpenVG support.
+ * An option for those with GLES but no OpenVG could be to port ShivaVG to GLES
  * http://pandorawiki.org/Porting_to_GLES_from_GL
  */
 

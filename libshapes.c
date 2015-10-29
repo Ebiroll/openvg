@@ -27,6 +27,8 @@
 #include "DejaVuSans.inc"				   // font data
 #include "DejaVuSerif.inc"
 #include "DejaVuSansMono.inc"
+#include "shf.inc"
+
 #include "eglstate.h"					   // data structures for graphics state
 #include "fontinfo.h"					   // font data structure
 #include "shapes.h"
@@ -329,7 +331,7 @@ void dumpscreen(int w, int h, FILE * fp) {
 	free(ScreenBuffer);
 }
 
-Fontinfo SansTypeface, SerifTypeface, MonoTypeface;
+Fontinfo SansTypeface, SerifTypeface, MonoTypeface,scaryTypeface;
 
 // init sets the system to its initial state
 void init(int *w, int *h) {
@@ -366,6 +368,14 @@ void init(int *w, int *h) {
 				DejaVuSansMono_glyphInstructionIndices,
 				DejaVuSansMono_glyphInstructionCounts,
 				DejaVuSansMono_glyphAdvances, DejaVuSansMono_characterMap, DejaVuSansMono_glyphCount);
+
+	scaryTypeface = loadfont(shf_glyphPoints,
+				shf_glyphPointIndices,
+				shf_glyphInstructions,
+				shf_glyphInstructionIndices,
+				shf_glyphInstructionCounts,
+				shf_glyphAdvances, shf_characterMap, shf_glyphCount);
+
 
     *w = state->screen_width;
     *h = state->screen_height;
