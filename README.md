@@ -36,6 +36,12 @@ To build the go library do
 	
  On windows the CMakeLists.txt compiles fine with latest qt-creator, but I was not able to test it with go yet.
 
+## Video playback
+
+Another feature added to this library is video playback. To get the video to play on the raspberry you must transcode in. This can be done with ffmpeg.
+	ffmpeg -i [input-video.avi] -profile:v main  -an -bsf:v h264_mp4toannexb -pix_fmt yuv420p  -r 25 -s 1920*1080 test.h264
+
+I am not exacty sure what I am doing here but it seems to work.
 
 ## GO clients
 
