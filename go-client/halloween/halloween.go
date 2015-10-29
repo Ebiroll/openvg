@@ -16,7 +16,8 @@ func main() {
 
 	w, h := openvg.Init()
 	//var speed openvg.VGfloat = 0.5
-	var x openvg.VGfloat = 0
+	var x openvg.VGfloat	= 0
+	var vw,vh openvg.VGfloat 
 	var midxx openvg.VGfloat = openvg.VGfloat(w/2)
 	midy = (h / 2)
 	fontsize := w / 8
@@ -31,7 +32,7 @@ func main() {
 	// scroll the text, only in the clipping rectangle
 	index = 0
 	for {
-		for redness = 255; redness > 32; redness-=16 {
+		for redness = 255; redness > 16; redness-=2 {
 			openvg.Start(w, h)
 			openvg.Background(redness, 0, 0)
 			openvg.FillRGB(0, 0, 0, .2)
@@ -45,7 +46,9 @@ func main() {
 		}
 		index=(index+1)%8
 		if (index==0) {
-				openvg.Video(100.0,100.0,800.0,600.0,"test.h264");
+		                vw=openvg.VGfloat(w)-200
+				vh=openvg.VGfloat(h)-200
+				openvg.Video(100.0,100.0, vw,vh,"test.h264");
 		}
 	}
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
