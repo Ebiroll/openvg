@@ -490,6 +490,9 @@ func selectfont(s string) C.Fontinfo {
 		return C.SerifTypeface
 	case "mono":
 		return C.MonoTypeface
+
+	case "shf":
+		return C.scaryTypeface
 	}
 	return C.SerifTypeface
 }

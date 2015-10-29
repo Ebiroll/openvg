@@ -7,7 +7,7 @@ The typical "hello world" program looks like this:
 
 	import (
 		"bufio"
-		"github.com/ajstarks/openvg"
+		"github.com/Ebiroll/openvg"
 		"os"
 	)
 
