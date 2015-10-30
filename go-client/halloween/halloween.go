@@ -58,7 +58,7 @@ func main() {
 				vh=openvg.VGfloat(h)-200
 				openvg.Video(100.0,100.0, vw,vh,"test.h264");
 		}
-		if (7==7) {		
+		if (index==0) {		
 			var test , oix int
 			var xpos [40]float32
 			var ypos [40]float32
