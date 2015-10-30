@@ -11,7 +11,7 @@ The application is written in GO and runs on a raspberry PI 2 or Linux.
 
 sl2go is found here https://github.com/Ebiroll/openvg/tree/master/go-client/sl2go
 
-You will need to get your own api-key from trafiklabb.se or run the test server located in srv https://github.com/Ebiroll/openvg/tree/master/go-client/srv
+You will need to get your own api-key from trafiklabb.se or run the test server located in srv https://github.com/Ebiroll/openvg/tree/master/go-client/sl2go/srv
 
 
 <a href="https://farm6.staticflickr.com/5834/22318139536_f249a86979_z_d.jpg" title="rotext by Olof, on Flickr"><img src="https://farm6.staticflickr.com/5834/22318139536_f249a86979_z_d.jpg" width="640" height="512" alt="rotext"></a>
@@ -23,32 +23,35 @@ before deploying on the raspberry. http://ivanleben.blogspot.se/2007/07/shivavg-
 
 To build, do 
 
-	mkdir build
-	cd build
-	cmake ..
-	make
-	cp ../client/*.jpg .
-	./shivavg demo 5
+    mkdir build
+    cd build
+    cmake ..
+    make
+    cp ../client/*.jpg .
+    ./shivavg demo 5
 
 To build the go library do 
-	go get github.com/Ebiroll/openvg
+
+    go get github.com/Ebiroll/openvg
     go install github.com/Ebiroll/openvg
 	
  On windows the CMakeLists.txt compiles fine with latest qt-creator, but I was not able to test it with go yet.
 
 ## Video playback
 
-Another feature added to this library is video playback. To get the video to play on the raspberry you must transcode in. This can be done with ffmpeg.
-	ffmpeg -i [input-video.avi] -profile:v main  -an -bsf:v h264_mp4toannexb -pix_fmt yuv420p  -r 25 -s 1920*1080 test.h264
+Another feature added to the library is video playback. To get the video to play on the raspberry you must transcode it. This can be done with ffmpeg.
 
-I am not exacty sure what I am doing here but it seems to work.
+    ffmpeg -i [input-video.avi] -profile:v main  -an -bsf:v h264_mp4toannexb -pix_fmt yuv420p  -r 25 -s 1920*1080 test.h264
+
+Works for me.
 
 ## GO clients
 
 To use do, setup your GOPATH, i.e. export GOPATH=~/GO
-	cd ~/GO
-	go get github.com/Ebiroll/openvg
-	go install github.com/Ebiroll/openvg
+
+    cd ~/GO
+    go get github.com/Ebiroll/openvg
+    go install github.com/Ebiroll/openvg
 
 
 ## Visual Studio Code
@@ -78,8 +81,8 @@ Download and install. https://code.visualstudio.com/
 				"message": 3	
 			}
 		}
-	}
-	When editing a go file you can now press. Ctrl-Shift B
+    }
+    When editing a go file you can now press. Ctrl-Shift B
     If compilation is successfull it will also run the file.
  
 
@@ -87,8 +90,9 @@ Download and install. https://code.visualstudio.com/
 
  
  If you are using MSYS2 with GO
-	pacman -S base-devel
-	pacman -S mingw-w64-i686-mesa
+ 
+    pacman -S base-devel
+    pacman -S mingw-w64-i686-mesa
 	#This one is normally already installed
 	pacman -S  msys2-w32api-headers
 	pacman -S mingw-w64-x86_64-freeglut 
