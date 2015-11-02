@@ -45,7 +45,11 @@ Another feature added to the library is video playback. To get the video to play
     ffmpeg -i [input-video.avi] -profile:v main  -an -bsf:v h264_mp4toannexb -pix_fmt yuv420p  -r 25 -s 1920*1080 test.h264
 
 Works for me.
+
 If you get OMX_ErrorInsufficientResources try adding or changing the cpu/gpu memory split by adding gpu_mem=128 to /boot/config.txt
+If you get  * failed to add service - already in use?
+Try adding/changing  gpu_mem=128 to /boot/config.txt. If all fails try updating your firmware, sudo rpi-update
+ 
 
 ## GO clients
 
@@ -56,35 +60,53 @@ To build go on raspberry do,
 
     cd $HOME
 	curl http://dave.cheney.net/paste/go-linux-arm-bootstrap-c788a8e.tbz | tar xj 
-	curl https://storage.googleapis.com/golang/go1.5.src.tar.gz | tar xz
+	curl https://storage.googleapis.com/golang/go1.5.1.src.tar.gz | tar xz
 	#Lower the default stack size from 8mb to 1mb.
 	ulimit -s 1024
 	cd go/src
 	env GO_TEST_TIMEOUT_SCALE=10 GOROOT_BOOTSTRAP=$HOME/go-linux-arm-bootstrap ./all.bash
 	
 	As a final step you should add $HOME/go to your $PATH
-	GOPATH=~/go
+	export PATH=$PATH:$HOME/go/bin
+	export GOPATH=~/go_test
 
 
 To build go-clients on raspberry do,
-    export GOPATH=~/go
+    export GOPATH=~/go_test
+	mkdir go_test;cd go_test
 	
     go get github.com/Ebiroll/openvg
     go install github.com/Ebiroll/openvg
 	
 	
-Other info,	
-	If you insist on using an older version of golang try setting these,
+Building go 1.5.1 including bootstrap,	
+	If you want to builf the bootstrap go yourself. Try this,
+	# Note GOROOT should not be set
+	curl https://storage.googleapis.com/golang/go1.4.3.src.tar.gz | tar xz
+	ulimit -s 1024
+	cd go/src
+	env GO_TEST_TIMEOUT_SCALE=10 GOOS=linux GOARCH=arm ./make.bash
+	cd ../..
+	mv go go-linux-arm-bootstrap
+	curl https://storage.googleapis.com/golang/go1.5.1.src.tar.gz | tar xz
+	cd go/src
+	env GO_TEST_TIMEOUT_SCALE=10 GOROOT_BOOTSTRAP=$HOME/go-linux-arm-bootstrap ./all.bash
+	
+Building go 1.5.1 bootstraping from (itself?)		
+	# Only unpack 1.5.1 sources
+	curl https://storage.googleapis.com/golang/go1.5.1.src.tar.gz | tar xz
+	cd go/src
+	ulimit -s 1024
+	export GOROOT_BOOTSTRAP=$HOME/go1.4
+	GOOS=linux GOARCH=arm ./bootstrap.bash
+	
+To use do, setup your GOPATH, i.e. export GOPATH=~/go
+If it works, you can then remove the botstrap 1.4 build
+
+If you insist on using an older version of golang try setting these,
 	export CGO_ENABLED=1
 	export GOOS=linux
 	export GOARCH=arm	
-	If you want to builf the bootstrap go yourself. Try this link,
-	https://storage.googleapis.com/golang/go1.4.3.src.tar.gz
-	
-
-
-To use do, setup your GOPATH, i.e. export GOPATH=~/go
-
     cd ~/go    
 	go get github.com/Ebiroll/openvg
     go install github.com/Ebiroll/openvg
