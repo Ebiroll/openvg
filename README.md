@@ -21,6 +21,11 @@ You will need to get your own api-key from trafiklabb.se or run the test server 
 I added the ShivaVG library in order to be able to test on a regular linux box
 before deploying on the raspberry. http://ivanleben.blogspot.se/2007/07/shivavg-open-source-ansi-c-openvg.html
 
+To install necessary pre-requsists do
+	sudo apt-get install build-essential
+	sudo apt-get install libjpeg8-dev indent libfreetype6-dev ttf-dejavu-core
+	sudo apt-get install golang
+
 To build, do 
 
     mkdir build
