@@ -45,7 +45,7 @@ Another feature added to the library is video playback. To get the video to play
     ffmpeg -i [input-video.avi] -profile:v main  -an -bsf:v h264_mp4toannexb -pix_fmt yuv420p  -r 25 -s 1920*1080 test.h264
 
 Works for me.
-If you get OMX_ErrorInsufficientResources try 
+If you get OMX_ErrorInsufficientResources try adding or changing the cpu/gpu memory split by adding gpu_mem=128 to /boot/config.txt
 
 ## GO clients
 
