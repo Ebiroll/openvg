@@ -310,15 +310,16 @@ void ScaledImage(VGfloat x, VGfloat y, int w, int h, char *filename) {
     vgDestroyImage(img);
 }
 
+// Found in video.c
 void video_decode_test(char *filename,int x,int y,int w,int h);
 
 void Video(VGfloat x, VGfloat y,  VGfloat w,  VGfloat  h, char *filename) {
-#if 0   // __arm__
-    Fill(44, 77, 232, 1);				   // Big blue marble
+#ifndef __arm__    
+    Fill(22, 35, 116, 1);				   // Blue testblob for location of video
     Rect(x,y,w,h);
-    Fill(255, 255, 255, 1);				   // White text
+    swap_buffers_gls();
 #else
-    video_decode_test(filename,(int) x,(int) y,(int) w,(int) h);
+    video_decode_test(filename,(int) x,h-(int) y,(int) w,(int) h);
 #endif
 }
 
