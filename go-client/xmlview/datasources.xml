@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<entry key="languages">en:se</entry>
+<entry key="language_interval">5</entry>
+<entry key="collector.address">127.0.0.1:3000</entry>
+
+
+<entry key="data.url">file:traindata.xml</entry>
+<entry key="data.table_type">grid</entry>
+<entry key="data.content.root">DataList</entry>
+<entry key="data.row.identifier">schedules</entry>
+<entry key="data.column.titles">platform:tcode:scheduledep:destination</entry>
+<entry key="data.column.layout">platform:tcode:scheduledep:destination</entry>
+<entry key="data.status_attributes">status1</entry>
+<entry key="data.special_statuses">Delayed</entry>
+<entry key="data.special.location">TrainStationName</entry>
+<entry key="data.special.last_update">LastUpdateTime</entry>
+<entry key="data.page.interval">60</entry>
+<entry key="data.interval">15</entry>
+
+
+<entry key="data2.url">/traindata?station=SUND&amp;orig=TRAIN&amp;count=4</entry>
+<entry key="data2.root">DataList</entry>
+<entry key="data2.row">schedules</entry>
+<entry key="data2.columns">platform:tcode:scheduledep:destination</entry>
+<entry key="data2.status_attributes">status1</entry>
+
+<entry key="weatherdata.url">/weatherdata/DefaultWidgetData.xml</entry>
+<entry key="worldtime.data.url">file:../data/worldtime_data.xml</entry>
+<entry key="scrolltext.url">file:../conf/MessageBoard.txt</entry>
+<entry key="prayerdata.url">file:../conf/prayerdata.xml</entry>
+<entry key="playedmedia.log">../data/playedmedia.log</entry>
+<entry key="playlist.duration">1200</entry>
+
+<entry key="strings.empty.en">No data available at this time</entry>
+<entry key="strings.empty.se">Ingen data...</entry>
+<entry key="strings.page.en">Page</entry>
+<entry key="strings.page.se">Sida</entry>
+
+<entry key="strings.nosmoking.en">No Smoking</entry>
+<entry key="strings.nosmoking.se">Rokning forbjuden</entry>
+
+<entry key="strings.pagelabel.en">DEPARTURES</entry>
+<entry key="strings.pagelabel.se">AVGANGER</entry>
+
+<entry key="date.format">d MMMM HH:mm:ss, EEEE</entry>
+
+</properties>

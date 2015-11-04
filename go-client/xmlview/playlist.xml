@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?><playlist>
+<loop type="main">
+<item start="0" stop="15">
+  <media name="test.h264" fullscreen="false" url="" />  
+</item>
+<item start="15" stop="75">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="75" stop="135">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="135" stop="150">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="150" stop="165">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="165" stop="225">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="225" stop="285">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="285" stop="300">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="300" stop="315">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="315" stop="375">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="375" stop="435">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="435" stop="450">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="450" stop="465">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="465" stop="525">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="525" stop="585">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="585" stop="600">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="600" stop="615">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="615" stop="675">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="675" stop="735">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="735" stop="750">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="750" stop="765">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="765" stop="825">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="825" stop="885">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="885" stop="900">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="900" stop="915">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="915" stop="975">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="975" stop="1035">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="1035" stop="1050">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="1050" stop="1065">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="1065" stop="1125">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="1125" stop="1185">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+<item start="1185" stop="1200">
+<media name="test.h264" fullscreen="false" url="" />
+</item>
+</loop>
+</playlist>

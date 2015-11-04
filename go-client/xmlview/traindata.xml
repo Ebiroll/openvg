@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DataList>
+  <schedules>
+    <tcode>10</tcode>
+    <platform/>
+    <destination>Hjulsta</destination>
+    <origin>METRO</origin>
+    <status/>
+    <scheduledep>21 min</scheduledep>
+    <ttime>1446624323.889</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>10</tcode>
+    <platform/>
+    <destination>Kungsträdgården</destination>
+    <origin>METRO</origin>
+    <status/>
+    <scheduledep>24 min</scheduledep>
+    <ttime>1446624323.891</ttime>
+  </schedules>
+  <schedules>
+    <tcode>509</tcode>
+    <platform>D</platform>
+    <destination>Brommaplan</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>Nu</scheduledep>
+    <ttime>1446627894</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>35</tcode>
+    <platform>2</platform>
+    <destination>Bålsta</destination>
+    <origin>TRAIN</origin>
+    <status/>
+    <scheduledep>Nu</scheduledep>
+    <ttime>1446627960</ttime>
+  </schedules>
+  <schedules>
+    <tcode>152</tcode>
+    <platform>D</platform>
+    <destination>Bromma flygplats</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>2 min</scheduledep>
+    <ttime>1446628065</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>35</tcode>
+    <platform>3</platform>
+    <destination>Nynäshamn</destination>
+    <origin>TRAIN</origin>
+    <status/>
+    <scheduledep>2 min</scheduledep>
+    <ttime>1446628079</ttime>
+  </schedules>
+  <schedules>
+    <tcode>152</tcode>
+    <platform>C</platform>
+    <destination>Liljeholmen</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>3 min</scheduledep>
+    <ttime>1446628111</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>512</tcode>
+    <platform>C</platform>
+    <destination>Solna centrum</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>3 min</scheduledep>
+    <ttime>1446628158</ttime>
+  </schedules>
+  <schedules>
+    <tcode>515</tcode>
+    <platform>A</platform>
+    <destination>Odenplan</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:10</scheduledep>
+    <ttime>1446628200</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>504</tcode>
+    <platform>A</platform>
+    <destination>Rissne</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:11</scheduledep>
+    <ttime>1446628260</ttime>
+  </schedules>
+  <schedules>
+    <tcode>35</tcode>
+    <platform>3</platform>
+    <destination>Västerhaninge</destination>
+    <origin>TRAIN</origin>
+    <status/>
+    <scheduledep>5 min</scheduledep>
+    <ttime>1446628270</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>509</tcode>
+    <platform>C</platform>
+    <destination>Danderyds sjukhus</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>6 min</scheduledep>
+    <ttime>1446628304</ttime>
+  </schedules>
+  <schedules>
+    <tcode>509</tcode>
+    <platform>D</platform>
+    <destination>Brommaplan</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>9 min</scheduledep>
+    <ttime>1446628495</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>113</tcode>
+    <platform>C</platform>
+    <destination>Solna centrum</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>11 min</scheduledep>
+    <ttime>1446628598</ttime>
+  </schedules>
+  <schedules>
+    <tcode>506</tcode>
+    <platform>B</platform>
+    <destination>Karolinska sjukhuset</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>11 min</scheduledep>
+    <ttime>1446628616</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>515</tcode>
+    <platform>A</platform>
+    <destination>Odenplan</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:20</scheduledep>
+    <ttime>1446628800</ttime>
+  </schedules>
+  <schedules>
+    <tcode>506</tcode>
+    <platform>A</platform>
+    <destination>Hallonbergen</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>15 min</scheduledep>
+    <ttime>1446628846</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>35</tcode>
+    <platform>2</platform>
+    <destination>Kungsängen</destination>
+    <origin>TRAIN</origin>
+    <status/>
+    <scheduledep>15 min</scheduledep>
+    <ttime>1446628860</ttime>
+  </schedules>
+  <schedules>
+    <tcode>152</tcode>
+    <platform>D</platform>
+    <destination>Bromma flygplats</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>15 min</scheduledep>
+    <ttime>1446628872</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>35</tcode>
+    <platform>3</platform>
+    <destination>Nynäshamn</destination>
+    <origin>TRAIN</origin>
+    <status/>
+    <scheduledep>18 min</scheduledep>
+    <ttime>1446629040</ttime>
+  </schedules>
+  <schedules>
+    <tcode>509</tcode>
+    <platform>C</platform>
+    <destination>Danderyds sjukhus</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>20 min</scheduledep>
+    <ttime>1446629147</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>504</tcode>
+    <platform>A</platform>
+    <destination>Rissne</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:26</scheduledep>
+    <ttime>1446629160</ttime>
+  </schedules>
+  <schedules>
+    <tcode>113</tcode>
+    <platform>D</platform>
+    <destination>Blackebergs gård</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:27</scheduledep>
+    <ttime>1446629248</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>152</tcode>
+    <platform>C</platform>
+    <destination>Liljeholmen</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>24 min</scheduledep>
+    <ttime>1446629370</ttime>
+  </schedules>
+  <schedules>
+    <tcode>515</tcode>
+    <platform>A</platform>
+    <destination>Odenplan</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:30</scheduledep>
+    <ttime>1446629400</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>506</tcode>
+    <platform>B</platform>
+    <destination>Karolinska sjukhuset</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>24 min</scheduledep>
+    <ttime>1446629409</ttime>
+  </schedules>
+  <schedules>
+    <tcode>509</tcode>
+    <platform>D</platform>
+    <destination>Brommaplan</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>26 min</scheduledep>
+    <ttime>1446629508</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>506</tcode>
+    <platform>A</platform>
+    <destination>Hallonbergen</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:32</scheduledep>
+    <ttime>1446629520</ttime>
+  </schedules>
+  <schedules>
+    <tcode>35</tcode>
+    <platform>2</platform>
+    <destination>Bålsta</destination>
+    <origin>TRAIN</origin>
+    <status/>
+    <scheduledep>09:36</scheduledep>
+    <ttime>1446629760</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>512</tcode>
+    <platform>C</platform>
+    <destination>Solna centrum</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:37</scheduledep>
+    <ttime>1446629853</ttime>
+  </schedules>
+  <schedules>
+    <tcode>35</tcode>
+    <platform>3</platform>
+    <destination>Västerhaninge</destination>
+    <origin>TRAIN</origin>
+    <status/>
+    <scheduledep>09:39</scheduledep>
+    <ttime>1446629940</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>509</tcode>
+    <platform>C</platform>
+    <destination>Danderyds sjukhus</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:40</scheduledep>
+    <ttime>1446630047</ttime>
+  </schedules>
+  <schedules>
+    <tcode>504</tcode>
+    <platform>A</platform>
+    <destination>Rissne</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:41</scheduledep>
+    <ttime>1446630060</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>152</tcode>
+    <platform>C</platform>
+    <destination>Liljeholmen</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:41</scheduledep>
+    <ttime>1446630177</ttime>
+  </schedules>
+  <schedules>
+    <tcode>515</tcode>
+    <platform>A</platform>
+    <destination>Odenplan</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:45</scheduledep>
+    <ttime>1446630300</ttime>
+  </schedules>
+  <schedules oddRow="true">
+    <tcode>509</tcode>
+    <platform>D</platform>
+    <destination>Brommaplan</destination>
+    <origin>BUS</origin>
+    <status/>
+    <scheduledep>09:45</scheduledep>
+    <ttime>1446630318</ttime>
+  </schedules>
+</DataList>
