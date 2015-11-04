@@ -1,8 +1,7 @@
 <deck>
     <title>Deck with video</title>
-    <canvas width="1024" height="768"/>
-    <slide bg="blue" fg="white" duration="1s">
-        <image type="video" xp="40" yp="40" width="512" height="512" name="test.h264"/>
+    <slide bg="blue" fg="white" duration="5s">
+        <image type="video" xp="40" yp="38" width="512" height="512" name="test.h264"/>
         <text align="center" xp="50" yp="80" sp="3" link="http://example.com/">% based layout</text>
         <line xp1="10" yp1="75" xp2="80" yp2="75" sp="0.3" color="rgb(127,127,127)"/>
         <list align="begin" type="bullet" xp="75" yp="70" sp="1.5">
@@ -19,8 +18,8 @@
         </list>
     </slide>
     
-    <slide bg="blue" fg="white" duration="1s">
-        <image type="video" xp="40" yp="40" width="512" height="512" name="test.h264"/>
+    <slide bg="blue" fg="white" duration="5s">
+        <image type="video" xp="40" yp="38" width="512" height="512" name="test.h264"/>
         <text align="center" xp="50" yp="80" sp="3" link="http://example.com/">% based layout</text>
         <line xp1="10" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,127,127)"/>
         <list align="begin" type="bullet" xp="75" yp="70" sp="1.5">
@@ -35,12 +34,12 @@
     </slide>
     
     
-    <slide bg="maroon" fg="white" duration="1s">
+    <slide bg="maroon" fg="white" duration="5s">
         <image xp="20" yp="30" width="256" height="256" name="picture.png"/>
         <text xp="20" yp="80" sp="3" link="http://example.com/">Deck uses these elements</text>
         <line xp1="20" yp1="75" xp2="90" yp2="75" sp="0.3" color="rgb(127,127,127)"/>
         <list  xp="20" yp="70" sp="1.5">
-            <li>destination</li>
+            <li>canvas</li>
             <li>slide</li>
             <li>text</li>
             <li>list</li>
@@ -69,5 +68,125 @@
         <curve   xp1="60" yp1="10" xp2="75" yp2="20" xp3="70" yp3="10" />       
         <arc     xp="55"  yp="10" wp="4" hp="3" a1="0" a2="180" color="rgb(0,0,127)"/>
         <polygon xc="75 75 80" yc="8 12 10" color="rgb(0,0,127)"/>
-    </slide>
+        
+   </slide>
+
+
+<slide bg="white">
+    <text xp="10" yp="90" sp="4">rect element</text>
+    <rect xp="50" yp="50" wp="20" hr="100" color="rgb(127,0,0)" />
+    <text xp="50" yp="50" sp="3" align="center" color="white">x, y</text>
+    <text xp="50" yp="25" sp="3" align="center" color="rgb(127,0,0)">width</text>
+    <text xp="10" yp="60" sp="3" wp="10" type="block" color="rgb(127,0,0)">height (relative to element or canvas width)</text>
+    <text xp="10" yp="10" sp="2" type="code">&lt;rect xp="50" yp="50" wp="20" hr="100"/&gt;</text>
+</slide>
+
+<slide bg="white">
+    <text xp="10" yp="90" sp="4">ellipse element</text>
+    <ellipse xp="50" yp="50" wp="20" hr="100" color="rgb(127,0,0)" />
+    <text xp="50" yp="50" sp="3" align="center" color="white">x, y</text>
+    <text xp="50" yp="25" sp="3" align="center" color="rgb(127,0,0)">width</text>
+    <text xp="10" yp="60" sp="3" type="block" wp="10" color="rgb(127,0,0)">height (relative to element or canvas width)</text>
+    <text xp="10" yp="10" sp="2" type="code">&lt;ellipse xp="50" yp="50" wp="20" hr="100"/&gt;</text>
+</slide>
+
+<slide bg="white">
+    <text xp="10" yp="90" sp="4">polygon element</text>
+    <polygon xc="30 50 70" yc="30 70 30" color="rgb(127,0,0)" />
+    <text xp="30" yp="30" align="right" sp="3">(30,50)</text>
+    <text xp="70" yp="30" align="left" sp="3">(70,30)</text>
+    <text xp="50" yp="70" align="center" sp="3">(50,70)</text>
+    <text xp="10" yp="10" sp="2" type="code">&lt;polygon xc="30 50 70" yc="30 70 30"/&gt;</text>
+</slide>
+
+<slide bg="white">
+    <text xp="10" yp="90" sp="4">line element</text>
+    <line xp1="35" yp1="50" xp2="65" yp2="65" sp="0.5" color="rgb(127,127,127)" />
+    <text xp="35" yp="50" sp="3" align="center" color="rgb(127,0,0)">start</text>
+    <text xp="65" yp="65" sp="3" align="center" color="rgb(127,0,0)">end</text>
+    <text xp="10" yp="10" sp="2" type="code">&lt;line xp1="35" yp1="50" xp2="65" yp2="65"/&gt;</text>
+</slide>
+
+<slide bg="white">
+    <text xp="10" yp="90" sp="4">arc element</text>
+    <arc xp="50" yp="50" wp="30" hp="30" a1="0" a2="90" sp="0.5" />
+    <text xp="50" yp="70" sp="3" align="center" color="rgb(127,0,0)">angle2 (90 deg)</text>
+    <text xp="65" yp="50" sp="3" align="center" color="rgb(127,0,0)">angle1 (0 deg)</text>
+    <text xp="50" yp="50" sp="3" align="center" color="rgb(127,0,0)">x, y</text>
+    <text xp="10" yp="10" sp="2" type="code">&lt;arc xp="50" yp="50" wp="30" hp="30" a1="0" a2="90"/&gt;</text>
+</slide>
+
+<slide bg="white">
+    <text xp="10" yp="90" sp="4">curve element</text>
+    <curve xp1="30" yp1="50" xp2="80" yp2="80" xp3="70" yp3="50" sp="0.5" />
+    <text xp="30" yp="50" sp="3" align="center" color="rgb(127,0,0)">start</text>
+    <text xp="80" yp="90" sp="3" align="center" color="rgb(127,0,0)">control</text>
+    <text xp="70" yp="50" sp="3" align="center" color="rgb(127,0,0)">end</text>
+    <text xp="10" yp="10" sp="2" type="code">&lt;curve xp1="30" yp1="50" xp2="80" yp2="80" xp3="70" yp3="50"/&gt;</text>
+</slide>
+    
+ <slide bg="white" fg="rgb(50,50,50)">
+    <text xp="50" yp="50" sp="5" align="center">Percent Grid</text>
+    <line xp1="0" yp1="0" xp2="0" yp2="100" sp="0.1" color="blue"/>
+    <line xp1="0" yp1="0" xp2="100" yp2="0" sp="0.1" color="blue"/>
+    <line xp1="100" yp1="0" xp2="100" yp2="100" sp="0.1" color="blue"/>
+    <line xp1="10" yp1="0" xp2="10" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="10" yp="95" sp="2" color="gray" align="center">10</text>
+    <line xp1="20" yp1="0" xp2="20" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="20" yp="95" sp="2" color="gray" align="center">20</text>
+    <line xp1="30" yp1="0" xp2="30" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="30" yp="95" sp="2" color="gray" align="center">30</text>
+    <line xp1="40" yp1="0" xp2="40" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="40" yp="95" sp="2" color="gray" align="center">40</text>
+    <line xp1="50" yp1="0" xp2="50" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="50" yp="95" sp="2" color="gray" align="center">50</text>
+    <line xp1="60" yp1="0" xp2="60" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="60" yp="95" sp="2" color="gray" align="center">60</text>
+    <line xp1="70" yp1="0" xp2="70" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="70" yp="95" sp="2" color="gray" align="center">70</text>
+    <line xp1="80" yp1="0" xp2="80" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="80" yp="95" sp="2" color="gray" align="center">80</text>
+    <line xp1="90" yp1="0" xp2="90" yp2="100" sp="0.1" color="lightblue"/>
+    <text xp="90" yp="95" sp="2" color="gray" align="center">90</text>
+    <line xp1="0" yp1="100" xp2="100" yp2="100" sp="0.1" color="blue"/>
+    <line xp1="0" yp1="10" xp2="100" yp2="10" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="10" sp="2" color="gray" align="center">10</text>
+    <line xp1="0" yp1="20" xp2="100" yp2="20" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="20" sp="2" color="gray" align="center">20</text>
+    <line xp1="0" yp1="30" xp2="100" yp2="30" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="30" sp="2" color="gray" align="center">30</text>
+    <line xp1="0" yp1="40" xp2="100" yp2="40" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="40" sp="2" color="gray" align="center">40</text>
+    <line xp1="0" yp1="50" xp2="100" yp2="50" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="50" sp="2" color="gray" align="center">50</text>
+    <line xp1="0" yp1="60" xp2="100" yp2="60" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="60" sp="2" color="gray" align="center">60</text>
+    <line xp1="0" yp1="70" xp2="100" yp2="70" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="70" sp="2" color="gray" align="center">70</text>
+    <line xp1="0" yp1="80" xp2="100" yp2="80" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="80" sp="2" color="gray" align="center">80</text>
+    <line xp1="0" yp1="90" xp2="100" yp2="90" sp="0.1" color="lightblue"/>
+    <text xp="5" yp="90" sp="2" color="gray" align="center">90</text>
+</slide>   
+
+<slide bg="white" fg="rgb(50,50,50)">
+      <text xp="50" yp="10" sp="4" align="center">Percentage-based layout</text>
+      <text xp="10" yp="50" sp="3" color="rgb(127,0,0)">Hello</text>
+      <image xp="50" yp="50" width="360" height="203" name="desert2.jpg"/>
+      <rect xp="90" yp="50" wp="10" hr="100" color="rgb(127,0,0)" opacity="50"/>
+      <text xp="10" yp="80" sp="1.5"  align="center">10%, 50%</text>
+      <text xp="50" yp="80" sp="1.5"  align="center">50%, 50%</text>
+      <text xp="90" yp="80" sp="1.5"  align="center">90%, 50%</text>
+        
+      <line xp1="10" yp1="80" xp2="10" yp2="50" sp="0.1" color="gray"/>
+      <line xp1="50" yp1="80" xp2="50" yp2="50" sp="0.1" color="gray"/>
+      <line xp1="90" yp1="80" xp2="90" yp2="50" sp="0.1" color="gray"/>
+        
+      <ellipse xp="10" yp="50" wp="0.5" hr="100" color="gray"/>
+      <ellipse xp="50" yp="50" wp="0.5" hr="100" color="gray"/>
+      <ellipse xp="90" yp="50" wp="0.5" hr="100" color="gray"/>
+  </slide>
+  
+    
+    
 </deck>
