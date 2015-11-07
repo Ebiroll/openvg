@@ -77,8 +77,7 @@ VGPaint paint;
 VGPaint strokePaint;
 
 static STATE_T _state, *state = &_state;	// global graphics state
-static const int MAXFONTPATH = 256;
-
+static const int MAXFONTPATH = 500;
 //
 // Terminal settings
 //
@@ -545,38 +544,28 @@ void ClipEnd() {
 	vgSeti(VG_SCISSORING, VG_FALSE);
 }
 
+unsigned char *next_utf8_char(unsigned char *utf8, int *codepoint) {
+	int seqlen;
+	int datalen = (int)strlen(utf8);
+	unsigned char *p = utf8;
 
-unsigned const char *next_utf8_char(const unsigned char *utf8, int *codepoint)
-{
-    int seqlen;
-    int datalen = strlen((const char *)utf8);
-    const unsigned char *p = utf8;
-
-    if (datalen < 1 || *utf8==0) {
-        // End of sfring
-        return NULL;
-    }
-
-      if(!(utf8[0] & 0x80))      // 0xxxxxxx
-      {
-        *codepoint= (wchar_t)utf8[0];
-         seqlen = 1;
-      }
-      else if((utf8[0] & 0xE0) == 0xC0)  // 110xxxxx
-      {
-        *codepoint= (int)(((utf8[0] & 0x1F) << 6) | (utf8[1] & 0x3F));
-         seqlen = 2;
-      }
-      else if((utf8[0] & 0xF0) == 0xE0)  // 1110xxxx
-      {
-        *codepoint= (int)(((utf8[0] & 0x0F) << 12) | ((utf8[1] & 0x3F) << 6) | (utf8[2] & 0x3F));
-         seqlen = 3;
-      }
-      else
-        return NULL;  // No code points this high here
-
-      p += seqlen;
-      return p;
+	if (datalen < 1 || *utf8 == 0) { // End of string
+		return NULL;
+	}
+	if (!(utf8[0] & 0x80)) {			 // 0xxxxxxx
+		*codepoint = (wchar_t) utf8[0];
+		seqlen = 1;
+	} else if ((utf8[0] & 0xE0) == 0xC0) {		   // 110xxxxx 
+		*codepoint = (int)(((utf8[0] & 0x1F) << 6) | (utf8[1] & 0x3F));
+		seqlen = 2;
+	} else if ((utf8[0] & 0xF0) == 0xE0) {		   // 1110xxxx
+		*codepoint = (int)(((utf8[0] & 0x0F) << 12) | ((utf8[1] & 0x3F) << 6) | (utf8[2] & 0x3F));
+		seqlen = 3;
+	} else {
+		return NULL;				   // No code points this high here
+	}
+	p += seqlen;
+	return p;
 }
 
 
@@ -584,11 +573,9 @@ unsigned const char *next_utf8_char(const unsigned char *utf8, int *codepoint)
 // derived from http://web.archive.org/web/20070808195131/http://developer.hybrid.fi/font2openvg/renderFont.cpp.txt
 void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {
 	VGfloat size = (VGfloat) pointsize, xx = x, mm[9];
-
 	vgGetMatrix(mm);
 	int character;
-	const unsigned char *ss =(const unsigned char *)s;
-
+	unsigned char *ss = s;
 	while ((ss = next_utf8_char(ss, &character)) != NULL) {
 		int glyph = f.CharacterMap[character];
 		if (glyph == -1) {
@@ -611,10 +598,10 @@ void Text(VGfloat x, VGfloat y, char *s, Fontinfo f, int pointsize) {
 VGfloat TextWidth(char *s, Fontinfo f, int pointsize) {
 	VGfloat tw = 0.0;
 	VGfloat size = (VGfloat) pointsize;
-        int character;
-        const unsigned char *ss = (const unsigned char *) s;
-        while ((ss = next_utf8_char(ss, &character)) != NULL) {
-        int glyph = f.CharacterMap[character];
+	int character;
+	unsigned char *ss = s;
+	while ((ss = next_utf8_char(ss, &character)) != NULL) {
+		int glyph = f.CharacterMap[character];
 		if (glyph == -1) {
 			continue;			   //glyph is undefined
 		}
