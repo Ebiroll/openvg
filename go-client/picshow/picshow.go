@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/ajstarks/openvg"
+	"github.com/Ebiroll/openvg"
 	"github.com/disintegration/gift"
 )
 

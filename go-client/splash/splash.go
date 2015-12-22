@@ -10,7 +10,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/ajstarks/openvg"
+	"github.com/Ebiroll/openvg"
 	"github.com/disintegration/gift"
 )
 
