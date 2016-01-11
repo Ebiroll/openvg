@@ -437,7 +437,7 @@ void finish() {
     vgDestroyPaint(paint);
     vgDestroyPaint(strokePaint);
 #ifdef BCMHOST
-	glClear(GL_COLOR_BUFFER_BIT);
+       //glClear(GL_COLOR_BUFFER_BIT);
 
 	eglSwapBuffers(state->display, state->surface);
 	eglMakeCurrent(state->display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT);
