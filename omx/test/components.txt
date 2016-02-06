@@ -1,3 +1,218 @@
+
+Broadcom omx components are Documented here,
+
+
+http://home.nouwen.name/RaspberryPi/documentation/ilcomponents/index.html
+
+http://www.jvcref.com/files/PI/documentation/ilcomponents/index.html
+
+
+Component is OMX.st.clocksrc
+  Num roles is 1
+    role: clocksrc
+Component is OMX.st.clocksrc
+  Num roles is 1
+    role: clocksrc
+Component is OMX.st.volume.component
+  Num roles is 1
+    role: volume.component
+Component is OMX.st.volume.component
+  Num roles is 1
+    role: volume.component
+Component is OMX.st.audio.mixer
+  Num roles is 1
+    role: audio.mixer
+Component is OMX.st.audio.mixer
+  Num roles is 1
+    role: audio.mixer
+Component is OMX.st.video.scheduler
+  Num roles is 1
+    role: video.scheduler
+Component is OMX.st.video.scheduler
+  Num roles is 1
+    role: video.scheduler
+No more components
+
+----------------------------------------
+
+Component is OMX.st.audio_decoder.amr
+  Num roles is 1
+    role: audio_decoder.amr
+Component is OMX.st.audio_decoder.amr
+  Num roles is 1
+    role: audio_decoder.amr
+Component is OMX.st.audio_encoder.amr
+  Num roles is 1
+    role: audio_encoder.amr
+Component is OMX.st.audio_encoder.amr
+  Num roles is 1
+    role: audio_encoder.amr
+Component is OMX.st.mux.3gp
+  Num roles is 1
+    role: mux.3gp
+Component is OMX.st.mux.3gp
+  Num roles is 1
+    role: mux.3gp
+Component is OMX.st.clocksrc
+  Num roles is 1
+    role: clocksrc
+Component is OMX.st.clocksrc
+  Num roles is 1
+    role: clocksrc
+Component is OMX.st.volume.component
+  Num roles is 1
+    role: volume.component
+Component is OMX.st.volume.component
+  Num roles is 1
+    role: volume.component
+Component is OMX.st.audio.mixer
+  Num roles is 1
+    role: audio.mixer
+Component is OMX.st.audio.mixer
+  Num roles is 1
+    role: audio.mixer
+Component is OMX.st.video.xvideo_sink
+  Num roles is 1
+    role: video.xvideosink
+Component is OMX.st.video.xvideosink
+  Num roles is 1
+    role: video.xvideosink
+Component is OMX.st.video.scheduler
+  Num roles is 1
+    role: video.scheduler
+Component is OMX.st.video.scheduler
+  Num roles is 1
+    role: video.scheduler
+Component is OMX.st.audio_decoder
+  Num roles is 4
+    role: audio_decoder.mp3
+    role: audio_decoder.ogg
+    role: audio_decoder.aac
+    role: audio_decoder.g726
+Component is OMX.st.audio_decoder.mp3
+  Num roles is 1
+    role: audio_decoder.mp3
+Component is OMX.st.audio_decoder.ogg
+  Num roles is 1
+    role: audio_decoder.ogg
+Component is OMX.st.audio_decoder.aac
+  Num roles is 1
+    role: audio_decoder.aac
+Component is OMX.st.audio_decoder.g726
+  Num roles is 1
+    role: audio_decoder.g726
+Component is OMX.st.video_decoder
+  Num roles is 2
+    role: video_decoder.mpeg4
+    role: video_decoder.avc
+Component is OMX.st.video_decoder.mpeg4
+  Num roles is 1
+    role: video_decoder.mpeg4
+Component is OMX.st.video_decoder.avc
+  Num roles is 1
+    role: video_decoder.avc
+Component is OMX.st.video_colorconv.ffmpeg
+  Num roles is 1
+    role: video_colorconv.ffmpeg
+Component is OMX.st.video_colorconv.ffmpeg
+  Num roles is 1
+    role: video_colorconv.ffmpeg
+Component is OMX.st.video_encoder
+  Num roles is 1
+    role: video_encoder.mpeg4
+Component is OMX.st.video_encoder.mpeg4
+  Num roles is 1
+    role: video_encoder.mpeg4
+Component is OMX.st.audio_encoder
+  Num roles is 3
+    role: audio_encoder.mp3
+    role: audio_encoder.aac
+    role: audio_encoder.g726
+Component is OMX.st.audio_encoder.mp3
+  Num roles is 1
+    role: audio_encoder.mp3
+Component is OMX.st.audio_encoder.aac
+  Num roles is 1
+    role: audio_encoder.aac
+Component is OMX.st.audio_encoder.g726
+  Num roles is 1
+    role: audio_encoder.g726
+Component is OMX.st.parser.3gp
+  Num roles is 1
+    role: parser.3gp
+Component is OMX.st.parser.3gp
+  Num roles is 1
+    role: parser.3gp
+Component is OMX.st.audio_filereader
+  Num roles is 0
+No more components
+
+
+
+-----------------------------------------
+ From net....
+
+Component is OMX.broadcom.audio_capture
+  Num roles is 0
+Component is OMX.broadcom.audio_decode
+  Num roles is 0
+Component is OMX.broadcom.audio_encode
+  Num roles is 0
+Component is OMX.broadcom.audio_render
+  Num roles is 0
+Component is OMX.broadcom.audio_mixer
+  Num roles is 0
+Component is OMX.broadcom.audio_splitter
+  Num roles is 0
+Component is OMX.broadcom.audio_processor
+  Num roles is 0
+Component is OMX.broadcom.camera
+  Num roles is 0
+Component is OMX.broadcom.clock
+  Num roles is 0
+Component is OMX.broadcom.coverage
+  Num roles is 0
+Component is OMX.broadcom.egl_render
+  Num roles is 0
+Component is OMX.broadcom.image_fx
+  Num roles is 0
+Component is OMX.broadcom.image_decode
+  Num roles is 0
+Component is OMX.broadcom.image_encode
+  Num roles is 0
+Component is OMX.broadcom.image_read
+  Num roles is 0
+Component is OMX.broadcom.image_write
+  Num roles is 0
+Component is OMX.broadcom.read_media
+  Num roles is 0
+Component is OMX.broadcom.resize
+  Num roles is 0
+Component is OMX.broadcom.source
+  Num roles is 0
+Component is OMX.broadcom.text_scheduler
+  Num roles is 0
+Component is OMX.broadcom.transition
+  Num roles is 0
+Component is OMX.broadcom.video_decode
+  Num roles is 0
+Component is OMX.broadcom.video_encode
+  Num roles is 0
+Component is OMX.broadcom.video_render
+  Num roles is 0
+Component is OMX.broadcom.video_scheduler
+  Num roles is 0
+Component is OMX.broadcom.video_splitter
+  Num roles is 0
+Component is OMX.broadcom.visualisation
+  Num roles is 0
+Component is OMX.broadcom.write_media
+  Num roles is 0
+Component is OMX.broadcom.write_still
+  Num roles is 0
+No more components
+--------------------------------------
+
 Component is OMX.broadcom.audio_capture
   Num roles is 0
 Component is OMX.broadcom.audio_decode

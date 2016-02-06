@@ -75,6 +75,9 @@ func loadimage(d deck.Deck, m map[string]image.Image) {
 				continue
 			}
 			openvg.Start(w, h)
+			if i.Link!= "" {
+                          fmt.Fprintf(os.Stderr, "Found altimg %s\n", i.Link)
+                        }
 			f, err := os.Open(i.Name)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "%v\n", err)
@@ -366,6 +369,7 @@ func dimen(d deck.Deck, x, y, s float64) (xo, yo, so openvg.VGfloat) {
 
 type videoType struct {
     name string
+    altimg string
     x  openvg.VGfloat
     y  openvg.VGfloat
     w  openvg.VGfloat
@@ -421,7 +425,8 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 			video.x=x-midx;
 			video.y=y-midy;
 			video.w=imw
-			video.h=imh				
+			video.h=imh
+                        video.altimg=im.Link				
 		} else {
 			img, ok := imap[im.Name]
 			if ok {
@@ -705,6 +710,12 @@ func showslide(d deck.Deck, imap map[string]image.Image, n int) {
 	}
 	openvg.FillColor(slide.Fg)
 	openvg.End()
+	if (video.altimg !="") {
+		img, ok := imap[video.altimg]
+		if ok {
+			openvg.Img(video.x, video.y, img)
+		}
+        }
 	if (video.name !="") {
 		openvg.Video(video.x,video.y,video.w,video.h,video.name)
 	}
@@ -765,8 +776,8 @@ func main() {
 	var cw = flag.Int("w", 0, "canvas width")
 	var ch = flag.Int("h", 0, "canvas height")
 	flag.Parse()
-	dodeck("layout.xml", *search, *pause, *slidenum, *cw, *ch, *gridpct)
-	//for _, f := range flag.Args() {
-	//	dodeck(f, *search, *pause, *slidenum, *cw, *ch, *gridpct)
-	//}
+	//dodeck("layout.xml", *search, *pause, *slidenum, *cw, *ch, *gridpct)
+	for _, f := range flag.Args() {
+		dodeck(f, *search, *pause, *slidenum, *cw, *ch, *gridpct)
+	}
 }
