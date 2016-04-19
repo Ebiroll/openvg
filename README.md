@@ -42,7 +42,7 @@ To build, do
 
 Another feature added to the library is video playback. To get the video to play on the raspberry you must transcode it. This can be done with ffmpeg.
 
-    ffmpeg -i [input-video.avi] -profile:v main  -an -bsf:v h264_mp4toannexb -pix_fmt yuv420p  -r 25 -s 1920*1080 test.h264
+    ffmpeg -i [input-video.avi] -profile:v main  -an -bsf:v h264_mp4toannexb -pix_fmt yuv420p  -r 25 -s 1280*720 test.h264
 
 Works for me.
 
@@ -115,6 +115,12 @@ If you insist on using an older version of golang try setting these,
 ## Visual Studio Code
 Works great for editing go code in linux
 Download and install. https://code.visualstudio.com/
+Install go extension with,
+Presss Ctrl-P
+ext install Go
+Choose lukehobans extension.
+    To compile and run
+    Ctrl-Shift P
 
 	Open the folder src/github.com/Ebiroll/openvg
     Ctrl-Shift P   ->   Type Tasks and find : Configure Task Runner

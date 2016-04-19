@@ -251,8 +251,8 @@ int video_decode_test(char *filename,int x,int y,int w,int h)
             configDisplay.dest_rect.height    = h;
             configDisplay.src_rect.x_offset   = 0;
             configDisplay.src_rect.y_offset   = 0;
-            configDisplay.src_rect.width      = 1920;
-            configDisplay.src_rect.height     = 1080;
+            configDisplay.src_rect.width      = 1280;
+            configDisplay.src_rect.height     = 720;
 
             int stat = 0;
             stat =  OMX_SetParameter(ILC_GET_HANDLE(video_render), OMX_IndexConfigDisplayRegion, &configDisplay);
