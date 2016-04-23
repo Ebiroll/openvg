@@ -9,8 +9,8 @@ import (
 	"github.com/Ebiroll/openvg"
 	"log"
 	"fmt"
-        "net/http"
-        "io/ioutil"
+    "net/http"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"time"
@@ -216,69 +216,41 @@ func main() {
 		fmt.Println("W,H",w,h)
 
 		imgw,imgh := 0 , 0
-		openvg.Background(255, 255, 255)
+		openvg.Background(0, 0, 0)
 		
 		//SLHeight = 60
-		var imgPosY = openvg.VGfloat(sreenHeight - 70 )
-		openvg.Image(4, imgPosY , imgw, imgh, "SL.jpg")
+		var imgPosY = openvg.VGfloat(sreenHeight - 120 )
+		openvg.Image(8, imgPosY , imgw, imgh, "DA4FID.png")
 	
 		var TAB1 = openvg.VGfloat(4*w/20)
-		var TAB2 = openvg.VGfloat(8*w/20)
+		//var TAB2 = openvg.VGfloat(8*w/20)
 	
 		rx1,  rw1, rh1 := openvg.VGfloat(cx),  openvg.VGfloat(cw), openvg.VGfloat(ch)
 		ty := 0
 		rix := 0
+
+		ty = sreenHeight - (120 + int(rh1)) 
 		
-		// Buses
-		for ty = sreenHeight - (80 + int(rh1)) ; ty>0 && rix < len(jsonData.ResponseData.Buses) ; ty -= ch {
-			tempy := openvg.VGfloat(ty)
-			//ry := openvg.VGfloat(ty)
-			if  rix%2 == 0 {
-				openvg.FillRGB(0, 0, 0, .2)
-				//openvg.Rect(rx1, tempy, rw1, rh1)	
-				openvg.FillRGB(0, 0, 0, 1)
-				tempy = tempy + 6.0
-			} else {
-				openvg.FillRGB(0, 0, 0, .4)
-				openvg.Rect(rx1, tempy, rw1, rh1)	
-				tempy = tempy + 6.0
-				openvg.FillRGB(0, 0, 0, 1)			
-			}
-			openvg.Text(rx1, tempy, jsonData.ResponseData.Buses[rix].LineNumber , "sans", fontsize)
-			drawTypeOfTransport(rx1+60,tempy+2,rw1,ch-20,jsonData.ResponseData.Buses[rix].TransportMode)
-			
-			openvg.Text(rx1 + 100 ,  tempy, jsonData.ResponseData.Buses[rix].StopPointDesignation, "sans", fontsize)
-			openvg.Text(rx1 + TAB1, tempy, jsonData.ResponseData.Buses[rix].DisplayTime , "sans", fontsize)
-			var dest = jsonData.ResponseData.Buses[rix].Destination
-			dest = replaceAO(dest)
-			openvg.Text(rx1 + TAB2, tempy, dest , "sans", fontsize)
-	
-			
-			//openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
-			//openvg.Background(255,255,0)
-			rix = rix+1			
-		}
 		var trainIx=0
 		for ty=ty-20; ty>0 && trainIx < len(jsonData.ResponseData.Trains) ; ty -= ch {
 			tempy := openvg.VGfloat(ty)
 			//ry := openvg.VGfloat(ty)
 			if  rix%2 == 0 {
-				openvg.FillRGB(0, 0, 0, .2)
+				openvg.FillRGB(255, 255, 255, .2)
 				//openvg.Rect(rx1, tempy, rw1, rh1)	
-				openvg.FillRGB(0, 0, 0, 1)
 				tempy = tempy + 6.0
 			} else {
-				openvg.FillRGB(0, 0, 0, .4)
-				openvg.Rect(rx1, tempy, rw1, rh1)	
+				openvg.FillRGB(255, 255, 255, .4)
+				openvg.Rect(rx1, tempy, rw1/3, rh1)	
 				tempy = tempy + 6.0
-				openvg.FillRGB(0, 0, 0, 1)			
 			}
-			openvg.Text(rx1, tempy, jsonData.ResponseData.Trains[trainIx].LineNumber , "sans", fontsize)
-			drawTypeOfTransport(rx1+55,tempy+4,rw1,ch-20,jsonData.ResponseData.Trains[trainIx].TransportMode)
-			openvg.Text(rx1 + TAB1, tempy, jsonData.ResponseData.Trains[trainIx].DisplayTime , "sans", fontsize)
+			openvg.FillRGB(255, 255, 255, 1)
+			//openvg.Text(rx1, tempy, jsonData.ResponseData.Trains[trainIx].LineNumber , "sans", fontsize)
+			//drawTypeOfTransport(rx1+55,tempy+4,rw1,ch-20,jsonData.ResponseData.Trains[trainIx].TransportMode)
+			openvg.Text(rx1 , tempy, jsonData.ResponseData.Trains[trainIx].DisplayTime , "sans", fontsize)
 			var dest = jsonData.ResponseData.Trains[trainIx].Destination
 			dest = replaceAO(dest)
-			openvg.Text(rx1 + TAB2, tempy, dest , "sans", fontsize)
+			openvg.Text(rx1 + TAB1, tempy, dest , "sans", fontsize)
 	
 			
 			//openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
@@ -287,8 +259,13 @@ func main() {
 			rix = rix+1			
 		}
 				
-		//openvg.End()
-		openvg.SaveEnd("dump.raw")
+		openvg.End()
+		//openvg.SaveEnd("dump.raw")
+	
+		openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
+	
+		openvg.Image(8, 10 , imgw, imgh, "no_smoking.png")
+
 	
 		time.Sleep(60*time.Second);	
 	}
