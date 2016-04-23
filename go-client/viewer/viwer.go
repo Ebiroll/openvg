@@ -13,7 +13,7 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
-	"time"
+	//"time"
 	"encoding/json"
 )
 
@@ -153,6 +153,14 @@ func replaceAO(in string) string {
 	return ret
 }
 
+
+func PlayVideo(w,h int) {
+openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
+openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
+openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
+openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
+}
+
 func drawTypeOfTransport(x openvg.VGfloat,y openvg.VGfloat, w openvg.VGfloat, h int, tType string ) {
 
 	//openvg.Background(0, 0, 255)
@@ -180,23 +188,24 @@ func drawTypeOfTransport(x openvg.VGfloat,y openvg.VGfloat, w openvg.VGfloat, h 
 }
 
 func main() {
-	var sreenHeight  , cx, cy, cw, ch, midy int
-	message := "Scrolling texts could be useful if the information does not fit on screen, is this a scrolling text"
+	var sreenHeight  , cx, cy, cw, ch int
+	message := "Scrolling texts could be useful if the information does not fit on screen, is this a scrolling text....... Of course it is "
 
 	w, h := openvg.Init()
 	sreenHeight= h
 	var speed openvg.VGfloat = 0.5
 	var x openvg.VGfloat = 0
-	midy = (h / 2)
+	//midy = (h / 2)
 	fontsize := w / 50
 	cx = 0
 	ch = fontsize * 2
 	cw = w
-	cy = midy - (ch / 2)
-    var jsonData SLData
+	//cy = midy - (ch / 2)
+	cy = 40
+        var jsonData SLData
 
-	for {	
-		response, err := http.Get("http://localhost:8000")
+	response, err := http.Get("http://localhost:8000")
+
 
 		if err == nil {
 			defer response.Body.Close()
@@ -211,9 +220,24 @@ func main() {
 				fmt.Println(jsonData)					
 			}
 		}
+
+	go PlayVideo(1280,1024)
+
+
+	for {	
+
+
+
+
 	
 		openvg.Start(w, h)
 		fmt.Println("W,H",w,h)
+
+
+
+ 	        rx, ry, rw, rh := openvg.VGfloat(cx), openvg.VGfloat(cy), openvg.VGfloat(cw), openvg.VGfloat(ch)
+		// scroll the text, only in the clipping rectangle
+		for x = 0; x < rw+speed; x += speed {
 
 		imgw,imgh := 0 , 0
 		openvg.Background(0, 0, 0)
@@ -229,7 +253,8 @@ func main() {
 		ty := 0
 		rix := 0
 
-		ty = sreenHeight - (120 + int(rh1)) 
+		// - (120 + int(rh1)) 
+		ty = sreenHeight - 140
 		
 		var trainIx=0
 		for ty=ty-20; ty>0 && trainIx < len(jsonData.ResponseData.Trains) ; ty -= ch {
@@ -258,35 +283,46 @@ func main() {
 			trainIx = trainIx +1
 			rix = rix+1			
 		}
-				
-		openvg.End()
-		//openvg.SaveEnd("dump.raw")
-	
-		openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
-	
-		openvg.Image(8, 10 , imgw, imgh, "no_smoking.png")
+
+		imgw=20
+		imgh=20
+
+		//openvg.Image(8, 100 , imgw, imgh, "no_smoking.png")
+
+
+
 
 	
-		time.Sleep(60*time.Second);	
+		    // openvg.Start(w, h)
+		    //openvg.Background(255, 255, 255)
+		    openvg.FillRGB(0, 0, 0, 1)
+		    openvg.Rect(rx, ry, rw, rh)
+		    //openvg.ClipRect(cx, cy, cw, ch)
+		    //openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
+		    openvg.FillRGB(255, 255, 255, 1)
+		    var pxp openvg.VGfloat =  openvg.VGfloat (w) - openvg.VGfloat (x)   
+		    openvg.Text(pxp,10, message, "sans", fontsize)
+		    //openvg.ClipEnd()
+		    openvg.End()
+		}
+
+
+
+
+		//openvg.SaveEnd("dump.raw")
+	
+
+
+
+
+	
+		//time.Sleep(60*time.Second);	
 	}
 
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
 
 
-	rx, ry, rw, rh := openvg.VGfloat(cx), openvg.VGfloat(cy), openvg.VGfloat(cw), openvg.VGfloat(ch)
-	// scroll the text, only in the clipping rectangle
-	for x = 0; x < rw+speed; x += speed {
-		openvg.Start(w, h)
-		openvg.Background(255, 255, 255)
-		openvg.FillRGB(0, 0, 0, .2)
-		openvg.Rect(rx, ry, rw, rh)
-		openvg.ClipRect(cx, cy, cw, ch)
-		openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
-		openvg.FillRGB(0, 0, 0, 1)
-		openvg.Text(0, 0, message, "sans", fontsize)
-		openvg.ClipEnd()
-		openvg.End()
-	}
+
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
 	openvg.Finish()
 	os.Exit(0)
