@@ -9,11 +9,11 @@ import (
 	"github.com/Ebiroll/openvg"
 	"log"
 	"fmt"
-    "net/http"
+        "net/http"
 	"io/ioutil"
 	"os"
 	"os/exec"
-	//"time"
+	"time"
 	"encoding/json"
 )
 
@@ -153,12 +153,26 @@ func replaceAO(in string) string {
 	return ret
 }
 
+func makeTimestamp() int64 {
+    return time.Now().UnixNano() / (int64(time.Millisecond)/int64(time.Nanosecond))
+    }
+
 
 func PlayVideo(w,h int) {
-openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
-openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
-openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
-openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
+
+
+
+for {
+openvg.Video(openvg.VGfloat(w-900),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"siATM_video2.mpg.h264")
+openvg.Video(openvg.VGfloat(w-900),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"sketchers_15s.ogv.h264")
+}
+
+
+//openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
+//openvg.Video(openvg.VGfloat(w-800),openvg.VGfloat(h-600),openvg.VGfloat(800),openvg.VGfloat(600),"test.h264")
+
+
+
 }
 
 func drawTypeOfTransport(x openvg.VGfloat,y openvg.VGfloat, w openvg.VGfloat, h int, tType string ) {
@@ -189,11 +203,10 @@ func drawTypeOfTransport(x openvg.VGfloat,y openvg.VGfloat, w openvg.VGfloat, h 
 
 func main() {
 	var sreenHeight  , cx, cy, cw, ch int
-	message := "Scrolling texts could be useful if the information does not fit on screen, is this a scrolling text....... Of course it is "
-
-	w, h := openvg.Init()
+	message := "Hej Sandra tack forden mysiga kramen ..... <3 <3 Puss puss"
+	w , h := openvg.Init()
 	sreenHeight= h
-	var speed openvg.VGfloat = 0.5
+	var speed openvg.VGfloat = 4.0
 	var x openvg.VGfloat = 0
 	//midy = (h / 2)
 	fontsize := w / 50
@@ -201,8 +214,9 @@ func main() {
 	ch = fontsize * 2
 	cw = w
 	//cy = midy - (ch / 2)
-	cy = 40
+	cy = h - 80
         var jsonData SLData
+	var lastmill = makeTimestamp() 
 
 	response, err := http.Get("http://localhost:8000")
 
@@ -221,23 +235,30 @@ func main() {
 			}
 		}
 
-	go PlayVideo(1280,1024)
+	openvg.Start(w, h)
+	openvg.End()
+	go PlayVideo(w,h)
 
 
 	for {	
 
-
-
-
 	
 		openvg.Start(w, h)
-		fmt.Println("W,H",w,h)
+		//fmt.Println("W,H",w,h)
 
-
-
- 	        rx, ry, rw, rh := openvg.VGfloat(cx), openvg.VGfloat(cy), openvg.VGfloat(cw), openvg.VGfloat(ch)
+ 	        rx, ry, rw, rh := openvg.VGfloat(cx)	, openvg.VGfloat(cy), openvg.VGfloat(cw), openvg.VGfloat(ch)
 		// scroll the text, only in the clipping rectangle
+
+
+
 		for x = 0; x < rw+speed; x += speed {
+
+		var mill = makeTimestamp()
+		var delta= (mill - lastmill)/5
+		//fmt.Println("delta ", delta)
+		//speed
+
+                x = openvg.VGfloat(delta)
 
 		imgw,imgh := 0 , 0
 		openvg.Background(0, 0, 0)
@@ -295,13 +316,14 @@ func main() {
 	
 		    // openvg.Start(w, h)
 		    //openvg.Background(255, 255, 255)
-		    openvg.FillRGB(0, 0, 0, 1)
+		    openvg.FillRGB(100, 0, 0, 1)
 		    openvg.Rect(rx, ry, rw, rh)
 		    //openvg.ClipRect(cx, cy, cw, ch)
 		    //openvg.Translate(x, ry+openvg.VGfloat(fontsize/2))
 		    openvg.FillRGB(255, 255, 255, 1)
-		    var pxp openvg.VGfloat =  openvg.VGfloat (w) - openvg.VGfloat (x)   
-		    openvg.Text(pxp,10, message, "sans", fontsize)
+		    var pxp openvg.VGfloat =  openvg.VGfloat (w) - openvg.VGfloat (x)
+		    var pyp openvg.VGfloat = openvg.VGfloat(h) -openvg.VGfloat(58)
+		    openvg.Text(pxp,pyp, message, "sans", fontsize)
 		    //openvg.ClipEnd()
 		    openvg.End()
 		}
@@ -327,3 +349,4 @@ func main() {
 	openvg.Finish()
 	os.Exit(0)
 }
+
