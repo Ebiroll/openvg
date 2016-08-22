@@ -17,10 +17,10 @@ extern "C" {
 	extern void Rotate(VGfloat);
 	extern void Shear(VGfloat, VGfloat);
 	extern void Scale(VGfloat, VGfloat);
-	extern void Text(VGfloat, VGfloat, char *, Fontinfo, int);
-	extern void TextMid(VGfloat, VGfloat, char *, Fontinfo, int);
-	extern void TextEnd(VGfloat, VGfloat, char *, Fontinfo, int);
-	extern VGfloat TextWidth(char *, Fontinfo, int);
+	extern void Text(VGfloat, VGfloat, const char *, Fontinfo, int);
+	extern void TextMid(VGfloat, VGfloat, const char *, Fontinfo, int);
+	extern void TextEnd(VGfloat, VGfloat, const char *, Fontinfo, int);
+	extern VGfloat TextWidth(const char *, Fontinfo, int);
 	extern void Cbezier(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void Qbezier(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void Polygon(VGfloat *, VGfloat *, VGint);
@@ -31,10 +31,10 @@ extern "C" {
 	extern void Ellipse(VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void Circle(VGfloat, VGfloat, VGfloat);
 	extern void Arc(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
-	extern void Image(VGfloat, VGfloat, int, int, char *);
+	extern void Image(VGfloat, VGfloat, int, int, const char *);
 	extern void Start(int, int);
 	extern void End();
-	extern void SaveEnd(char *);
+	extern void SaveEnd(const char *);
 	extern void Background(unsigned int, unsigned int, unsigned int);
 	extern void BackgroundRGB(unsigned int, unsigned int, unsigned int, VGfloat);
 	extern void init(int *, int *);
@@ -77,6 +77,7 @@ extern "C" {
 	extern void EllipseOutline(VGfloat, VGfloat, VGfloat, VGfloat);
 	extern void CircleOutline(VGfloat, VGfloat, VGfloat);
 	extern void ArcOutline(VGfloat, VGfloat, VGfloat, VGfloat, VGfloat, VGfloat);
+	extern VGImage createImageFromJpeg(const char *);
 
 #if defined(__cplusplus)
 }
